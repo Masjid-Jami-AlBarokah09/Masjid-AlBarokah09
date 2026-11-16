@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masjid Jami' Al-Barokah 09 — Portal Digital & Layanan Umat</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        alabaster: '#F9F8F4',
+                        emeraldDeep: '#0D4A3A',
+                        emeraldLight: '#E8F1EE',
+                        goldSoft: '#D4AF37',
+                        terracotta: '#C87D32',
+                        terracottaLight: '#FDF4EB',
+                        sage: '#4A7C59',
+                        navyRoyal: '#1E3A5F',
+                        navyLight: '#EDF2F8',
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F9F8F4;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%230D4A3A' stroke-width='0.8' stroke-opacity='0.045'%3E%3Cpath d='M40 0L51.7 28.3L80 40L51.7 51.7L40 80L28.3 51.7L0 40L28.3 28.3Z'/%3E%3Ccircle cx='40' cy='40' r='16'/%3E%3Cpath d='M11.7 11.7L68.3 68.3M68.3 11.7L11.7 68.3'/%3E%3C/g%3E%3C/svg%3E");
+            color: #1F2937;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .islamic-arch {
+            border-radius: 9999px 9999px 1.5rem 1.5rem;
+        }
+
+        /* Efek Mengembang saat Disentuh (Hover & Scale) */
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 12px 30px -10px rgba(0,0,0,0.12);
+        }
+
+        /* Flipbox Jam */
+        .flip-box {
+            background: linear-gradient(to bottom, #ffffff 0%, #f1f5f9 100%);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), inset 0 2px 4px rgba(255, 255, 255, 0.9);
+            border-bottom: 3px solid #cbd5e1;
+        }
+
+        .page-fade {
+            animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #F1EFEA; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-emeraldDeep selection:text-white">
+
+    <!-- TOP BAR -->
+    <div id="top-prayer-bar" class="bg-emeraldDeep text-white transition-colors duration-500 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-col lg:flex-row items-center justify-between gap-2 text-xs sm:text-sm">
+            <div class="flex items-center gap-3 text-white/90">
+                <span class="inline-flex items-center gap-1.5 font-medium">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-goldSoft"></i>
+                    RW 09 Cigending, Ujungberung, Bandung
+                </span>
+                <span class="hidden sm:inline text-white/30">|</span>
+                <span id="weather-topbar" class="text-amber-200 font-medium">🌡️ Memuat cuaca Bandung...</span>
+            </div>
+            <div id="current-date-display" class="text-white/80 font-medium">Senin, 16 Nov 2026</div>
+        </div>
+    </div>
+
+    <!-- HEADER & NAVIGASI UTAMA -->
+    <header class="sticky top-0 z-40 bg-alabaster/90 backdrop-blur-md border-b border-stone-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-18 py-3">
+                <button onclick="switchPage('profil', 'beranda')" class="flex items-center gap-3 text-left group focus:outline-none">
+                    <div id="brand-icon-box" class="w-11 h-11 rounded-2xl bg-emeraldDeep text-goldSoft flex items-center justify-center shadow-md transition-colors duration-300 group-hover:scale-105">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M12 2C9 5 6 7.5 6 11v9h12v-9c0-3.5-3-6-6-9z"/>
+                            <path d="M12 2v2M4 20h16M10 20v-4a2 2 0 0 1 4 0v4"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="font-serif font-bold text-lg sm:text-xl text-gray-900 leading-tight">Masjid Jami' Al-Barokah 09</h1>
+                        <p class="text-xs text-stone-500 font-medium">Cigending, Ujungberung, Bandung</p>
+                    </div>
+                </button>
+
+                <nav class="hidden md:flex items-center gap-2 bg-stone-200/60 p-1.5 rounded-2xl">
+                    <button id="cat-btn-profil" onclick="switchCategory('profil')" class="cat-btn flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-heading font-semibold transition-all duration-200">
+                        <i data-lucide="landmark" class="w-4 h-4"></i>
+                        <span>Profil Masjid</span>
+                    </button>
+                    <button id="cat-btn-layanan" onclick="switchCategory('layanan')" class="cat-btn flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-heading font-semibold transition-all duration-200">
+                        <i data-lucide="heart-handshake" class="w-4 h-4"></i>
+                        <span>Layanan Umat</span>
+                    </button>
+                    <button id="cat-btn-informasi" onclick="switchCategory('informasi')" class="cat-btn flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-heading font-semibold transition-all duration-200">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        <span>Informasi & Kas</span>
+                    </button>
+                </nav>
+
+                <div class="hidden sm:flex items-center">
+                    <button onclick="switchPage('informasi', 'kas')" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs sm:text-sm font-semibold shadow-sm transition hover-lift">
+                        <i data-lucide="qr-code" class="w-4 h-4 text-goldSoft"></i>
+                        <span>Infaq Cepat</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-1.5 pb-2.5 md:hidden">
+                <button id="mob-cat-profil" onclick="switchCategory('profil')" class="flex flex-col items-center justify-center py-2 px-1 rounded-xl text-xs font-semibold transition">
+                    <i data-lucide="landmark" class="w-4 h-4 mb-1"></i>
+                    <span>Profil</span>
+                </button>
+                <button id="mob-cat-layanan" onclick="switchCategory('layanan')" class="flex flex-col items-center justify-center py-2 px-1 rounded-xl text-xs font-semibold transition">
+                    <i data-lucide="heart-handshake" class="w-4 h-4 mb-1"></i>
+                    <span>Layanan</span>
+                </button>
+                <button id="mob-cat-informasi" onclick="switchCategory('informasi')" class="flex flex-col items-center justify-center py-2 px-1 rounded-xl text-xs font-semibold transition">
+                    <i data-lucide="shield-check" class="w-4 h-4 mb-1"></i>
+                    <span>Info & Kas</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="sub-nav-container" class="border-t border-stone-200/70 bg-white/70 backdrop-blur-sm transition-colors duration-300">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div id="sub-nav-list" class="flex items-center gap-2 py-2.5 overflow-x-auto no-scrollbar"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- KONTEN UTAMA -->
+    <main id="main-content" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8"></main>
+
+    <!-- FOOTER DENGAN AKUN IG & TIKTOK -->
+    <footer class="bg-white border-t border-stone-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                <div>
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <span class="w-3 h-3 rounded-full bg-emeraldDeep"></span>
+                        <span class="font-serif font-bold text-lg text-gray-900">Masjid Jami' Al-Barokah 09</span>
+                    </div>
+                    <p class="text-sm text-stone-500 leading-relaxed">
+                        RW 09 Cigending, Ujungberung, Kota Bandung, Jawa Barat. Terbuka 24 jam untuk ibadah dan musafir.
+                    </p>
+                </div>
+                
+                <!-- Akun IG & Tiktok Resmi -->
+                <div class="flex flex-col sm:flex-row gap-3 md:justify-center">
+                    <a href="https://instagram.com/remajamasjid_albarokah2025" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-pink-50 text-pink-700 hover:bg-pink-100 font-semibold text-xs transition hover-lift border border-pink-200">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        <span>@remajamasjid_albarokah2025</span>
+                    </a>
+                    <a href="https://www.tiktok.com/@rmj_alba25" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-stone-900 text-white hover:bg-stone-800 font-semibold text-xs transition hover-lift border border-stone-800">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                        <span>@rmj_alba25</span>
+                    </a>
+                </div>
+
+                <div class="md:text-right text-xs text-stone-400">
+                    <p>&copy; 2026 DKM Masjid Jami' Al-Barokah 09.</p>
+                    <p class="mt-1">Cigending, Ujungberung, Bandung.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script>
+        const menuConfig = {
+            profil: {
+                label: 'Profil Masjid',
+                themeColor: '#0D4A3A',
+                accentColor: '#D4AF37',
+                activeCatClass: 'bg-emeraldDeep text-white shadow-md',
+                activeSubClass: 'bg-emeraldDeep text-white shadow-sm',
+                inactiveSubClass: 'text-stone-600 hover:bg-emeraldLight hover:text-emeraldDeep',
+                submenus: [
+                    { id: 'beranda', title: 'Beranda Utama', icon: 'home' },
+                    { id: 'kajian', title: 'Jadwal Kajian & Diskusi Rutin', icon: 'calendar-days' },
+                    { id: 'struktur', title: 'Bagan Struktur Kepengurusan', icon: 'network' }
+                ]
+            },
+            layanan: {
+                label: 'Layanan Umat',
+                themeColor: '#C87D32',
+                accentColor: '#4A7C59',
+                activeCatClass: 'bg-terracotta text-white shadow-md',
+                activeSubClass: 'bg-terracotta text-white shadow-sm',
+                inactiveSubClass: 'text-stone-600 hover:bg-terracottaLight hover:text-terracotta',
+                submenus: [
+                    { id: 'qurban', title: 'Layanan & Tabungan Qurban', icon: 'award' },
+                    { id: 'zakat', title: 'Zakat, Infaq & Shodaqoh', icon: 'hand-coins' },
+                    { id: 'beras', title: 'Program Beras Barokah', icon: 'wheat' },
+                    { id: 'jumat', title: "Program Jum'at Berkah", icon: 'utensils' }
+                ]
+            },
+            informasi: {
+                label: 'Informasi & Kas',
+                themeColor: '#1E3A5F',
+                accentColor: '#3B82F6',
+                activeCatClass: 'bg-navyRoyal text-white shadow-md',
+                activeSubClass: 'bg-navyRoyal text-white shadow-sm',
+                inactiveSubClass: 'text-stone-600 hover:bg-navyLight hover:text-navyRoyal',
+                submenus: [
+                    { id: 'kas', title: 'Rekening Donasi & Saldo Kas', icon: 'wallet' }
+                ]
+            }
+        };
+
+        let currentCategory = 'profil';
+        let currentSubmenu = 'beranda';
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-stone-900 border-goldSoft' : 'bg-navyRoyal border-blue-400';
+            
+            toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl text-white text-sm shadow-xl border-l-4 ${bgColor} transition-all duration-300 transform translate-y-2 opacity-0`;
+            toast.innerHTML = `
+                <i data-lucide="check-circle-2" class="w-5 h-5 text-goldSoft shrink-0"></i>
+                <span class="font-medium">${message}</span>
+            `;
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+
+        function switchCategory(catKey) {
+            currentCategory = catKey;
+            currentSubmenu = menuConfig[catKey].submenus[0].id;
+            updateNavigationUI();
+            renderPage();
+        }
+
+        function switchPage(catKey, subKey) {
+            currentCategory = catKey;
+            currentSubmenu = subKey;
+            updateNavigationUI();
+            renderPage();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateNavigationUI() {
+            const config = menuConfig[currentCategory];
+            const topBar = document.getElementById('top-prayer-bar');
+            const brandBox = document.getElementById('brand-icon-box');
+            topBar.style.backgroundColor = config.themeColor;
+            brandBox.style.backgroundColor = config.themeColor;
+
+            ['profil', 'layanan', 'informasi'].forEach(key => {
+                const deskBtn = document.getElementById(`cat-btn-${key}`);
+                const mobBtn = document.getElementById(`mob-cat-${key}`);
+                
+                if (key === currentCategory) {
+                    deskBtn.className = `cat-btn flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-heading font-semibold transition-all duration-200 ${menuConfig[key].activeCatClass}`;
+                    mobBtn.className = `flex flex-col items-center justify-center py-2 px-1 rounded-xl text-xs font-semibold transition ${menuConfig[key].activeCatClass}`;
+                } else {
+                    deskBtn.className = `cat-btn flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-heading font-semibold text-stone-600 hover:text-stone-900 hover:bg-white/60 transition-all duration-200`;
+                    mobBtn.className = `flex flex-col items-center justify-center py-2 px-1 rounded-xl text-xs font-semibold text-stone-600 bg-stone-200/60 transition`;
+                }
+            });
+
+            const subNavList = document.getElementById('sub-nav-list');
+            subNavList.innerHTML = config.submenus.map(sub => {
+                const isActive = sub.id === currentSubmenu;
+                const btnClass = isActive ? config.activeSubClass : config.inactiveSubClass;
+                return `
+                    <button onclick="switchPage('${currentCategory}', '${sub.id}')" 
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition-all duration-200 hover-lift ${btnClass}">
+                        <i data-lucide="${sub.icon}" class="w-4 h-4"></i>
+                        <span>${sub.title}</span>
+                    </button>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        function renderPage() {
+            const main = document.getElementById('main-content');
+            main.innerHTML = '';
+            const wrapper = document.createElement('div');
+            wrapper.className = 'page-fade';
+
+            // 1. BERANDA UTAMA (DENGAN JAM FLIPBOOK, JADWAL IMSAKIYAH, COUNTDOWN RAMADHAN, CUACA, HEADLINE ARTIKEL & JADWAL KHATIB JUM'AT)
+            if (currentCategory === 'profil' && currentSubmenu === 'beranda') {
+                wrapper.innerHTML = `
+                    <!-- Kalimat Sambutan Sesuai Permintaan -->
+                    <div class="bg-emeraldDeep text-white p-6 sm:p-10 rounded-3xl shadow-xl mb-8 border border-goldSoft/30 relative overflow-hidden">
+                        <div class="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-goldSoft/10 pointer-events-none"></div>
+                        <div class="max-w-3xl space-y-4">
+                            <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-goldSoft/20 text-goldSoft text-xs font-semibold tracking-wider uppercase border border-goldSoft/30">
+                                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Selamat Datang
+                            </span>
+                            <h2 class="font-serif text-2xl sm:text-4xl font-bold leading-snug text-white">
+                                Assalamu'alaikum Selamat Datang di Portal Digital Masjid Jami Al-Barokah 09
+                            </h2>
+                            <p class="text-emerald-100/90 text-sm sm:text-base leading-relaxed">
+                                Pusat informasi ibadah, kajian, transparansi keuangan kas, serta layanan qurban dan sosial untuk warga RW 09 Cigending, Ujungberung, Bandung.
+                            </p>
+
+                            <!-- JAM FLIPBOOK INTERAKTIF -->
+                            <div class="pt-4 flex flex-col sm:flex-row items-center gap-4 bg-black/20 p-4 rounded-2xl border border-white/10 backdrop-blur-sm">
+                                <div class="text-xs uppercase tracking-wider text-amber-300 font-bold">Waktu Real-Time:</div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="flip-box w-12 h-14 rounded-xl flex items-center justify-center text-gray-900 font-black text-xl font-mono"><span id="flip-hour">00</span></div>
+                                    <span class="text-xl font-bold text-amber-300">:</span>
+                                    <div class="flip-box w-12 h-14 rounded-xl flex items-center justify-center text-gray-900 font-black text-xl font-mono"><span id="flip-minute">00</span></div>
+                                    <span class="text-xl font-bold text-amber-300">:</span>
+                                    <div class="flip-box w-12 h-14 rounded-xl flex items-center justify-center text-gray-900 font-black text-xl font-mono"><span id="flip-second">00</span></div>
+                                </div>
+                                <div id="hijri-date-hero" class="text-xs font-semibold text-emerald-200 sm:ml-auto">Memuat Hijriah...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WIDGET CARD: COUNTDOWN RAMADHAN & CUACA -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+                        <div class="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm hover-lift flex flex-col justify-between">
+                            <div>
+                                <span class="text-[11px] uppercase tracking-widest text-amber-600 font-bold bg-amber-50 px-2.5 py-1 rounded-full">🌙 Menuju Ramadhan 1448H</span>
+                                <div id="ramadan-countdown" class="text-lg sm:text-xl font-black text-gray-900 font-mono mt-3">Menghitung waktu...</div>
+                            </div>
+                            <p class="text-xs text-stone-400 mt-2">Estimasi 1 Ramadhan: 8 Februari 2027</p>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm hover-lift flex flex-col justify-between">
+                            <div>
+                                <span class="text-[11px] uppercase tracking-widest text-emerald-700 font-bold bg-emerald-50 px-2.5 py-1 rounded-full">🌤️ Kondisi Cuaca Cigending</span>
+                                <div class="flex items-center space-x-3 mt-3">
+                                    <span id="weather-icon" class="text-3xl">⛅</span>
+                                    <div>
+                                        <div id="weather-temp" class="text-xl font-black text-gray-900 font-mono">--°C</div>
+                                        <div id="weather-desc" class="text-xs font-bold text-stone-600">Memuat cuaca...</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p id="weather-wind" class="text-xs text-stone-400 mt-2">Kecepatan angin: -- km/jam</p>
+                        </div>
+                    </div>
+
+                    <!-- JADWAL IMSAKIYAH & SHOLAT KOTA BANDUNG -->
+                    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-sm mb-8 hover-lift">
+                        <div class="flex flex-col sm:flex-row justify-between items-center gap-2 border-b border-stone-100 pb-4 mb-5">
+                            <div>
+                                <span class="text-xs font-bold text-amber-700 uppercase tracking-widest">⏰ Jadwal Imsakiyah & Sholat Kota Bandung</span>
+                                <p class="text-xs text-stone-500 mt-0.5">Kementerian Agama RI • Wilayah Cigending, Bandung</p>
+                            </div>
+                            <div id="hijri-badge" class="bg-emerald-50 text-emerald-800 px-3.5 py-1.5 rounded-full text-xs font-bold border border-emerald-200">
+                                📅 Memuat Tanggal...
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-center">
+                            <div id="card-imsak" class="p-3 rounded-2xl border border-stone-200 bg-stone-50 transition"><div class="text-[11px] text-stone-500 font-bold uppercase">Imsak</div><div id="sholat-imsak" class="text-base sm:text-lg font-black text-gray-900 mt-1">--:--</div></div>
+                            <div id="card-subuh" class="p-3 rounded-2xl border border-stone-200 bg-stone-50 transition"><div class="text-[11px] text-stone-500 font-bold uppercase">Subuh</div><div id="sholat-subuh" class="text-base sm:text-lg font-black text-emeraldDeep mt-1">--:--</div></div>
+                            <div id="card-terbit" class="p-3 rounded-2xl border border-stone-200 bg-stone-50 transition"><div class="text-[11px] text-stone-500 font-bold uppercase">Terbit</div><div id="sholat-terbit" class="text-base sm:text-lg font-black text-stone-700 mt-1">--:--</div></div>
+                            <div id="card-dzuhur" class="p-3 rounded-2xl border border-stone-200 bg-stone-50 transition"><div class="text-[11px] text-stone-500 font-bold uppercase">Dzuhur</div><div id="sholat-dzuhur" class="text-base sm:text-lg font-black text-emeraldDeep mt-1">--:--</div></div>
+                            <div id="card-ashar" class="p-3 rounded-2xl border border-stone-200 bg-stone-50 transition"><div class="text-[11px] text-stone-500 font-bold uppercase">Ashar</div><div id="sholat-ashar" class="text-base sm:text-lg font-black text-emeraldDeep mt-1">--:--</div></div>
+                            <div id="card-maghrib" class="p-3 rounded-2xl border border-stone-200 bg-stone-50 transition"><div class="text-[11px] text-stone-500 font-bold uppercase">Maghrib</div><div id="sholat-maghrib" class="text-base sm:text-lg font-black text-emeraldDeep mt-1">--:--</div></div>
+                            <div id="card-isya" class="p-3 rounded-2xl border border-stone-200 bg-stone-50 col-span-2 sm:col-span-2 lg:col-span-1 transition"><div class="text-[11px] text-stone-500 font-bold uppercase">Isya</div><div id="sholat-isya" class="text-base sm:text-lg font-black text-emeraldDeep mt-1">--:--</div></div>
+                        </div>
+                    </div>
+
+                    <!-- JADWAL IMAM & KHATIB JUM'AT (DIPINDAHKAN KE BERANDA SESUAI PERMINTAAN) -->
+                    <div class="bg-navyRoyal text-white p-6 sm:p-8 rounded-3xl shadow-lg mb-8 hover-lift">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-bold uppercase tracking-wider text-blue-200 bg-white/10 px-3 py-1 rounded-full">🗓️ Petugas Jum'at Pekan Ini</span>
+                            <span class="text-xs text-blue-300">20 November 2026</span>
+                        </div>
+                        <h3 class="font-heading text-xl sm:text-2xl font-bold">Khatib & Imam: Dr. H. M. Taufik, M.Pd.I.</h3>
+                        <p class="text-xs text-blue-200 mt-1">Muadzin: Sdr. Rahmat Hidayat • Waktu Dzuhur: 11:48 WIB</p>
+                    </div>
+
+                    <!-- HEADLINE ARTIKEL -->
+                    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-sm hover-lift">
+                        <div class="flex items-center justify-between mb-5">
+                            <div>
+                                <span class="text-xs font-bold text-emeraldDeep uppercase tracking-widest">Wawasan & Berita Umat</span>
+                                <h3 class="font-heading text-xl font-bold text-gray-900 mt-0.5">Headline Artikel Terbaru</h3>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            <div class="bg-stone-50 border border-stone-200 p-5 rounded-2xl space-y-2 hover:border-emeraldDeep transition hover-lift">
+                                <span class="text-[11px] text-emeraldDeep font-bold bg-emerald-50 px-2.5 py-0.5 rounded-full">31 Oktober 2026</span>
+                                <h4 class="font-bold text-sm text-gray-900 leading-snug">Persiapan DKM Menyambut Bulan Suci Ramadhan 1448H</h4>
+                                <p class="text-xs text-stone-600">Rapat koordinasi jajaran DKM dan Remaja Masjid menyusun kegiatan syiar.</p>
+                            </div>
+                            <div class="bg-stone-50 border border-stone-200 p-5 rounded-2xl space-y-2 hover:border-emeraldDeep transition hover-lift">
+                                <span class="text-[11px] text-emeraldDeep font-bold bg-emerald-50 px-2.5 py-0.5 rounded-full">20 Oktober 2026</span>
+                                <h4 class="font-bold text-sm text-gray-900 leading-snug">Suksesnya Penyaluran Santunan Yatim Piatu Triwulan Ini</h4>
+                                <p class="text-xs text-stone-600">Amanah donatur warga RW 09 Cigending disalurkan kepada anak-anak yatim.</p>
+                            </div>
+                            <div class="bg-stone-50 border border-stone-200 p-5 rounded-2xl space-y-2 hover:border-emeraldDeep transition hover-lift">
+                                <span class="text-[11px] text-emeraldDeep font-bold bg-emerald-50 px-2.5 py-0.5 rounded-full">14 Oktober 2026</span>
+                                <h4 class="font-bold text-sm text-gray-900 leading-snug">Keutamaan Besar Memakmurkan Rumah Allah di Akhir Pekan</h4>
+                                <p class="text-xs text-stone-600">Mengajak keluarga meramaikan sholat berjamaah serta kajian rutin.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } 
+            else if (currentCategory === 'profil' && currentSubmenu === 'kajian') {
+                wrapper.innerHTML = `
+                    <div class="mb-8">
+                        <span class="text-xs font-bold uppercase tracking-widest text-emeraldDeep">Majelis Ilmu</span>
+                        <h2 class="font-heading text-3xl font-bold text-gray-900 mt-1">Jadwal Kajian & Diskusi Rutin</h2>
+                        <p class="text-sm text-stone-600 mt-1">Terbuka untuk umum warga RW 09 Cigending dan sekitarnya.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm hover-lift">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emeraldDeep">Setiap Rabu Siang</span>
+                            <h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Kajian Tahsin Al-Qur'an</h3>
+                            <p class="text-xs text-stone-600 mt-1">Perbaikan bacaan Al-Qur'an, tajwid, dan makharijul huruf untuk jamaah.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm hover-lift">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800">Setiap Malam Jum'at</span>
+                            <h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Pengajian Malam Jum'at</h3>
+                            <p class="text-xs text-stone-600 mt-1">Pembacaan Surah Yasin, Tahlil, Doa Bersama & Tausiyah keagamaan.</p>
+                        </div>
+                        <!-- Diskusi Ba'da Maghrib (Sesuai Permintaan) -->
+                        <div class="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm hover-lift">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-teal-50 text-teal-800">Waktu Ba'da Maghrib</span>
+                            <h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Diskusi Ba'da Maghrib</h3>
+                            <p class="text-xs text-stone-600 mt-1">Dialog keislaman interaktif, fiqih keseharian & solusi umat bersama jamaah.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm hover-lift">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-rose-50 text-rose-800">Rutin Sore Hari</span>
+                            <h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Pengajian Anak-Anak (TPA)</h3>
+                            <p class="text-xs text-stone-600 mt-1">Taman Pendidikan Al-Qur'an, hafalan surat pendek & pembinaan akhlak santri.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            else if (currentCategory === 'profil' && currentSubmenu === 'struktur') {
+                wrapper.innerHTML = `
+                    <div class="text-center max-w-2xl mx-auto mb-10">
+                        <span class="text-xs font-bold uppercase tracking-widest text-emeraldDeep">Periode Khidmat 2024 – 2029</span>
+                        <h2 class="font-heading text-3xl font-bold text-gray-900 mt-1">Bagan Struktur Kepengurusan DKM</h2>
+                        <p class="text-sm text-stone-600 mt-2">Susunan pengurus Dewan Kemakmuran Masjid Jami' Al-Barokah 09.</p>
+                    </div>
+
+                    <!-- Bagan Struktur Lengkap & Elegan -->
+                    <div class="bg-white p-6 sm:p-10 rounded-3xl border border-stone-200 shadow-sm overflow-x-auto">
+                        <div class="min-w-[700px] flex flex-col items-center">
+                            
+                            <!-- Dewan Penasihat -->
+                            <div class="bg-stone-50 border-2 border-goldSoft/60 px-6 py-4 rounded-2xl text-center shadow-sm w-80 hover-lift">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full">Dewan Penasihat</span>
+                                <h4 class="font-heading font-bold text-gray-900 mt-2 text-xs">Ketua RW 09 Cigending, Dr. H. Asep Hilman, M.Pd., H. Aep Syaefulloh, H. Gatot, S.T.</h4>
+                            </div>
+
+                            <div class="w-0.5 h-6 bg-goldSoft"></div>
+
+                            <!-- Ketua DKM -->
+                            <div class="bg-emeraldDeep text-white px-8 py-5 rounded-2xl text-center shadow-lg border-2 border-goldSoft w-80 hover-lift">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-goldSoft">Ketua DKM</span>
+                                <h4 class="font-heading font-bold text-xl mt-0.5">H. Suwandi</h4>
+                            </div>
+
+                            <div class="w-0.5 h-6 bg-goldSoft"></div>
+                            <div class="w-[60%] h-0.5 bg-goldSoft"></div>
+
+                            <!-- Sekretaris & Bendahara -->
+                            <div class="grid grid-cols-2 gap-12 w-[80%] max-w-2xl mt-2">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-0.5 h-4 bg-goldSoft"></div>
+                                    <div class="bg-emeraldLight/60 border border-emeraldDeep/20 p-4 rounded-2xl text-center w-full hover-lift">
+                                        <span class="text-[10px] font-bold uppercase text-emeraldDeep">Sekretaris</span>
+                                        <h5 class="font-heading font-bold text-gray-900 text-xs mt-1">1. H. Agus Gunadi Ismail, S.T.<br>2. Ir. Aang Sutarya</h5>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="w-0.5 h-4 bg-goldSoft"></div>
+                                    <div class="bg-emeraldLight/60 border border-emeraldDeep/20 p-4 rounded-2xl text-center w-full hover-lift">
+                                        <span class="text-[10px] font-bold uppercase text-emeraldDeep">Bendahara</span>
+                                        <h5 class="font-heading font-bold text-gray-900 text-xs mt-1">1. Drs. Deni Iskandar<br>2. Zulkarnaen</h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w-0.5 h-6 bg-goldSoft mt-2"></div>
+                            <div class="w-[85%] h-0.5 bg-goldSoft"></div>
+
+                            <!-- Seksi-Seksi -->
+                            <div class="grid grid-cols-4 gap-3 w-full mt-2">
+                                <div class="bg-stone-50 border border-stone-200 p-3 rounded-2xl text-center hover-lift">
+                                    <span class="text-[10px] font-bold uppercase text-emeraldDeep">Seksi Dakwah</span>
+                                    <p class="text-[11px] text-stone-600 mt-1">Kasno, Zumar, Tardi, Sulkhoni, Mastur, Robby</p>
+                                </div>
+                                <div class="bg-stone-50 border border-stone-200 p-3 rounded-2xl text-center hover-lift">
+                                    <span class="text-[10px] font-bold uppercase text-emeraldDeep">Seksi Pendidikan</span>
+                                    <p class="text-[11px] text-stone-600 mt-1">Siti Parlina, S.Pd., Teti Supriatin, Imam M.</p>
+                                </div>
+                                <div class="bg-stone-50 border border-stone-200 p-3 rounded-2xl text-center hover-lift">
+                                    <span class="text-[10px] font-bold uppercase text-emeraldDeep">Seksi Pemberdayaan</span>
+                                    <p class="text-[11px] text-stone-600 mt-1">Lingga, S.Sos., Atep, Dedi, Imas, Nurdini</p>
+                                </div>
+                                <div class="bg-stone-50 border border-stone-200 p-3 rounded-2xl text-center hover-lift">
+                                    <span class="text-[10px] font-bold uppercase text-emeraldDeep">Seksi Humas</span>
+                                    <p class="text-[11px] text-stone-600 mt-1">Ending, Gugum, Syamsu, Tono, Haryono, Zaenal</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 2. LAYANAN UMAT (DENGAN KETERANGAN ESTETIK DI TOMBOL QURBAN)
+            else if (currentCategory === 'layanan' && currentSubmenu === 'qurban') {
+                wrapper.innerHTML = `
+                    <div class="mb-8">
+                        <span class="text-xs font-bold uppercase tracking-widest text-terracotta">Idul Adha & Tabungan Terencana</span>
+                        <h2 class="font-heading text-3xl font-bold text-gray-900 mt-1">Layanan & Tabungan Qurban RW 09 Cigending</h2>
+                        <p class="text-sm text-stone-600 mt-1 max-w-2xl">Fasilitas tabungan qurban terencana maupun penyaluran hewan qurban langsung untuk warga RW 09 Cigending dan mustahik secara amanah dan transparan.</p>
+                    </div>
+
+                    <!-- Kartu Utama Layanan Qurban dengan Keterangan Estetik -->
+                    <div class="bg-white p-8 rounded-3xl border-2 border-terracotta/40 shadow-md space-y-6 max-w-3xl mx-auto hover-lift">
+                        <div class="flex items-center space-x-4">
+                            <span class="w-16 h-16 rounded-2xl bg-terracotta/20 border border-terracotta/40 flex items-center justify-center text-3xl">🐄</span>
+                            <div>
+                                <h3 class="text-2xl font-extrabold text-gray-900">Formulir Pendaftaran & Tabungan Qurban</h3>
+                                <p class="text-xs text-stone-500">Langsung terhubung ke Database Spreadsheet Masjid Al-Barokah 09</p>
+                            </div>
+                        </div>
+
+                        <ul class="text-sm text-stone-700 space-y-3 bg-stone-50 p-5 rounded-2xl border border-stone-200">
+                            <li class="flex items-center space-x-2"><span class="text-terracotta font-bold">✔</span> <span><b>Tabungan Qurban:</b> Setoran ringan mulai Rp 250.000/bulan</span></li>
+                            <li class="flex items-center space-x-2"><span class="text-terracotta font-bold">✔</span> <span><b>Patungan Sapi (1/7):</b> Kolektif jamaah yang terorganisir</span></li>
+                            <li class="flex items-center space-x-2"><span class="text-terracotta font-bold">✔</span> <span><b>Qurban Domba/Kambing:</b> Hewan sehat & sesuai syariat</span></li>
+                            <li class="flex items-center space-x-2"><span class="text-terracotta font-bold">✔</span> <span>Laporan penyembelihan & dokumentasi distribusi transparan</span></li>
+                        </ul>
+
+                        <!-- TOMBOL G-FORM & SETORAN DENGAN KETERANGAN ESTETIK -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScug6XWUG9aC55K51lIJUf65jGCL7Vyvjwemn9yt3NkyZHb-g/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" 
+                               class="w-full text-center bg-terracotta hover:bg-amber-700 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                                <div class="text-sm font-extrabold flex items-center gap-1.5"><span>📝</span> <span>Isi Formulir Pendaftaran</span></div>
+                                <span class="text-[11px] text-amber-100 font-medium">Daftar online & otomatis masuk spreadsheet</span>
+                            </a>
+
+                            <button onclick="switchPage('informasi', 'kas')" 
+                                    class="w-full text-center bg-emeraldDeep hover:bg-emerald-900 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                                <div class="text-sm font-extrabold flex items-center gap-1.5"><span>💳</span> <span>Setor Tabungan (Rekening BSI)</span></div>
+                                <span class="text-[11px] text-emerald-200 font-medium">Transfer cicilan via BSI Resmi Masjid</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            else if (currentCategory === 'layanan' && currentSubmenu === 'zakat') {
+                wrapper.innerHTML = `
+                    <div class="mb-8">
+                        <span class="text-xs font-bold uppercase tracking-widest text-sage">UPZ Resmi</span>
+                        <h2 class="font-heading text-3xl font-bold text-gray-900 mt-1">Zakat, Infaq & Shodaqoh (ZIS)</h2>
+                    </div>
+                    <div class="bg-white p-8 rounded-3xl border border-stone-200 shadow-sm max-w-2xl mx-auto text-center space-y-4 hover-lift">
+                        <p class="text-sm text-stone-600">Salurkan zakat fitrah, maal, dan infaq operasional Anda melalui rekening resmi masjid atau QRIS.</p>
+                        <button onclick="switchPage('informasi', 'kas')" class="px-6 py-3 bg-sage text-white rounded-xl font-bold text-xs hover-lift">Lihat Rekening Donasi</button>
+                    </div>
+                `;
+            }
+            else if (currentCategory === 'layanan' && currentSubmenu === 'beras') {
+                wrapper.innerHTML = `
+                    <div class="mb-8">
+                        <span class="text-xs font-bold uppercase tracking-widest text-amber-600">Pangan Warga</span>
+                        <h2 class="font-heading text-3xl font-bold text-gray-900 mt-1">Program Beras Barokah</h2>
+                    </div>
+                    <div class="bg-white p-8 rounded-3xl border border-stone-200 shadow-sm max-w-2xl mx-auto hover-lift">
+                        <p class="text-sm text-stone-600">Gerakan sedekah beras rutin untuk menjamin kebutuhan pokok keluarga prasejahtera dan lansia di wilayah RW 09 Cigending.</p>
+                    </div>
+                `;
+            }
+            else if (currentCategory === 'layanan' && currentSubmenu === 'jumat') {
+                wrapper.innerHTML = `
+                    <div class="mb-8">
+                        <span class="text-xs font-bold uppercase tracking-widest text-terracotta">Rutin Pekanan</span>
+                        <h2 class="font-heading text-3xl font-bold text-gray-900 mt-1">Program Jum'at Berkah</h2>
+                    </div>
+                    <div class="bg-white p-8 rounded-3xl border border-stone-200 shadow-sm max-w-2xl mx-auto hover-lift">
+                        <p class="text-sm text-stone-600">Gerakan sedekah makan siang dan paket sembako rutin setiap hari Jum'at bagi jamaah dan warga dhuafa.</p>
+                    </div>
+                `;
+            }
+
+            // 3. INFORMASI & KAS
+            else if (currentCategory === 'informasi' && currentSubmenu === 'kas') {
+                wrapper.innerHTML = `
+                    <div class="mb-8">
+                        <span class="text-xs font-bold uppercase tracking-widest text-navyRoyal">Transparansi Keuangan</span>
+                        <h2 class="font-heading text-3xl font-bold text-gray-900 mt-1">Rekening Donasi & Saldo Kas</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-navyRoyal text-white p-6 rounded-3xl shadow-md hover-lift">
+                            <span class="text-xs text-blue-200 uppercase font-semibold">Saldo Kas Operasional</span>
+                            <p class="font-heading text-3xl font-bold mt-1">Rp 14.850.000</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm hover-lift">
+                            <span class="text-xs text-stone-500 uppercase font-semibold">Dana Pembangunan Masjid</span>
+                            <p class="font-heading text-3xl font-bold text-gray-900 mt-1">Rp 45.200.000</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-navyLight/70 p-8 rounded-3xl border border-navyRoyal/15 space-y-4 max-w-xl mx-auto text-center hover-lift">
+                        <h3 class="font-heading font-bold text-lg text-navyRoyal">Rekening Resmi Masjid Al-Barokah 09</h3>
+                        <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm">
+                            <span class="text-xs font-bold text-teal-700 bg-teal-50 px-2.5 py-1 rounded">Bank Syariah Indonesia (BSI)</span>
+                            <p class="font-mono font-bold text-2xl text-gray-900 mt-2 tracking-wider">7302 811 959</p>
+                            <p class="text-xs text-stone-500 mt-1">a.n. MESJID AL-BAROKAH</p>
+                        </div>
+                        <button onclick="copyRekening('7302811959', 'BSI')" class="px-5 py-2.5 rounded-xl bg-navyRoyal hover:bg-blue-900 text-white text-xs font-bold transition hover-lift">
+                            📋 Salin Nomor Rekening
+                        </button>
+                    </div>
+                `;
+            }
+
+            main.appendChild(wrapper);
+            lucide.createIcons();
+            if (currentCategory === 'profil' && currentSubmenu === 'beranda') {
+                fetchWeatherDataAndPrayer();
+            }
+        }
+
+        function copyRekening(norek, bankName) {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = norek;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast(`Nomor rekening ${bankName} (${norek}) berhasil disalin!`);
+        }
+
+        // Jam Flipbook & Realtime Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours();
+            const min = now.getMinutes();
+            const sec = now.getSeconds();
+            
+            const hEl = document.getElementById('flip-hour');
+            const mEl = document.getElementById('flip-minute');
+            const sEl = document.getElementById('flip-second');
+            const dEl = document.getElementById('current-date-display');
+
+            if (hEl) hEl.textContent = String(hours).padStart(2, '0');
+            if (mEl) mEl.textContent = String(min).padStart(2, '0');
+            if (sEl) sEl.textContent = String(sec).padStart(2, '0');
+            if (dEl) dEl.textContent = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
+
+            try {
+                const hijriFormatted = new Intl.DateTimeFormat('id-ID-u-ca-islamic', {
+                    day: 'numeric', month: 'long', year: 'numeric'
+                }).format(now);
+                const heroHijri = document.getElementById('hijri-date-hero');
+                const badgeHijri = document.getElementById('hijri-badge');
+                if (heroHijri) heroHijri.textContent = '📅 ' + hijriFormatted + ' H';
+                if (badgeHijri) badgeHijri.textContent = '📅 ' + hijriFormatted + ' H';
+            } catch(e) {}
+        }
+        setInterval(updateClock, 1000);
+
+        // Countdown Ramadhan
+        function updateRamadanCountdown() {
+            const ramadanDate = new Date('February 8, 2027 00:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = ramadanDate - now;
+            const el = document.getElementById('ramadan-countdown');
+            if (!el) return;
+
+            if (distance < 0) {
+                el.textContent = "Marhaban Ya Ramadhan 1448H!";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            el.textContent = `${days} Hari : ${hours} Jam : ${minutes} Menit Lagi`;
+        }
+        setInterval(updateRamadanCountdown, 1000);
+
+        // Fetch Cuaca & Jadwal Sholat Bandung
+        async function fetchWeatherDataAndPrayer() {
+            try {
+                const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Bandung&country=Indonesia&method=20');
+                const data = await res.json();
+                const t = data.data.timings;
+                
+                if(document.getElementById('sholat-imsak')) {
+                    document.getElementById('sholat-imsak').textContent = t.Imsak;
+                    document.getElementById('sholat-subuh').textContent = t.Fajr;
+                    document.getElementById('sholat-terbit').textContent = t.Sunrise;
+                    document.getElementById('sholat-dzuhur').textContent = t.Dhuhr;
+                    document.getElementById('sholat-ashar').textContent = t.Asr;
+                    document.getElementById('sholat-maghrib').textContent = t.Maghrib;
+                    document.getElementById('sholat-isya').textContent = t.Isha;
+                }
+
+                const weatherRes = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-6.9125&longitude=107.7025&current_weather=true');
+                const weatherData = await weatherRes.json();
+                const cw = weatherData.current_weather;
+                
+                if(document.getElementById('weather-temp')) {
+                    document.getElementById('weather-topbar').innerHTML = `🌡️ Cigending, Bandung • Suhu: <b>${cw.temperature}°C</b>`;
+                    document.getElementById('weather-temp').textContent = `${cw.temperature}°C`;
+                    document.getElementById('weather-desc').textContent = cw.weathercode <= 2 ? "Cerah / Berawan" : "Berawan / Sejuk";
+                    document.getElementById('weather-wind').textContent = `Kecepatan Angin: ${cw.windspeed} km/jam`;
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        window.onload = function () {
+            updateNavigationUI();
+            renderPage();
+            updateClock();
+            updateRamadanCountdown();
+        };
+    </script>
+</body>
+</html>
