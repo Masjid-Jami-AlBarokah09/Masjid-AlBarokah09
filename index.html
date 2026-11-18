@@ -91,7 +91,36 @@
             transform: scale(1.22) rotate(-6deg);
         }
 
-        /* Flipbox Jam & Penanggalan */
+        /* Animasi Gerakan Cuaca */
+        @keyframes weatherFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-6px) rotate(5deg) scale(1.08); }
+        }
+        .weather-motion {
+            animation: weatherFloat 3.5s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        /* Efek Tirai Dropdown pada Kartu Kajian */
+        .curtain-panel {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease, margin-top 0.35s ease;
+            opacity: 0;
+            margin-top: 0;
+        }
+        .curtain-inner {
+            overflow: hidden;
+        }
+        .kajian-card:hover .curtain-panel,
+        .kajian-card:focus-within .curtain-panel,
+        .kajian-card.is-open .curtain-panel {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            margin-top: 1rem;
+        }
+
+        /* Flipbox Jam & Countdown Ramadhan */
         .flip-box {
             background: linear-gradient(to bottom, #ffffff 0%, #f1f5f9 100%);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.22), inset 0 2px 4px rgba(255, 255, 255, 0.95);
@@ -105,7 +134,25 @@
             right: 0;
             top: 50%;
             height: 1px;
-            background: rgba(15, 23, 42, 0.08);
+            background: rgba(15, 23, 42, 0.1);
+            pointer-events: none;
+        }
+
+        .flip-countdown-box {
+            background: linear-gradient(to bottom, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%);
+            box-shadow: 0 8px 20px -4px rgba(11, 59, 46, 0.14), inset 0 2px 3px rgba(255, 255, 255, 0.95);
+            border: 1px solid #cbd5e1;
+            border-bottom: 3px solid #94a3b8;
+            position: relative;
+        }
+        .flip-countdown-box::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 1px;
+            background: rgba(15, 23, 42, 0.1);
             pointer-events: none;
         }
 
@@ -243,7 +290,7 @@
                     </p>
                 </div>
                 
-                <!-- Ikon Logo IG & TikTok (Tanpa Kotak Panjang) -->
+                <!-- Ikon Logo IG & TikTok -->
                 <div class="flex items-center justify-start md:justify-center gap-4">
                     <a href="https://instagram.com/remajamasjid_albarokah2025" target="_blank" rel="noopener noreferrer" title="Instagram @remajamasjid_albarokah2025" aria-label="Instagram" class="group w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 via-pink-600 to-purple-600 text-white flex items-center justify-center shadow-md hover-lift">
                         <svg class="w-6 h-6 fill-current icon-anim" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
@@ -378,6 +425,43 @@
             lucide.createIcons();
         }
 
+        // Helper Template Seragam untuk Sub-Menu Layanan Umat
+        function buildLayananCard({ badge, title, subtitle, emoji, cardTitle, cardSubtitle, bullets, primaryBtn, secondaryBtn }) {
+            return `
+                <div class="mb-8">
+                    <span class="text-xs font-bold uppercase tracking-widest text-terracotta">${badge}</span>
+                    <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">${title}</h2>
+                    <p class="text-sm text-stone-600 mt-1 max-w-2xl">${subtitle}</p>
+                </div>
+
+                <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border-2 border-terracotta/40 shadow-md space-y-6 max-w-3xl mx-auto hover-lift">
+                    <div class="flex items-center space-x-4">
+                        <span class="group w-16 h-16 rounded-2xl bg-terracotta/15 border border-terracotta/40 flex items-center justify-center text-3xl shrink-0">
+                            <span class="icon-anim">${emoji}</span>
+                        </span>
+                        <div>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-gray-900">${cardTitle}</h3>
+                            <p class="text-xs text-stone-500">${cardSubtitle}</p>
+                        </div>
+                    </div>
+
+                    <ul class="text-sm text-stone-700 space-y-3 bg-[#F8F1E9] p-5 rounded-2xl border border-terracotta/20">
+                        ${bullets.map(item => `
+                            <li class="flex items-start space-x-2.5">
+                                <span class="text-terracotta font-bold">✔</span>
+                                <span>${item}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        ${primaryBtn}
+                        ${secondaryBtn}
+                    </div>
+                </div>
+            `;
+        }
+
         function renderPage() {
             const main = document.getElementById('main-content');
             main.innerHTML = '';
@@ -387,7 +471,7 @@
             // HALAMAN 1A: BERANDA UTAMA
             if (currentCategory === 'profil' && currentSubmenu === 'beranda') {
                 wrapper.innerHTML = `
-                    <!-- KOTAK HIJAU SELAMAT DATANG + JAM + CUACA TRANSPARAN ADAPTIF WAKTU -->
+                    <!-- KOTAK HIJAU SELAMAT DATANG + JAM REAL-TIME (TANPA HIJRIAH) + CUACA TRANSPARAN BERGERAK -->
                     <div class="bg-emeraldDeep text-white p-6 sm:p-10 rounded-3xl shadow-xl mb-8 border border-goldSoft/40 relative overflow-hidden">
                         <div class="absolute -right-10 -bottom-10 w-56 h-56 rounded-full bg-goldSoft/10 pointer-events-none"></div>
                         
@@ -402,47 +486,65 @@
                                 Pusat informasi ibadah, kajian, transparansi keuangan kas, serta layanan qurban dan sosial untuk warga RW 09 Cigending, Ujungberung, Bandung.
                             </p>
 
-                            <!-- BARIS JAM REAL-TIME & KOTAK CUACA TRANSPARAN (BERSEBELAHAN DI DESKTOP & PONSEL) -->
+                            <!-- BARIS JAM REAL-TIME & KOTAK CUACA TRANSPARAN -->
                             <div class="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                <!-- Kotak Jam Real-Time (Tanpa Tulisan Jumadilakhir) -->
-                                <div class="flex flex-col justify-center bg-black/25 px-4 py-3.5 rounded-2xl border border-white/15 backdrop-blur-sm">
-                                    <div class="text-[11px] uppercase tracking-wider text-amber-300 font-bold mb-2">Waktu Real-Time:</div>
+                                <!-- Kotak Jam Real-Time (Tanpa Tanggal Hijriah) -->
+                                <div class="flex flex-col justify-center bg-black/25 px-4 py-4 rounded-2xl border border-white/15 backdrop-blur-sm">
+                                    <div class="text-[11px] uppercase tracking-wider text-amber-300 font-bold mb-2.5">Waktu Real-Time:</div>
                                     <div class="flex items-center space-x-2">
-                                        <div class="flip-box w-11 h-12 sm:w-12 sm:h-14 rounded-xl flex items-center justify-center text-gray-900 font-black text-lg sm:text-xl font-mono"><span id="flip-hour">00</span></div>
-                                        <span class="text-lg sm:text-xl font-bold text-amber-300">:</span>
-                                        <div class="flip-box w-11 h-12 sm:w-12 sm:h-14 rounded-xl flex items-center justify-center text-gray-900 font-black text-lg sm:text-xl font-mono"><span id="flip-minute">00</span></div>
-                                        <span class="text-lg sm:text-xl font-bold text-amber-300">:</span>
-                                        <div class="flip-box w-11 h-12 sm:w-12 sm:h-14 rounded-xl flex items-center justify-center text-gray-900 font-black text-lg sm:text-xl font-mono"><span id="flip-second">00</span></div>
+                                        <div class="flip-box w-12 h-14 rounded-xl flex items-center justify-center text-gray-900 font-black text-xl font-mono"><span id="flip-hour">00</span></div>
+                                        <span class="text-xl font-bold text-amber-300">:</span>
+                                        <div class="flip-box w-12 h-14 rounded-xl flex items-center justify-center text-gray-900 font-black text-xl font-mono"><span id="flip-minute">00</span></div>
+                                        <span class="text-xl font-bold text-amber-300">:</span>
+                                        <div class="flip-box w-12 h-14 rounded-xl flex items-center justify-center text-gray-900 font-black text-xl font-mono"><span id="flip-second">00</span></div>
                                     </div>
                                 </div>
 
-                                <!-- Kotak Khusus Cuaca Transparan (Warna Mengikuti Waktu) -->
-                                <div id="weather-hero-card" class="group flex items-center justify-between px-4 py-3.5 rounded-2xl border backdrop-blur-md transition-all duration-700 bg-white/10 border-white/20">
+                                <!-- Kotak Khusus Cuaca Transparan dengan Gerakan Ikon & Warna Mengikuti Waktu -->
+                                <div id="weather-hero-card" class="group flex items-center justify-between px-4 py-4 rounded-2xl border backdrop-blur-md transition-all duration-700 bg-white/10 border-white/20">
                                     <div>
-                                        <div class="flex items-center gap-1.5">
-                                            <span id="weather-time-badge" class="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full bg-white/15 text-amber-200">Cuaca Cigending</span>
-                                        </div>
-                                        <div class="flex items-baseline gap-2 mt-1.5">
+                                        <span id="weather-time-badge" class="text-[10px] uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-white/15 text-amber-200">Cuaca Cigending</span>
+                                        <div class="flex items-baseline gap-2 mt-2">
                                             <span id="weather-temp" class="text-2xl sm:text-3xl font-black text-white font-mono">--°C</span>
                                             <span id="weather-desc" class="text-xs font-semibold text-white/90">Memuat...</span>
                                         </div>
-                                        <p id="weather-wind" class="text-[11px] text-white/75 mt-0.5">Angin: -- km/jam</p>
+                                        <p id="weather-wind" class="text-[11px] text-white/75 mt-1">Kecepatan angin: -- km/jam</p>
                                     </div>
-                                    <div class="text-4xl sm:text-5xl icon-anim select-none" id="weather-icon">⛅</div>
+                                    <div class="text-4xl sm:text-5xl select-none weather-motion" id="weather-icon">⛅</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- WIDGET CARD: COUNTDOWN RAMADHAN 1448H -->
-                    <div class="group bg-[#FCFBF7] p-6 rounded-3xl border border-stone-300/80 shadow-sm hover-lift mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div>
-                            <span class="text-[11px] uppercase tracking-widest text-amber-700 font-bold bg-amber-100/70 px-3 py-1 rounded-full inline-flex items-center gap-1.5">
-                                <i data-lucide="moon" class="w-3.5 h-3.5 icon-anim"></i> Menuju Ramadhan 1448H
-                            </span>
-                            <div id="ramadan-countdown" class="text-lg sm:text-2xl font-black text-gray-900 font-mono mt-2.5">Menghitung waktu...</div>
+                    <!-- COUNTDOWN RAMADHAN 1448H: FORMAT FLIP-BOOK MEMANJANG DI POSISI TENGAH -->
+                    <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm hover-lift mb-8 text-center max-w-4xl mx-auto">
+                        <span class="text-[11px] uppercase tracking-widest text-amber-800 font-bold bg-amber-100/80 px-3.5 py-1 rounded-full inline-flex items-center gap-1.5">
+                            <i data-lucide="moon" class="w-3.5 h-3.5 icon-anim"></i> Menuju Bulan Suci Ramadhan 1448H
+                        </span>
+                        
+                        <div class="flex items-center justify-center gap-2 sm:gap-4 mt-5">
+                            <div class="flex flex-col items-center">
+                                <div class="flip-countdown-box w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-emeraldDeep font-black text-2xl sm:text-3xl font-mono"><span id="cd-days">81</span></div>
+                                <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-stone-500 mt-1.5">Hari</span>
+                            </div>
+                            <span class="text-xl sm:text-2xl font-black text-amber-600 -mt-5">:</span>
+                            <div class="flex flex-col items-center">
+                                <div class="flip-countdown-box w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-emeraldDeep font-black text-2xl sm:text-3xl font-mono"><span id="cd-hours">06</span></div>
+                                <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-stone-500 mt-1.5">Jam</span>
+                            </div>
+                            <span class="text-xl sm:text-2xl font-black text-amber-600 -mt-5">:</span>
+                            <div class="flex flex-col items-center">
+                                <div class="flip-countdown-box w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-emeraldDeep font-black text-2xl sm:text-3xl font-mono"><span id="cd-minutes">35</span></div>
+                                <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-stone-500 mt-1.5">Menit</span>
+                            </div>
+                            <span class="text-xl sm:text-2xl font-black text-amber-600 -mt-5">:</span>
+                            <div class="flex flex-col items-center">
+                                <div class="flip-countdown-box w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-amber-700 font-black text-2xl sm:text-3xl font-mono"><span id="cd-seconds">00</span></div>
+                                <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-stone-500 mt-1.5">Detik</span>
+                            </div>
                         </div>
-                        <p class="text-xs text-stone-500 font-medium bg-stone-100 px-3.5 py-2 rounded-xl border border-stone-200">Estimasi 1 Ramadhan: 8 Februari 2027</p>
+
+                        <p class="text-xs text-stone-500 font-medium mt-4">Estimasi 1 Ramadhan 1448H jatuh pada Senin, 8 Februari 2027</p>
                     </div>
 
                     <!-- JADWAL IMSAKIYAH & SHOLAT + 2 PENANGGALAN FLIP-BOOK (MASEHI & HIJRIAH) -->
@@ -455,7 +557,6 @@
 
                             <!-- 2 PENANGGALAN BERGAYA FLIP-BOOK (MASEHI & HIJRIAH) -->
                             <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-                                <!-- Flip-Book Tanggal Masehi -->
                                 <div class="flex items-center gap-2.5 bg-[#F4F0E6] p-2 rounded-2xl border border-stone-300/80 flex-1 sm:flex-initial">
                                     <div class="flip-date-card w-11 h-12 rounded-xl flex flex-col items-center justify-center shrink-0">
                                         <span id="masehi-day-num" class="text-base font-black text-gray-900 leading-none font-mono">18</span>
@@ -467,7 +568,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Flip-Book Tanggal Hijriah -->
                                 <div class="flex items-center gap-2.5 bg-emeraldLight/70 p-2 rounded-2xl border border-emeraldDeep/20 flex-1 sm:flex-initial">
                                     <div class="flip-date-card w-11 h-12 rounded-xl flex flex-col items-center justify-center shrink-0 border-emeraldDeep/20">
                                         <span id="hijri-day-num" class="text-base font-black text-emeraldDeep leading-none font-mono">08</span>
@@ -570,112 +670,192 @@
                     </div>
                 `;
             }
-            // HALAMAN 1C: JADWAL KAJIAN
+            // HALAMAN 1C: JADWAL KAJIAN DENGAN TIRAI DROPDOWN SAAT DIARAHKAN / DISENTUH
             else if (currentCategory === 'profil' && currentSubmenu === 'kajian') {
                 wrapper.innerHTML = `
                     <div class="text-center max-w-2xl mx-auto mb-10">
                         <span class="text-xs font-bold uppercase tracking-widest text-emeraldDeep">Majelis Ilmu</span>
                         <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Jadwal Kajian & Diskusi Rutin</h2>
-                        <p class="text-sm text-stone-600 mt-1">Terbuka untuk umum warga RW 09 Cigending dan sekitarnya.</p>
+                        <p class="text-sm text-stone-600 mt-1">Arahkan kursor atau sentuh ikon kajian untuk membuka tirai detail materi & waktu pelaksanaan.</p>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div class="group bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-emeraldDeep/20 text-center shadow-sm hover-lift">
-                            <div class="w-12 h-12 mx-auto rounded-2xl bg-emeraldDeep text-goldSoft flex items-center justify-center mb-4">
-                                <i data-lucide="book-open-check" class="w-6 h-6 icon-anim"></i>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+                        <!-- Kartu 1 -->
+                        <div tabindex="0" onclick="this.classList.toggle('is-open')" class="kajian-card group cursor-pointer bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-emeraldDeep/20 text-center shadow-sm hover-lift">
+                            <div class="w-14 h-14 mx-auto rounded-2xl bg-emeraldDeep text-goldSoft flex items-center justify-center mb-4 shadow-md">
+                                <i data-lucide="book-open-check" class="w-7 h-7 icon-anim"></i>
                             </div>
                             <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emeraldDeep">Setiap Rabu Siang</span>
                             <h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Kajian Tahsin Al-Qur'an</h3>
                             <p class="text-xs text-stone-600 mt-2">Perbaikan bacaan Al-Qur'an, tajwid, dan makharijul huruf untuk jamaah.</p>
+                            
+                            <!-- Tirai Dropdown -->
+                            <div class="curtain-panel text-left">
+                                <div class="curtain-inner">
+                                    <div class="pt-3 border-t border-emeraldDeep/15 text-xs text-stone-700 space-y-1.5 bg-emeraldLight/50 p-3.5 rounded-2xl">
+                                        <p class="font-bold text-emeraldDeep">📖 Detail & Materi:</p>
+                                        <p>Bimbingan talaqqi surah Al-Fatihah dan Juz Amma bersama Ustadzah Siti Parlina, S.Pd. Mulai pukul 13.00 – 14.30 WIB di ruang utama masjid.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="group bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-amber-600/20 text-center shadow-sm hover-lift">
-                            <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-700 text-white flex items-center justify-center mb-4">
-                                <i data-lucide="sparkles" class="w-6 h-6 icon-anim"></i>
+
+                        <!-- Kartu 2 -->
+                        <div tabindex="0" onclick="this.classList.toggle('is-open')" class="kajian-card group cursor-pointer bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-amber-600/20 text-center shadow-sm hover-lift">
+                            <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-700 text-white flex items-center justify-center mb-4 shadow-md">
+                                <i data-lucide="sparkles" class="w-7 h-7 icon-anim"></i>
                             </div>
                             <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900">Setiap Malam Jum'at</span>
                             <h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Pengajian Malam Jum'at</h3>
                             <p class="text-xs text-stone-600 mt-2">Pembacaan Surah Yasin, Tahlil, Doa Bersama & Tausiyah keagamaan.</p>
+
+                            <!-- Tirai Dropdown -->
+                            <div class="curtain-panel text-left">
+                                <div class="curtain-inner">
+                                    <div class="pt-3 border-t border-amber-700/15 text-xs text-stone-700 space-y-1.5 bg-amber-50/90 p-3.5 rounded-2xl">
+                                        <p class="font-bold text-amber-900">🕌 Detail & Rangkaian:</p>
+                                        <p>Dimulai ba'da Maghrib berjamaah dengan pembacaan Yasin, dzikir bersama, serta kajian kitab Riyadhus Shalihin hingga menjelang Isya.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="group bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-teal-700/20 text-center shadow-sm hover-lift">
-                            <div class="w-12 h-12 mx-auto rounded-2xl bg-midnightTeal text-goldSoft flex items-center justify-center mb-4">
-                                <i data-lucide="messages-square" class="w-6 h-6 icon-anim"></i>
+
+                        <!-- Kartu 3 -->
+                        <div tabindex="0" onclick="this.classList.toggle('is-open')" class="kajian-card group cursor-pointer bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-teal-700/20 text-center shadow-sm hover-lift">
+                            <div class="w-14 h-14 mx-auto rounded-2xl bg-midnightTeal text-goldSoft flex items-center justify-center mb-4 shadow-md">
+                                <i data-lucide="messages-square" class="w-7 h-7 icon-anim"></i>
                             </div>
                             <span class="px-3 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-900">Waktu Ba'da Maghrib</span>
                             <h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Diskusi Ba'da Maghrib</h3>
                             <p class="text-xs text-stone-600 mt-2">Dialog keislaman interaktif, fiqih keseharian & solusi umat bersama jamaah.</p>
+
+                            <!-- Tirai Dropdown -->
+                            <div class="curtain-panel text-left">
+                                <div class="curtain-inner">
+                                    <div class="pt-3 border-t border-midnightTeal/15 text-xs text-stone-700 space-y-1.5 bg-tealLight/70 p-3.5 rounded-2xl">
+                                        <p class="font-bold text-midnightTeal">💬 Topik Pekan Ini:</p>
+                                        <p>Tanya jawab fiqih muamalah, adab bertetangga, dan penguatan ukhuwah warga RW 09 dipandu oleh Seksi Dakwah DKM.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="group bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-rose-700/20 text-center shadow-sm hover-lift">
-                            <div class="w-12 h-12 mx-auto rounded-2xl bg-rose-800 text-white flex items-center justify-center mb-4">
-                                <i data-lucide="users" class="w-6 h-6 icon-anim"></i>
+
+                        <!-- Kartu 4 -->
+                        <div tabindex="0" onclick="this.classList.toggle('is-open')" class="kajian-card group cursor-pointer bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-rose-700/20 text-center shadow-sm hover-lift">
+                            <div class="w-14 h-14 mx-auto rounded-2xl bg-rose-800 text-white flex items-center justify-center mb-4 shadow-md">
+                                <i data-lucide="users" class="w-7 h-7 icon-anim"></i>
                             </div>
                             <span class="px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-900">Rutin Sore Hari</span>
                             <h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Pengajian Anak-Anak (TPA)</h3>
                             <p class="text-xs text-stone-600 mt-2">Taman Pendidikan Al-Qur'an, hafalan surat pendek & pembinaan akhlak santri.</p>
+
+                            <!-- Tirai Dropdown -->
+                            <div class="curtain-panel text-left">
+                                <div class="curtain-inner">
+                                    <div class="pt-3 border-t border-rose-800/15 text-xs text-stone-700 space-y-1.5 bg-rose-50/90 p-3.5 rounded-2xl">
+                                        <p class="font-bold text-rose-900">🎒 Program Santri:</p>
+                                        <p>Belajar Iqra, hafalan doa harian, kisah teladan nabi, dan praktik wudhu/sholat setiap Senin–Jum'at pukul 16.00 – 17.15 WIB.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `;
             }
-            // HALAMAN 1D: BAGAN STRUKTUR KEPENGURUSAN
+            // HALAMAN 1D: BAGAN STRUKTUR KEPENGURUSAN DKM LENGKAP
             else if (currentCategory === 'profil' && currentSubmenu === 'struktur') {
                 wrapper.innerHTML = `
                     <div class="text-center max-w-2xl mx-auto mb-10">
                         <span class="text-xs font-bold uppercase tracking-widest text-emeraldDeep">Periode Khidmat 2024 – 2029</span>
                         <h2 class="font-heading text-3xl font-bold text-gray-900 mt-1">Bagan Struktur Kepengurusan DKM</h2>
-                        <p class="text-sm text-stone-600 mt-2">Susunan pengurus Dewan Kemakmuran Masjid Jami' Al-Barokah 09.</p>
+                        <p class="text-sm text-stone-600 mt-2">Susunan lengkap pengurus Dewan Kemakmuran Masjid Jami' Al-Barokah 09 RW 09 Cigending.</p>
                     </div>
 
                     <div class="bg-[#FCFBF7] p-6 sm:p-10 rounded-3xl border border-stone-300/80 shadow-sm overflow-x-auto">
-                        <div class="min-w-[700px] flex flex-col items-center">
-                            <div class="bg-[#F4F0E6] border-2 border-goldSoft/70 px-6 py-4 rounded-2xl text-center shadow-sm w-80 hover-lift">
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-900 bg-amber-100 px-2.5 py-0.5 rounded-full">Dewan Penasihat</span>
-                                <h4 class="font-heading font-bold text-gray-900 mt-2 text-xs">Ketua RW 09 Cigending, Dr. H. Asep Hilman, M.Pd., H. Aep Syaefulloh, H. Gatot, S.T.</h4>
+                        <div class="min-w-[820px] flex flex-col items-center">
+                            
+                            <!-- Level 1: Dewan Penasihat & Pembina -->
+                            <div class="bg-[#F4F0E6] border-2 border-goldSoft/80 px-6 py-4 rounded-2xl text-center shadow-sm w-[460px] hover-lift">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-900 bg-amber-100 px-3 py-0.5 rounded-full">Dewan Penasihat & Pembina</span>
+                                <h4 class="font-heading font-bold text-gray-900 mt-2 text-xs leading-relaxed">
+                                    Ketua RW 09 Cigending • Dr. H. Asep Hilman, M.Pd. • H. Aep Syaefulloh • H. Gatot, S.T. • Tokoh Masyarakat RW 09
+                                </h4>
                             </div>
 
                             <div class="w-0.5 h-6 bg-goldSoft"></div>
 
+                            <!-- Level 2: Ketua DKM -->
                             <div class="bg-emeraldDeep text-white px-8 py-5 rounded-2xl text-center shadow-lg border-2 border-goldSoft w-80 hover-lift">
                                 <span class="text-[10px] font-bold uppercase tracking-wider text-goldSoft">Ketua DKM</span>
                                 <h4 class="font-heading font-bold text-xl mt-0.5">H. Suwandi</h4>
                             </div>
 
                             <div class="w-0.5 h-6 bg-goldSoft"></div>
-                            <div class="w-[60%] h-0.5 bg-goldSoft"></div>
+                            <div class="w-[70%] h-0.5 bg-goldSoft"></div>
 
-                            <div class="grid grid-cols-2 gap-12 w-[80%] max-w-2xl mt-2">
+                            <!-- Level 3: Sekretaris & Bendahara -->
+                            <div class="grid grid-cols-2 gap-12 w-[85%] max-w-3xl mt-2">
                                 <div class="flex flex-col items-center">
                                     <div class="w-0.5 h-4 bg-goldSoft"></div>
-                                    <div class="bg-emeraldLight border border-emeraldDeep/20 p-4 rounded-2xl text-center w-full hover-lift">
-                                        <span class="text-[10px] font-bold uppercase text-emeraldDeep">Sekretaris</span>
-                                        <h5 class="font-heading font-bold text-gray-900 text-xs mt-1">1. H. Agus Gunadi Ismail, S.T.<br>2. Ir. Aang Sutarya</h5>
+                                    <div class="bg-emeraldLight border border-emeraldDeep/25 p-4 rounded-2xl text-center w-full hover-lift">
+                                        <span class="text-[10px] font-bold uppercase text-emeraldDeep bg-white px-2.5 py-0.5 rounded-full">Sekretaris</span>
+                                        <h5 class="font-heading font-bold text-gray-900 text-xs mt-2 leading-relaxed">
+                                            1. H. Agus Gunadi Ismail, S.T.<br>
+                                            2. Ir. Aang Sutarya
+                                        </h5>
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-center">
                                     <div class="w-0.5 h-4 bg-goldSoft"></div>
-                                    <div class="bg-emeraldLight border border-emeraldDeep/20 p-4 rounded-2xl text-center w-full hover-lift">
-                                        <span class="text-[10px] font-bold uppercase text-emeraldDeep">Bendahara</span>
-                                        <h5 class="font-heading font-bold text-gray-900 text-xs mt-1">1. Drs. Deni Iskandar<br>2. Zulkarnaen</h5>
+                                    <div class="bg-emeraldLight border border-emeraldDeep/25 p-4 rounded-2xl text-center w-full hover-lift">
+                                        <span class="text-[10px] font-bold uppercase text-emeraldDeep bg-white px-2.5 py-0.5 rounded-full">Bendahara</span>
+                                        <h5 class="font-heading font-bold text-gray-900 text-xs mt-2 leading-relaxed">
+                                            1. Drs. Deni Iskandar<br>
+                                            2. Zulkarnaen
+                                        </h5>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="w-0.5 h-6 bg-goldSoft mt-2"></div>
-                            <div class="w-[85%] h-0.5 bg-goldSoft"></div>
+                            <div class="w-[92%] h-0.5 bg-goldSoft"></div>
 
-                            <div class="grid grid-cols-4 gap-3 w-full mt-2">
-                                <div class="bg-[#F4F0E6] border border-stone-300 p-3 rounded-2xl text-center hover-lift">
-                                    <span class="text-[10px] font-bold uppercase text-emeraldDeep">Seksi Dakwah</span>
-                                    <p class="text-[11px] text-stone-700 mt-1">Kasno, Zumar, Tardi, Sulkhoni, Mastur, Robby</p>
+                            <!-- Level 4: Seksi-Seksi & Remaja Masjid Lengkap -->
+                            <div class="grid grid-cols-3 gap-4 w-full mt-3">
+                                <div class="bg-[#F4F0E6] border border-stone-300 p-4 rounded-2xl text-center hover-lift">
+                                    <span class="text-[10px] font-bold uppercase text-white bg-emeraldDeep px-2.5 py-0.5 rounded-full">Seksi Dakwah & Ibadah</span>
+                                    <p class="text-xs text-stone-800 font-medium mt-2 leading-relaxed">
+                                        Kasno • Zumar • Tardi • Sulkhoni • Mastur • Robby
+                                    </p>
                                 </div>
-                                <div class="bg-[#F4F0E6] border border-stone-300 p-3 rounded-2xl text-center hover-lift">
-                                    <span class="text-[10px] font-bold uppercase text-emeraldDeep">Seksi Pendidikan</span>
-                                    <p class="text-[11px] text-stone-700 mt-1">Siti Parlina, S.Pd., Teti Supriatin, Imam M.</p>
+                                <div class="bg-[#F4F0E6] border border-stone-300 p-4 rounded-2xl text-center hover-lift">
+                                    <span class="text-[10px] font-bold uppercase text-white bg-emeraldDeep px-2.5 py-0.5 rounded-full">Seksi Pendidikan & TPA</span>
+                                    <p class="text-xs text-stone-800 font-medium mt-2 leading-relaxed">
+                                        Siti Parlina, S.Pd. • Teti Supriatin • Imam M.
+                                    </p>
                                 </div>
-                                <div class="bg-[#F4F0E6] border border-stone-300 p-3 rounded-2xl text-center hover-lift">
-                                    <span class="text-[10px] font-bold uppercase text-emeraldDeep">Seksi Pemberdayaan</span>
-                                    <p class="text-[11px] text-stone-700 mt-1">Lingga, S.Sos., Atep, Dedi, Imas, Nurdini</p>
+                                <div class="bg-[#F4F0E6] border border-stone-300 p-4 rounded-2xl text-center hover-lift">
+                                    <span class="text-[10px] font-bold uppercase text-white bg-emeraldDeep px-2.5 py-0.5 rounded-full">Seksi Pemberdayaan Umat</span>
+                                    <p class="text-xs text-stone-800 font-medium mt-2 leading-relaxed">
+                                        Lingga, S.Sos. • Atep • Dedi • Imas • Nurdini
+                                    </p>
                                 </div>
-                                <div class="bg-[#F4F0E6] border border-stone-300 p-3 rounded-2xl text-center hover-lift">
-                                    <span class="text-[10px] font-bold uppercase text-emeraldDeep">Seksi Humas</span>
-                                    <p class="text-[11px] text-stone-700 mt-1">Ending, Gugum, Syamsu, Tono, Haryono, Zaenal</p>
+                                <div class="bg-[#F4F0E6] border border-stone-300 p-4 rounded-2xl text-center hover-lift">
+                                    <span class="text-[10px] font-bold uppercase text-white bg-emeraldDeep px-2.5 py-0.5 rounded-full">Seksi Humas & Publikasi</span>
+                                    <p class="text-xs text-stone-800 font-medium mt-2 leading-relaxed">
+                                        Ending • Gugum • Syamsu • Tono • Haryono • Zaenal
+                                    </p>
+                                </div>
+                                <div class="bg-[#F4F0E6] border border-stone-300 p-4 rounded-2xl text-center hover-lift">
+                                    <span class="text-[10px] font-bold uppercase text-white bg-emeraldDeep px-2.5 py-0.5 rounded-full">Seksi Sarpras & Pemeliharaan</span>
+                                    <p class="text-xs text-stone-800 font-medium mt-2 leading-relaxed">
+                                        Tim Kebersihan, Sound System & Pemeliharaan Bangunan Masjid
+                                    </p>
+                                </div>
+                                <div class="bg-amber-50 border border-amber-300 p-4 rounded-2xl text-center hover-lift">
+                                    <span class="text-[10px] font-bold uppercase text-amber-950 bg-goldSoft px-2.5 py-0.5 rounded-full">Remaja Masjid (RMJ Al-Barokah)</span>
+                                    <p class="text-xs text-stone-800 font-medium mt-2 leading-relaxed">
+                                        Pemuda & Pemudi RW 09 Cigending (@remajamasjid_albarokah2025)
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -685,101 +865,127 @@
 
             // HALAMAN 2A: LAYANAN & TABUNGAN QURBAN
             else if (currentCategory === 'layanan' && currentSubmenu === 'qurban') {
-                wrapper.innerHTML = `
-                    <div class="mb-8">
-                        <span class="text-xs font-bold uppercase tracking-widest text-terracotta">Idul Adha & Tabungan Terencana</span>
-                        <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Layanan & Tabungan Qurban RW 09 Cigending</h2>
-                        <p class="text-sm text-stone-600 mt-1 max-w-2xl">Fasilitas tabungan qurban terencana maupun penyaluran hewan qurban langsung untuk warga RW 09 Cigending dan mustahik secara amanah dan transparan.</p>
-                    </div>
-
-                    <div class="bg-[#FCFBF7] p-8 rounded-3xl border-2 border-terracotta/40 shadow-md space-y-6 max-w-3xl mx-auto hover-lift">
-                        <div class="flex items-center space-x-4">
-                            <span class="group w-16 h-16 rounded-2xl bg-terracotta/15 border border-terracotta/40 flex items-center justify-center text-3xl">
-                                <span class="icon-anim">🐄</span>
-                            </span>
-                            <div>
-                                <h3 class="text-2xl font-extrabold text-gray-900">Formulir Pendaftaran & Tabungan Qurban</h3>
-                                <p class="text-xs text-stone-500">Langsung terhubung ke Database Spreadsheet Masjid Al-Barokah 09</p>
-                            </div>
-                        </div>
-
-                        <ul class="text-sm text-stone-700 space-y-3 bg-[#F8F1E9] p-5 rounded-2xl border border-terracotta/20">
-                            <li class="flex items-center space-x-2"><span class="text-terracotta font-bold">✔</span> <span><b>Tabungan Qurban:</b> Setoran ringan mulai Rp 250.000/bulan</span></li>
-                            <li class="flex items-center space-x-2"><span class="text-terracotta font-bold">✔</span> <span><b>Patungan Sapi (1/7):</b> Kolektif jamaah yang terorganisir</span></li>
-                            <li class="flex items-center space-x-2"><span class="text-terracotta font-bold">✔</span> <span><b>Qurban Domba/Kambing:</b> Hewan sehat & sesuai syariat</span></li>
-                            <li class="flex items-center space-x-2"><span class="text-terracotta font-bold">✔</span> <span>Laporan penyembelihan & dokumentasi distribusi transparan</span></li>
-                        </ul>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScug6XWUG9aC55K51lIJUf65jGCL7Vyvjwemn9yt3NkyZHb-g/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" 
-                               class="group w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
-                                <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">📝</span> <span>Isi Formulir Pendaftaran</span></div>
-                                <span class="text-[11px] text-amber-100 font-medium">Daftar online & otomatis masuk spreadsheet</span>
-                            </a>
-
-                            <button onclick="switchPage('informasi', 'kas')" 
-                                    class="group w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
-                                <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">💳</span> <span>Setor Tabungan (Rekening BSI)</span></div>
-                                <span class="text-[11px] text-emerald-200 font-medium">Transfer cicilan via BSI Resmi Masjid</span>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }
-            // HALAMAN 2B: ZAKAT, INFAQ & SHODAQOH
-            else if (currentCategory === 'layanan' && currentSubmenu === 'zakat') {
-                wrapper.innerHTML = `
-                    <div class="mb-8">
-                        <span class="text-xs font-bold uppercase tracking-widest text-sage">UPZ Resmi Masjid</span>
-                        <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Zakat, Infaq & Shodaqoh (ZIS)</h2>
-                    </div>
-                    <div class="bg-[#FCFBF7] p-8 rounded-3xl border border-sage/30 shadow-sm max-w-2xl mx-auto text-center space-y-5 hover-lift">
-                        <div class="w-14 h-14 mx-auto rounded-2xl bg-sage/15 text-sage flex items-center justify-center">
-                            <i data-lucide="hand-coins" class="w-7 h-7 icon-anim"></i>
-                        </div>
-                        <p class="text-sm text-stone-700 leading-relaxed">Salurkan zakat fitrah, zakat maal, dan infaq operasional Anda melalui rekening resmi masjid untuk disalurkan kepada mustahik di wilayah RW 09 Cigending.</p>
-                        <button onclick="switchPage('informasi', 'kas')" class="group inline-flex items-center gap-2 px-6 py-3 bg-sage text-white rounded-xl font-bold text-xs hover-lift">
-                            <i data-lucide="arrow-right" class="w-4 h-4 icon-anim"></i>
-                            <span>Lihat Rekening Donasi BSI</span>
+                wrapper.innerHTML = buildLayananCard({
+                    badge: 'Idul Adha & Tabungan Terencana',
+                    title: 'Layanan & Tabungan Qurban RW 09 Cigending',
+                    subtitle: 'Fasilitas tabungan qurban terencana maupun penyaluran hewan qurban langsung untuk warga RW 09 Cigending dan mustahik secara amanah dan transparan.',
+                    emoji: '🐄',
+                    cardTitle: 'Formulir Pendaftaran & Tabungan Qurban',
+                    cardSubtitle: 'Langsung terhubung ke Database Spreadsheet Masjid Al-Barokah 09',
+                    bullets: [
+                        '<b>Tabungan Qurban:</b> Setoran ringan mulai Rp 250.000/bulan',
+                        '<b>Patungan Sapi (1/7):</b> Kolektif jamaah yang terorganisir',
+                        '<b>Qurban Domba/Kambing:</b> Hewan sehat & sesuai syariat',
+                        'Laporan penyembelihan & dokumentasi distribusi transparan'
+                    ],
+                    primaryBtn: `
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLScug6XWUG9aC55K51lIJUf65jGCL7Vyvjwemn9yt3NkyZHb-g/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" 
+                           class="group w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                            <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">📝</span> <span>Isi Formulir Pendaftaran</span></div>
+                            <span class="text-[11px] text-amber-100 font-medium">Daftar online & otomatis masuk spreadsheet</span>
+                        </a>
+                    `,
+                    secondaryBtn: `
+                        <button onclick="switchPage('informasi', 'kas')" 
+                                class="group w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                            <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">💳</span> <span>Setor Tabungan (Rekening BSI)</span></div>
+                            <span class="text-[11px] text-emerald-200 font-medium">Transfer cicilan via BSI Resmi Masjid</span>
                         </button>
-                    </div>
-                `;
+                    `
+                });
             }
-            // HALAMAN 2C: PROGRAM BERAS BAROKAH
+            // HALAMAN 2B: ZAKAT, INFAQ & SHODAQOH (FORMAT TOMBOL DISAMAKAN DENGAN QURBAN)
+            else if (currentCategory === 'layanan' && currentSubmenu === 'zakat') {
+                wrapper.innerHTML = buildLayananCard({
+                    badge: 'UPZ Resmi & Donasi Umat',
+                    title: 'Zakat, Infaq & Shodaqoh (ZIS) RW 09 Cigending',
+                    subtitle: 'Penghimpunan dan penyaluran zakat maal, zakat fitrah, serta infaq jariyah untuk kemakmuran masjid dan pemberdayaan mustahik sekitar.',
+                    emoji: '🤲',
+                    cardTitle: 'Layanan Penyaluran Zakat, Infaq & Shodaqoh',
+                    cardSubtitle: 'Tercatat rapi & dilaporkan berkala oleh Bendahara DKM Al-Barokah 09',
+                    bullets: [
+                        '<b>Zakat Maal & Profesi:</b> Dihitung 2,5% dari harta yang mencapai nisab',
+                        '<b>Infaq Operasional Masjid:</b> Mendukung listrik, kebersihan & kegiatan ibadah',
+                        '<b>Shodaqoh Yatim & Dhuafa:</b> Santunan rutin bagi warga yang membutuhkan',
+                        'Bukti konfirmasi resmi & transparansi laporan kas masjid'
+                    ],
+                    primaryBtn: `
+                        <a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20saya%20ingin%20konfirmasi%20penyaluran%20Zakat/Infaq/Shodaqoh." target="_blank" rel="noopener noreferrer" 
+                           class="group w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                            <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">📲</span> <span>Konfirmasi ZIS via WhatsApp</span></div>
+                            <span class="text-[11px] text-amber-100 font-medium">Kirim bukti transfer & akad zakat/infaq</span>
+                        </a>
+                    `,
+                    secondaryBtn: `
+                        <button onclick="switchPage('informasi', 'kas')" 
+                                class="group w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                            <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">💳</span> <span>Transfer Donasi (Rekening BSI)</span></div>
+                            <span class="text-[11px] text-emerald-200 font-medium">Salin nomor rekening BSI Resmi Masjid</span>
+                        </button>
+                    `
+                });
+            }
+            // HALAMAN 2C: PROGRAM BERAS BAROKAH (FORMAT TOMBOL DISAMAKAN DENGAN QURBAN)
             else if (currentCategory === 'layanan' && currentSubmenu === 'beras') {
-                wrapper.innerHTML = `
-                    <div class="mb-8">
-                        <span class="text-xs font-bold uppercase tracking-widest text-amber-800">Ketahanan Pangan Warga</span>
-                        <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Program Beras Barokah</h2>
-                    </div>
-                    <div class="bg-[#EFE7DA] p-8 rounded-3xl border border-amber-800/20 shadow-sm max-w-2xl mx-auto space-y-4 hover-lift">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-2xl bg-amber-800 text-amber-100 flex items-center justify-center">
-                                <i data-lucide="wheat" class="w-6 h-6 icon-anim"></i>
-                            </div>
-                            <h3 class="font-heading font-bold text-lg text-gray-900">Gerakan Sedekah Beras Rutin</h3>
-                        </div>
-                        <p class="text-sm text-stone-700 leading-relaxed">Gerakan sedekah beras rutin untuk menjamin kebutuhan pokok keluarga prasejahtera, janda, dan lansia di wilayah RW 09 Cigending setiap bulannya.</p>
-                    </div>
-                `;
+                wrapper.innerHTML = buildLayananCard({
+                    badge: 'Ketahanan Pangan Warga',
+                    title: 'Program Beras Barokah RW 09 Cigending',
+                    subtitle: 'Gerakan sedekah beras dan sembako pokok setiap bulan untuk membantu keluarga prasejahtera, janda, dan lansia di lingkungan masjid.',
+                    emoji: '🌾',
+                    cardTitle: 'Partisipasi Sedekah Beras Barokah',
+                    cardSubtitle: 'Penyaluran langsung ke rumah warga mustahik RW 09 Cigending',
+                    bullets: [
+                        '<b>Donasi Paket Beras:</b> Mulai dari 5 kg atau kelipatannya per bulan',
+                        '<b>Donasi Tunai Konversi Beras:</b> Mulai Rp 75.000/paket beras premium',
+                        '<b>Distribusi Tepat Sasaran:</b> Didata langsung oleh Seksi Pemberdayaan & RT/RW',
+                        'Dokumentasi penyaluran bulanan dibagikan kepada para donatur'
+                    ],
+                    primaryBtn: `
+                        <a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20saya%20ingin%20ikut%20donasi%20Program%20Beras%20Barokah." target="_blank" rel="noopener noreferrer" 
+                           class="group w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                            <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">🌾</span> <span>Daftar Donatur Beras</span></div>
+                            <span class="text-[11px] text-amber-100 font-medium">Konfirmasi antar beras atau titip dana</span>
+                        </a>
+                    `,
+                    secondaryBtn: `
+                        <button onclick="switchPage('informasi', 'kas')" 
+                                class="group w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                            <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">💳</span> <span>Transfer Dana Beras (BSI)</span></div>
+                            <span class="text-[11px] text-emerald-200 font-medium">Transfer via Rekening BSI Resmi Masjid</span>
+                        </button>
+                    `
+                });
             }
-            // HALAMAN 2D: PROGRAM JUM'AT BERKAH
+            // HALAMAN 2D: PROGRAM JUM'AT BERKAH (FORMAT TOMBOL DISAMAKAN DENGAN QURBAN)
             else if (currentCategory === 'layanan' && currentSubmenu === 'jumat') {
-                wrapper.innerHTML = `
-                    <div class="mb-8">
-                        <span class="text-xs font-bold uppercase tracking-widest text-terracotta">Berbagi Setiap Pekan</span>
-                        <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Program Jum'at Berkah</h2>
-                    </div>
-                    <div class="bg-[#FCFBF7] p-8 rounded-3xl border border-terracotta/30 shadow-sm max-w-2xl mx-auto space-y-4 hover-lift">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-2xl bg-terracotta text-white flex items-center justify-center">
-                                <i data-lucide="utensils" class="w-6 h-6 icon-anim"></i>
-                            </div>
-                            <h3 class="font-heading font-bold text-lg text-gray-900">Paket Nasi & Sembako Jum'at</h3>
-                        </div>
-                        <p class="text-sm text-stone-700 leading-relaxed">Gerakan sedekah makan siang dan paket sembako rutin setiap hari Jum'at ba'da Sholat Jum'at bagi jamaah, musafir, dan warga dhuafa.</p>
-                    </div>
-                `;
+                wrapper.innerHTML = buildLayananCard({
+                    badge: 'Sedekah Rutin Pekanan',
+                    title: "Program Jum'at Berkah RW 09 Cigending",
+                    subtitle: "Berbagi kebahagiaan setiap hari Jum'at melalui pembagian paket nasi box, minuman segar, dan santunan ba'da Sholat Jum'at.",
+                    emoji: '🍱',
+                    cardTitle: "Layanan Donasi Jum'at Berkah",
+                    cardSubtitle: "Dikelola bersama DKM dan Remaja Masjid Al-Barokah 09",
+                    bullets: [
+                        '<b>Paket Nasi Box Jum\'at:</b> Rp 15.000 – Rp 20.000 per porsi',
+                        '<b>Sedekah Takjil & Minuman:</b> Disediakan di pelataran masjid untuk jamaah',
+                        '<b>Titip Makanan Siap Saji:</b> Dapat diantar ke masjid sebelum pukul 11.00 WIB',
+                        'Terbuka untuk donatur perorangan maupun keluarga (atas nama almarhum/orang tua)'
+                    ],
+                    primaryBtn: `
+                        <a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20saya%20ingin%20berpartisipasi%20di%20Program%20Jum'at%20Berkah." target="_blank" rel="noopener noreferrer" 
+                           class="group w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                            <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">🍱</span> <span>Konfirmasi Paket Jum'at</span></div>
+                            <span class="text-[11px] text-amber-100 font-medium">Koordinasi jumlah porsi & jadwal antar</span>
+                        </a>
+                    `,
+                    secondaryBtn: `
+                        <button onclick="switchPage('informasi', 'kas')" 
+                                class="group w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                            <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">💳</span> <span>Transfer Donasi (Rekening BSI)</span></div>
+                            <span class="text-[11px] text-emerald-200 font-medium">Transfer via Rekening BSI Resmi Masjid</span>
+                        </button>
+                    `
+                });
             }
 
             // HALAMAN 3: INFORMASI & KAS
@@ -825,6 +1031,7 @@
             main.appendChild(wrapper);
             lucide.createIcons();
             updateClock();
+            updateRamadanCountdown();
             if (currentCategory === 'profil' && currentSubmenu === 'beranda') {
                 applyTimeBasedWeatherTheme();
                 fetchWeatherDataAndPrayer();
@@ -847,7 +1054,7 @@
             }
         }
 
-        // Menyesuaikan Warna Kotak Cuaca Transparan Berdasarkan Waktu (Pagi, Siang, Sore, Malam)
+        // Menyesuaikan Warna Kotak Cuaca Transparan Berdasarkan Waktu
         function applyTimeBasedWeatherTheme() {
             const card = document.getElementById('weather-hero-card');
             const badge = document.getElementById('weather-time-badge');
@@ -857,26 +1064,22 @@
             const hour = new Date().getHours();
 
             if (hour >= 5 && hour < 11) {
-                // Pagi: Nuansa Emas Cerah Transparan
-                card.className = 'group flex items-center justify-between px-4 py-3.5 rounded-2xl border backdrop-blur-md transition-all duration-700 bg-amber-300/15 border-amber-200/35 shadow-inner';
+                card.className = 'group flex items-center justify-between px-4 py-4 rounded-2xl border backdrop-blur-md transition-all duration-700 bg-amber-300/15 border-amber-200/35 shadow-inner';
                 badge.className = 'text-[10px] uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-amber-300/25 text-amber-100';
                 badge.textContent = 'Pagi • Cigending';
                 if (iconEl && iconEl.textContent === '⛅') iconEl.textContent = '🌤️';
             } else if (hour >= 11 && hour < 15) {
-                // Siang: Nuansa Biru Langit Segar Transparan
-                card.className = 'group flex items-center justify-between px-4 py-3.5 rounded-2xl border backdrop-blur-md transition-all duration-700 bg-sky-300/15 border-sky-200/35 shadow-inner';
+                card.className = 'group flex items-center justify-between px-4 py-4 rounded-2xl border backdrop-blur-md transition-all duration-700 bg-sky-300/15 border-sky-200/35 shadow-inner';
                 badge.className = 'text-[10px] uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-sky-300/25 text-sky-100';
                 badge.textContent = 'Siang • Cigending';
                 if (iconEl && iconEl.textContent === '⛅') iconEl.textContent = '☀️';
             } else if (hour >= 15 && hour < 18) {
-                // Sore: Nuansa Senja Oranye/Hangat Transparan
-                card.className = 'group flex items-center justify-between px-4 py-3.5 rounded-2xl border backdrop-blur-md transition-all duration-700 bg-orange-400/20 border-orange-200/35 shadow-inner';
+                card.className = 'group flex items-center justify-between px-4 py-4 rounded-2xl border backdrop-blur-md transition-all duration-700 bg-orange-400/20 border-orange-200/35 shadow-inner';
                 badge.className = 'text-[10px] uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-orange-400/30 text-orange-100';
                 badge.textContent = 'Sore • Cigending';
                 if (iconEl && iconEl.textContent === '⛅') iconEl.textContent = '🌥️';
             } else {
-                // Malam: Nuansa Indigo/Biru Malam Transparan
-                card.className = 'group flex items-center justify-between px-4 py-3.5 rounded-2xl border backdrop-blur-md transition-all duration-700 bg-indigo-950/45 border-indigo-300/25 shadow-inner';
+                card.className = 'group flex items-center justify-between px-4 py-4 rounded-2xl border backdrop-blur-md transition-all duration-700 bg-indigo-950/45 border-indigo-300/25 shadow-inner';
                 badge.className = 'text-[10px] uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-indigo-400/25 text-indigo-100';
                 badge.textContent = 'Malam • Cigending';
                 if (iconEl && iconEl.textContent === '⛅') iconEl.textContent = '🌙';
@@ -896,7 +1099,6 @@
             if (sEl) sEl.textContent = String(now.getSeconds()).padStart(2, '0');
             if (dEl) dEl.textContent = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
 
-            // Update Flip-Book Masehi di Jadwal Imsakiyah
             const mDayEl = document.getElementById('masehi-day-num');
             const mMonthEl = document.getElementById('masehi-month-short');
             const mFullEl = document.getElementById('masehi-full-text');
@@ -906,7 +1108,6 @@
                 mFullEl.textContent = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' });
             }
 
-            // Update Flip-Book Hijriah di Jadwal Imsakiyah
             try {
                 const hijriParts = new Intl.DateTimeFormat('id-ID-u-ca-islamic', {
                     day: 'numeric', month: 'long', year: 'numeric'
@@ -924,23 +1125,27 @@
         }
         setInterval(updateClock, 1000);
 
-        // Countdown Ramadhan
+        // Countdown Ramadhan Flip-Book
         function updateRamadanCountdown() {
             const ramadanDate = new Date('February 8, 2027 00:00:00').getTime();
             const now = new Date().getTime();
-            const distance = ramadanDate - now;
-            const el = document.getElementById('ramadan-countdown');
-            if (!el) return;
+            const distance = Math.max(0, ramadanDate - now);
 
-            if (distance < 0) {
-                el.textContent = "Marhaban Ya Ramadhan 1448H!";
-                return;
-            }
+            const dEl = document.getElementById('cd-days');
+            const hEl = document.getElementById('cd-hours');
+            const mEl = document.getElementById('cd-minutes');
+            const sEl = document.getElementById('cd-seconds');
+            if (!dEl) return;
 
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            el.textContent = `${days} Hari : ${hours} Jam : ${minutes} Menit Lagi`;
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            dEl.textContent = String(days).padStart(2, '0');
+            hEl.textContent = String(hours).padStart(2, '0');
+            mEl.textContent = String(minutes).padStart(2, '0');
+            sEl.textContent = String(seconds).padStart(2, '0');
         }
         setInterval(updateRamadanCountdown, 1000);
 
@@ -969,7 +1174,7 @@
                     document.getElementById('weather-topbar').innerHTML = `🌡️ Cigending, Bandung • Suhu: <b>${cw.temperature}°C</b>`;
                     document.getElementById('weather-temp').textContent = `${cw.temperature}°C`;
                     document.getElementById('weather-desc').textContent = cw.weathercode <= 2 ? "Cerah / Berawan" : "Berawan / Sejuk";
-                    document.getElementById('weather-wind').textContent = `Angin: ${cw.windspeed} km/jam`;
+                    document.getElementById('weather-wind').textContent = `Kecepatan angin: ${cw.windspeed} km/jam`;
                 }
             } catch (err) {
                 console.error(err);
