@@ -194,7 +194,7 @@
             <div class="flex items-center gap-3 text-white/95">
                 <span class="group inline-flex items-center gap-1.5 font-medium">
                     <i data-lucide="map-pin" class="w-3.5 h-3.5 text-goldSoft icon-anim"></i>
-                    RW 09 Cigending, Ujungberung, Bandung
+                    RT 03 RW 09 Kel. Cigending, Kec. Ujungberung, Kota Bandung
                 </span>
                 <span class="hidden sm:inline text-white/30">|</span>
                 <span id="weather-topbar" class="text-amber-200 font-medium">🌡️ Memuat cuaca Bandung...</span>
@@ -286,7 +286,7 @@
                         <span class="font-serif font-bold text-lg text-gray-900">Masjid Jami' Al-Barokah 09</span>
                     </div>
                     <p class="text-sm text-stone-600 leading-relaxed">
-                        RW 09 Cigending, Ujungberung, Kota Bandung, Jawa Barat. Terbuka 24 jam untuk ibadah dan musafir.
+                        RT 03 RW 09 Kel. Cigending, Kec. Ujungberung, Kota Bandung, Jawa Barat. Terbuka 24 jam untuk ibadah dan musafir.
                     </p>
                 </div>
                 
@@ -324,7 +324,7 @@
                     { id: 'beranda', title: 'Beranda Utama', icon: 'home' },
                     { id: 'sejarah', title: 'Sejarah & Visi Misi', icon: 'book-open' },
                     { id: 'kajian', title: 'Jadwal Kajian & Diskusi', icon: 'calendar-days' },
-                    { id: 'struktur', title: 'Struktur Kepengurusan', icon: 'network' }
+                    { id: 'struktur', title: 'Struktur Kepengurusan', icon: 'users' }
                 ]
             },
             layanan: {
@@ -360,6 +360,52 @@
             { bulan: 'November 2026', pekan: 'Pekan ke-2', sumber: 'Infaq Kotak Beras & Donatur Tetap', totalKg: 150, distribusi: '30 Keluarga Mustahik & Janda' },
             { bulan: 'Oktober 2026', pekan: 'Pekan ke-4', sumber: 'Kolektif Warga RW 09 Cigending', totalKg: 140, distribusi: '28 Keluarga Prasejahtera' },
             { bulan: 'Oktober 2026', pekan: 'Pekan ke-3', sumber: 'Donatur Hamba Allah & Majelis Taklim', totalKg: 115, distribusi: '23 Keluarga Mustahik' }
+        ];
+
+        // Data Lengkap Susunan Kepengurusan DKM Al Barokah Masa Khidmah 2024–2029
+        const seksiKepengurusan = [
+            {
+                title: 'Seksi Dakwah',
+                icon: 'book-open',
+                kiri: ['Kasno', 'Zumar', 'Tardi Nurdiansyah'],
+                kanan: ['Sulkhoni', 'Mastur', 'Robby Ilman']
+            },
+            {
+                title: 'Seksi Pendidikan',
+                icon: 'graduation-cap',
+                kiri: ['Siti Parlina, S.Pd', 'Teti Supriatin, S.Pd'],
+                kanan: ['Imam Mauludin']
+            },
+            {
+                title: 'Seksi Pemberdayaan',
+                icon: 'hand-helping',
+                kiri: ['Lingga, S.Sos', 'Atep Permana', 'Dedi Cahyana'],
+                kanan: ['Imas Suciawati', 'Nurdini Homsah']
+            },
+            {
+                title: 'Seksi Humas',
+                icon: 'megaphone',
+                kiri: ['Ending', 'Gugum Gumilar', 'Syamsu'],
+                kanan: ['Tono Haryanto', 'Haryono', 'Zaenal Mutaqim']
+            },
+            {
+                title: 'Seksi Kerumahtanggaan',
+                icon: 'home',
+                kiri: ['Engkos Kosidin', 'Suwarto', 'Sarjono'],
+                kanan: ['Sugito', 'Budianto']
+            },
+            {
+                title: 'Seksi Muslimat',
+                icon: 'heart',
+                kiri: ['Rika Nisa', 'Ning Hartati', 'Tarmini', 'Yeuis Purnamawati'],
+                kanan: ['Surip Romlah', 'Titin Aisah', 'Siti Warliyah', 'Aisyah']
+            },
+            {
+                title: 'Seksi Remaja',
+                icon: 'sparkles',
+                kiri: ['Firdaus', 'Hisyam Nur Chairuddin', 'Sibab'],
+                kanan: ['Radella Bilqisthi Gunawan', 'Najmi Tsaqib Nurhasani']
+            }
         ];
 
         let currentCategory = 'profil';
@@ -433,7 +479,6 @@
             lucide.createIcons();
         }
 
-        // Helper Template Seragam untuk Sub-Menu Layanan Umat
         function buildLayananCard({ badge, title, subtitle, emoji, cardTitle, cardSubtitle, bullets, primaryBtn, secondaryBtn, extraSection = '' }) {
             return `
                 <div class="mb-8">
@@ -481,7 +526,6 @@
             // HALAMAN 1A: BERANDA UTAMA
             if (currentCategory === 'profil' && currentSubmenu === 'beranda') {
                 wrapper.innerHTML = `
-                    <!-- KOTAK HIJAU SELAMAT DATANG + JAM REAL-TIME (TANPA HIJRIAH) + CUACA TRANSPARAN BERGERAK -->
                     <div class="bg-emeraldDeep text-white p-6 sm:p-10 rounded-3xl shadow-xl mb-8 border border-goldSoft/40 relative overflow-hidden">
                         <div class="absolute -right-10 -bottom-10 w-56 h-56 rounded-full bg-goldSoft/10 pointer-events-none"></div>
                         
@@ -496,7 +540,6 @@
                                 Pusat informasi ibadah, kajian, transparansi keuangan kas, serta layanan qurban dan sosial untuk warga RW 09 Cigending, Ujungberung, Bandung.
                             </p>
 
-                            <!-- BARIS JAM REAL-TIME & KOTAK CUACA TRANSPARAN -->
                             <div class="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                                 <div class="flex flex-col justify-center bg-black/25 px-4 py-4 rounded-2xl border border-white/15 backdrop-blur-sm">
                                     <div class="text-[11px] uppercase tracking-wider text-amber-300 font-bold mb-2.5">Waktu Real-Time:</div>
@@ -524,7 +567,6 @@
                         </div>
                     </div>
 
-                    <!-- COUNTDOWN RAMADHAN 1448H: FORMAT FLIP-BOOK MEMANJANG DI POSISI TENGAH -->
                     <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm hover-lift mb-8 text-center max-w-4xl mx-auto">
                         <span class="text-[11px] uppercase tracking-widest text-amber-800 font-bold bg-amber-100/80 px-3.5 py-1 rounded-full inline-flex items-center gap-1.5">
                             <i data-lucide="moon" class="w-3.5 h-3.5 icon-anim"></i> Menuju Bulan Suci Ramadhan 1448H
@@ -555,7 +597,6 @@
                         <p class="text-xs text-stone-500 font-medium mt-4">Estimasi 1 Ramadhan 1448H jatuh pada Senin, 8 Februari 2027</p>
                     </div>
 
-                    <!-- JADWAL IMSAKIYAH & SHOLAT + 2 PENANGGALAN FLIP-BOOK (MASEHI & HIJRIAH) -->
                     <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm mb-8 hover-lift">
                         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-stone-200 pb-5 mb-6">
                             <div>
@@ -563,7 +604,6 @@
                                 <p class="text-xs text-stone-500 mt-0.5">Kementerian Agama RI • Wilayah Cigending, Bandung</p>
                             </div>
 
-                            <!-- 2 PENANGGALAN BERGAYA FLIP-BOOK (MASEHI & HIJRIAH) -->
                             <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
                                 <div class="flex items-center gap-2.5 bg-[#F4F0E6] p-2 rounded-2xl border border-stone-300/80 flex-1 sm:flex-initial">
                                     <div class="flip-date-card w-11 h-12 rounded-xl flex flex-col items-center justify-center shrink-0">
@@ -600,7 +640,6 @@
                         </div>
                     </div>
 
-                    <!-- JADWAL IMAM & KHATIB JUM'AT -->
                     <div class="group bg-midnightTeal text-white p-6 sm:p-8 rounded-3xl shadow-lg mb-8 hover-lift border border-white/10">
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-xs font-bold uppercase tracking-wider text-amber-300 bg-white/10 px-3 py-1 rounded-full inline-flex items-center gap-1.5">
@@ -612,7 +651,6 @@
                         <p class="text-xs text-blue-200 mt-1">Muadzin: Sdr. Rahmat Hidayat • Waktu Dzuhur: 11:48 WIB</p>
                     </div>
 
-                    <!-- HEADLINE ARTIKEL -->
                     <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm hover-lift">
                         <div class="flex items-center justify-between mb-5">
                             <div>
@@ -757,98 +795,103 @@
                     </div>
                 `;
             }
-            // HALAMAN 1D: BAGAN STRUKTUR KEPENGURUSAN DKM LENGKAP
+            // HALAMAN 1D: SUSUNAN KEPENGURUSAN DALAM BENTUK TULISAN SIMETRIS LENGKAP
             else if (currentCategory === 'profil' && currentSubmenu === 'struktur') {
                 wrapper.innerHTML = `
-                    <div class="text-center max-w-2xl mx-auto mb-10">
-                        <span class="text-xs font-bold uppercase tracking-widest text-emeraldDeep">Periode Khidmat 2024 – 2029</span>
-                        <h2 class="font-heading text-3xl font-bold text-gray-900 mt-1">Bagan Struktur Kepengurusan DKM</h2>
-                        <p class="text-sm text-stone-600 mt-2">Susunan lengkap pengurus Dewan Kemakmuran Masjid Jami' Al-Barokah 09 RW 09 Cigending.</p>
-                    </div>
+                    <div class="max-w-4xl mx-auto">
+                        <!-- Header Dokumen Resmi Simetris -->
+                        <div class="text-center mb-8 bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm">
+                            <span class="inline-block text-[11px] font-bold uppercase tracking-widest text-emeraldDeep bg-emeraldLight px-3.5 py-1 rounded-full mb-2">
+                                Lampiran : 010/Al-Barokah/XII/2024
+                            </span>
+                            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mt-1">
+                                Susunan Kepengurusan DKM Al Barokah
+                            </h2>
+                            <p class="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-800 mt-1">
+                                Masa Khidmah 2024 – 2029
+                            </p>
+                            <p class="text-xs text-stone-500 mt-1">RT 03 RW 09 Kel. Cigending – Kec. Ujungberung – Kota Bandung</p>
+                        </div>
 
-                    <div class="bg-[#FCFBF7] p-6 sm:p-10 rounded-3xl border border-stone-300/80 shadow-sm overflow-x-auto">
-                        <div class="min-w-[820px] flex flex-col items-center">
-                            <div class="bg-[#F4F0E6] border-2 border-goldSoft/80 px-6 py-4 rounded-2xl text-center shadow-sm w-[460px] hover-lift">
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-900 bg-amber-100 px-3 py-0.5 rounded-full">Dewan Penasihat & Pembina</span>
-                                <h4 class="font-heading font-bold text-gray-900 mt-2 text-xs leading-relaxed">
-                                    Ketua RW 09 Cigending • Dr. H. Asep Hilman, M.Pd. • H. Aep Syaefulloh • H. Gatot, S.T. • Tokoh Masyarakat RW 09
-                                </h4>
+                        <!-- 1. Dewan Penasehat (Simetris Terpusat) -->
+                        <div class="bg-[#FCFBF7] p-6 rounded-3xl border-2 border-goldSoft/60 shadow-sm mb-6 text-center hover-lift">
+                            <span class="text-xs font-bold uppercase tracking-widest text-amber-900 bg-amber-100 px-3.5 py-1 rounded-full">
+                                Dewan Penasehat
+                            </span>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-4 max-w-2xl mx-auto text-sm font-semibold text-gray-800">
+                                <div class="bg-[#F4F0E6] py-2.5 px-4 rounded-xl border border-stone-200">Ketua RW 09 Cigending</div>
+                                <div class="bg-[#F4F0E6] py-2.5 px-4 rounded-xl border border-stone-200">DR. H. Asep Hilman, M.Pd</div>
+                                <div class="bg-[#F4F0E6] py-2.5 px-4 rounded-xl border border-stone-200">H. Aep Syaepulloh</div>
+                                <div class="bg-[#F4F0E6] py-2.5 px-4 rounded-xl border border-stone-200">H. Gatot ST</div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Pengurus Inti Harian (Ketua, Sekretaris 1 & 2, Bendahara 1 & 2) -->
+                        <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm mb-6 hover-lift">
+                            <div class="text-center mb-5">
+                                <span class="text-xs font-bold uppercase tracking-widest text-emeraldDeep bg-emeraldLight px-3.5 py-1 rounded-full">
+                                    Pengurus Inti Harian
+                                </span>
                             </div>
 
-                            <div class="w-0.5 h-6 bg-goldSoft"></div>
-
-                            <div class="bg-emeraldDeep text-white px-8 py-5 rounded-2xl text-center shadow-lg border-2 border-goldSoft w-80 hover-lift">
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-goldSoft">Ketua DKM</span>
-                                <h4 class="font-heading font-bold text-xl mt-0.5">H. Suwandi</h4>
+                            <!-- Ketua Utama -->
+                            <div class="bg-emeraldDeep text-white p-4 rounded-2xl text-center max-w-md mx-auto mb-5 shadow-md border border-goldSoft/50">
+                                <div class="text-[11px] uppercase tracking-widest text-goldSoft font-bold">Ketua DKM</div>
+                                <div class="font-heading text-xl font-extrabold mt-0.5">H. Suwandi</div>
                             </div>
 
-                            <div class="w-0.5 h-6 bg-goldSoft"></div>
-                            <div class="w-[70%] h-0.5 bg-goldSoft"></div>
+                            <!-- Grid Simetris Sekretaris & Bendahara -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-[#F4F0E6] p-4 rounded-2xl border border-stone-200 text-center">
+                                    <div class="text-[11px] font-bold uppercase tracking-wider text-emeraldDeep">Sekretaris</div>
+                                    <div class="font-bold text-gray-900 text-sm mt-1">H. Agus Gunadi Ismail, ST</div>
+                                </div>
+                                <div class="bg-[#F4F0E6] p-4 rounded-2xl border border-stone-200 text-center">
+                                    <div class="text-[11px] font-bold uppercase tracking-wider text-emeraldDeep">Bendahara</div>
+                                    <div class="font-bold text-gray-900 text-sm mt-1">Drs. Deni Iskandar</div>
+                                </div>
+                                <div class="bg-[#F4F0E6] p-4 rounded-2xl border border-stone-200 text-center">
+                                    <div class="text-[11px] font-bold uppercase tracking-wider text-emeraldDeep">Sekretaris 2</div>
+                                    <div class="font-bold text-gray-900 text-sm mt-1">Ir. Aang Utarya</div>
+                                </div>
+                                <div class="bg-[#F4F0E6] p-4 rounded-2xl border border-stone-200 text-center">
+                                    <div class="text-[11px] font-bold uppercase tracking-wider text-emeraldDeep">Bendahara 2</div>
+                                    <div class="font-bold text-gray-900 text-sm mt-1">Zulkarnaen</div>
+                                </div>
+                            </div>
+                        </div>
 
-                            <div class="grid grid-cols-2 gap-12 w-[85%] max-w-3xl mt-2">
-                                <div class="flex flex-col items-center">
-                                    <div class="w-0.5 h-4 bg-goldSoft"></div>
-                                    <div class="bg-emeraldLight border border-emeraldDeep/25 p-4 rounded-2xl text-center w-full hover-lift">
-                                        <span class="text-[10px] font-bold uppercase text-emeraldDeep bg-white px-2.5 py-0.5 rounded-full">Sekretaris</span>
-                                        <h5 class="font-heading font-bold text-gray-900 text-xs mt-2 leading-relaxed">
-                                            1. H. Agus Gunadi Ismail, S.T.<br>
-                                            2. Ir. Aang Sutarya
-                                        </h5>
+                        <!-- 3. Seksi-Seksi Kepengurusan (Daftar Tulisan 2 Kolom Simetris) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            ${seksiKepengurusan.map((seksi, idx) => {
+                                const isLastOdd = (idx === seksiKepengurusan.length - 1) && (seksiKepengurusan.length % 2 !== 0);
+                                return `
+                                    <div class="bg-[#FCFBF7] p-6 rounded-3xl border border-stone-300/80 shadow-sm hover-lift ${isLastOdd ? 'md:col-span-2 md:max-w-xl md:mx-auto md:w-full' : ''}">
+                                        <div class="flex items-center justify-center gap-2 pb-3 mb-4 border-b border-stone-200">
+                                            <i data-lucide="${seksi.icon}" class="w-4 h-4 text-emeraldDeep icon-anim"></i>
+                                            <h3 class="font-heading font-bold text-base text-emeraldDeep uppercase tracking-wide">${seksi.title}</h3>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-4 text-xs sm:text-sm text-gray-800">
+                                            <ul class="space-y-2">
+                                                ${seksi.kiri.map(nama => `
+                                                    <li class="flex items-start gap-2">
+                                                        <span class="text-goldSoft font-bold">•</span>
+                                                        <span class="font-medium">${nama}</span>
+                                                    </li>
+                                                `).join('')}
+                                            </ul>
+                                            <ul class="space-y-2 border-l border-stone-200 pl-4">
+                                                ${seksi.kanan.map(nama => `
+                                                    <li class="flex items-start gap-2">
+                                                        <span class="text-goldSoft font-bold">•</span>
+                                                        <span class="font-medium">${nama}</span>
+                                                    </li>
+                                                `).join('')}
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <div class="w-0.5 h-4 bg-goldSoft"></div>
-                                    <div class="bg-emeraldLight border border-emeraldDeep/25 p-4 rounded-2xl text-center w-full hover-lift">
-                                        <span class="text-[10px] font-bold uppercase text-emeraldDeep bg-white px-2.5 py-0.5 rounded-full">Bendahara</span>
-                                        <h5 class="font-heading font-bold text-gray-900 text-xs mt-2 leading-relaxed">
-                                            1. Drs. Deni Iskandar<br>
-                                            2. Zulkarnaen
-                                        </h5>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="w-0.5 h-6 bg-goldSoft mt-2"></div>
-                            <div class="w-[92%] h-0.5 bg-goldSoft"></div>
-
-                            <div class="grid grid-cols-3 gap-4 w-full mt-3">
-                                <div class="bg-[#F4F0E6] border border-stone-300 p-4 rounded-2xl text-center hover-lift">
-                                    <span class="text-[10px] font-bold uppercase text-white bg-emeraldDeep px-2.5 py-0.5 rounded-full">Seksi Dakwah & Ibadah</span>
-                                    <p class="text-xs text-stone-800 font-medium mt-2 leading-relaxed">
-                                        Kasno • Zumar • Tardi • Sulkhoni • Mastur • Robby
-                                    </p>
-                                </div>
-                                <div class="bg-[#F4F0E6] border border-stone-300 p-4 rounded-2xl text-center hover-lift">
-                                    <span class="text-[10px] font-bold uppercase text-white bg-emeraldDeep px-2.5 py-0.5 rounded-full">Seksi Pendidikan & TPA</span>
-                                    <p class="text-xs text-stone-800 font-medium mt-2 leading-relaxed">
-                                        Siti Parlina, S.Pd. • Teti Supriatin • Imam M.
-                                    </p>
-                                </div>
-                                <div class="bg-[#F4F0E6] border border-stone-300 p-4 rounded-2xl text-center hover-lift">
-                                    <span class="text-[10px] font-bold uppercase text-white bg-emeraldDeep px-2.5 py-0.5 rounded-full">Seksi Pemberdayaan Umat</span>
-                                    <p class="text-xs text-stone-800 font-medium mt-2 leading-relaxed">
-                                        Lingga, S.Sos. • Atep • Dedi • Imas • Nurdini
-                                    </p>
-                                </div>
-                                <div class="bg-[#F4F0E6] border border-stone-300 p-4 rounded-2xl text-center hover-lift">
-                                    <span class="text-[10px] font-bold uppercase text-white bg-emeraldDeep px-2.5 py-0.5 rounded-full">Seksi Humas & Publikasi</span>
-                                    <p class="text-xs text-stone-800 font-medium mt-2 leading-relaxed">
-                                        Ending • Gugum • Syamsu • Tono • Haryono • Zaenal
-                                    </p>
-                                </div>
-                                <div class="bg-[#F4F0E6] border border-stone-300 p-4 rounded-2xl text-center hover-lift">
-                                    <span class="text-[10px] font-bold uppercase text-white bg-emeraldDeep px-2.5 py-0.5 rounded-full">Seksi Sarpras & Pemeliharaan</span>
-                                    <p class="text-xs text-stone-800 font-medium mt-2 leading-relaxed">
-                                        Tim Kebersihan, Sound System & Pemeliharaan Bangunan Masjid
-                                    </p>
-                                </div>
-                                <div class="bg-amber-50 border border-amber-300 p-4 rounded-2xl text-center hover-lift">
-                                    <span class="text-[10px] font-bold uppercase text-amber-950 bg-goldSoft px-2.5 py-0.5 rounded-full">Remaja Masjid (RMJ Al-Barokah)</span>
-                                    <p class="text-xs text-stone-800 font-medium mt-2 leading-relaxed">
-                                        Pemuda & Pemudi RW 09 Cigending (@remajamasjid_albarokah2025)
-                                    </p>
-                                </div>
-                            </div>
+                                `;
+                            }).join('')}
                         </div>
                     </div>
                 `;
@@ -885,7 +928,7 @@
                     `
                 });
             }
-            // HALAMAN 2B: ZAKAT, INFAQ & SHODAQOH (DENGAN TOMBOL NIAT BISMILLAH)
+            // HALAMAN 2B: ZAKAT, INFAQ & SHODAQOH
             else if (currentCategory === 'layanan' && currentSubmenu === 'zakat') {
                 wrapper.innerHTML = buildLayananCard({
                     badge: 'UPZ Resmi & Donasi Umat',
