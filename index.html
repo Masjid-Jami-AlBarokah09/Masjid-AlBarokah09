@@ -311,9 +311,8 @@
         const SHEET_ID = '135ZDz6L9AKgm4znvvPPkJxCdtCjy_Qd8EBhEcAVv7D0';
         const SHEET_GID = '0';
 
-        // Data Keuangan & Mutasi dari Spreadsheet
+        // Data Infaq Pembangunan & Mutasi dari Spreadsheet
         let keuanganData = {
-            kasOperasional: 14850000,
             danaPembangunan: 0,
             totalPemasukan: 0,
             totalPengeluaran: 0,
@@ -358,7 +357,7 @@
                 activeSubClass: 'bg-midnightTeal text-white shadow-sm',
                 inactiveSubClass: 'text-stone-700 hover:bg-tealLight hover:text-midnightTeal',
                 submenus: [
-                    { id: 'kas', title: 'Rekening Donasi & Saldo Kas', icon: 'wallet' }
+                    { id: 'kas', title: 'Infaq Pembangunan & Rekening', icon: 'wallet' }
                 ]
             }
         };
@@ -464,7 +463,6 @@
                     const pengeluaran = parseNominalCell(row.c[2]);
                     const donasiBarang = row.c[4]?.v ? String(row.c[4].v) : '-';
 
-                    // Abaikan baris header jika terbaca sebagai baris data
                     if (tanggal.toLowerCase() === 'tanggal') return;
 
                     if (tanggal || pemasukan !== 0 || pengeluaran !== 0 || donasiBarang !== '-') {
@@ -479,7 +477,6 @@
                     }
                 });
 
-                // Otomatis hitung Total Saldo Pembangunan = Total Pemasukan - Total Pengeluaran
                 keuanganData.totalPemasukan = sumPemasukan;
                 keuanganData.totalPengeluaran = sumPengeluaran;
                 keuanganData.danaPembangunan = sumPemasukan - sumPengeluaran;
@@ -507,7 +504,7 @@
 
             if (pembEl) pembEl.textContent = formatRupiah(keuanganData.danaPembangunan);
             if (subPembEl) {
-                subPembEl.textContent = `Masuk: ${formatRupiah(keuanganData.totalPemasukan)} • Keluar: ${formatRupiah(keuanganData.totalPengeluaran)}`;
+                subPembEl.textContent = `Total Pemasukan: ${formatRupiah(keuanganData.totalPemasukan)} • Total Pengeluaran: ${formatRupiah(keuanganData.totalPengeluaran)}`;
             }
             if (statusEl) statusEl.textContent = keuanganData.lastSync;
 
@@ -653,7 +650,7 @@
                                 Assalamu'alaikum Selamat Datang di Portal Digital Masjid Jami' Al-Barokah 09
                             </h2>
                             <p class="text-emerald-100/90 text-sm sm:text-base leading-relaxed max-w-3xl">
-                                Pusat informasi ibadah, kajian, transparansi keuangan kas, serta layanan qurban dan sosial untuk warga RW 09 Cigending, Ujungberung, Bandung.
+                                Pusat informasi ibadah, kajian, transparansi dana pembangunan, serta layanan qurban dan sosial untuk warga RW 09 Cigending, Ujungberung, Bandung.
                             </p>
 
                             <div class="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -826,7 +823,7 @@
                             <ul class="mt-3 space-y-2.5 text-sm text-stone-700">
                                 <li class="flex items-start gap-2"><span class="text-emeraldDeep font-bold">1.</span> Menyelenggarakan peribadatan berjamaah yang khusyuk dan nyaman.</li>
                                 <li class="flex items-start gap-2"><span class="text-emeraldDeep font-bold">2.</span> Mengembangkan kajian keislaman rutin dan pembinaan generasi muda (Remaja Masjid).</li>
-                                <li class="flex items-start gap-2"><span class="text-emeraldDeep font-bold">3.</span> Mengelola dana ZIS, Qurban, dan kas masjid secara akuntabel dan terbuka.</li>
+                                <li class="flex items-start gap-2"><span class="text-emeraldDeep font-bold">3.</span> Mengelola dana ZIS, Qurban, dan pembangunan masjid secara akuntabel dan terbuka.</li>
                             </ul>
                         </div>
                     </div>
@@ -1012,7 +1009,7 @@
                         '<b>Zakat Maal & Profesi:</b> Dihitung 2,5% dari harta yang mencapai nisab',
                         '<b>Infaq Operasional Masjid:</b> Mendukung listrik, kebersihan & kegiatan ibadah',
                         '<b>Shodaqoh Yatim & Dhuafa:</b> Santunan rutin bagi warga yang membutuhkan',
-                        'Bukti konfirmasi resmi & transparansi laporan kas masjid'
+                        'Bukti konfirmasi resmi & transparansi laporan pembangunan masjid'
                     ],
                     primaryBtn: `
                         <button onclick="switchPage('informasi', 'kas')" 
@@ -1138,31 +1135,26 @@
                 });
             }
 
-            // HALAMAN 3: INFORMASI & KAS (OTOMATIS SINKRON DENGAN KOLOM SPREADSHEET INFAQ PEMBANGUNAN)
+            // HALAMAN 3: INFORMASI & INFAQ PEMBANGUNAN (OTOMATIS SINKRON DENGAN GOOGLE SHEETS)
             else if (currentCategory === 'informasi' && currentSubmenu === 'kas') {
                 wrapper.innerHTML = `
                     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
                         <div>
-                            <span class="text-xs font-bold uppercase tracking-widest text-midnightTeal">Transparansi Keuangan</span>
-                            <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Rekening Donasi & Saldo Kas</h2>
+                            <span class="text-xs font-bold uppercase tracking-widest text-midnightTeal">Transparansi Dana Pembangunan</span>
+                            <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Infaq Pembangunan & Rekening Donasi</h2>
                             <p id="sheet-sync-status" class="text-xs text-stone-500 mt-1">${keuanganData.lastSync}</p>
                         </div>
                         <button onclick="fetchKeuanganFromSheet(); showToast('Menyinkronkan data dari Google Sheets...');" class="group self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-stone-300 text-xs font-bold text-midnightTeal hover:bg-tealLight transition shadow-sm">
                             <i data-lucide="refresh-cw" class="w-3.5 h-3.5 icon-anim"></i>
-                            <span>Segarkan Saldo</span>
+                            <span>Segarkan Data</span>
                         </button>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div class="bg-midnightTeal text-white p-6 rounded-3xl shadow-md hover-lift border border-white/10">
-                            <span class="text-xs text-blue-200 uppercase font-semibold">Saldo Kas Operasional</span>
-                            <p id="val-kas-operasional" class="font-heading text-3xl font-bold mt-1">${formatRupiah(keuanganData.kasOperasional)}</p>
-                        </div>
-                        <div class="bg-[#FCFBF7] p-6 rounded-3xl border border-stone-300/80 shadow-sm hover-lift">
-                            <span class="text-xs text-stone-500 uppercase font-semibold">Dana Pembangunan Masjid (Otomatis Sheets)</span>
-                            <p id="val-dana-pembangunan" class="font-heading text-3xl font-bold text-gray-900 mt-1">${formatRupiah(keuanganData.danaPembangunan)}</p>
-                            <p id="sub-dana-pembangunan" class="text-xs text-stone-500 mt-1.5 font-medium">Masuk: ${formatRupiah(keuanganData.totalPemasukan)} • Keluar: ${formatRupiah(keuanganData.totalPengeluaran)}</p>
-                        </div>
+                    <!-- KARTU UTAMA DANA PEMBANGUNAN MASJID -->
+                    <div class="bg-midnightTeal text-white p-7 sm:p-9 rounded-3xl shadow-lg hover-lift border border-white/10 max-w-2xl mx-auto mb-8 text-center">
+                        <span class="text-xs text-amber-300 uppercase tracking-widest font-bold bg-white/10 px-3.5 py-1 rounded-full">Saldo Dana Pembangunan Masjid</span>
+                        <p id="val-dana-pembangunan" class="font-heading text-3xl sm:text-5xl font-extrabold text-white mt-4 tracking-tight">${formatRupiah(keuanganData.danaPembangunan)}</p>
+                        <p id="sub-dana-pembangunan" class="text-xs sm:text-sm text-blue-200 mt-3 font-medium">Total Pemasukan: ${formatRupiah(keuanganData.totalPemasukan)} • Total Pengeluaran: ${formatRupiah(keuanganData.totalPengeluaran)}</p>
                     </div>
 
                     <div class="bg-tealLight/90 p-8 rounded-3xl border border-midnightTeal/20 space-y-4 max-w-xl mx-auto text-center hover-lift mb-10">
@@ -1177,7 +1169,7 @@
                                 <i data-lucide="copy" class="w-4 h-4 text-goldSoft icon-anim"></i>
                                 <span>Salin Nomor Rekening</span>
                             </button>
-                            <a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20saya%20ingin%20konfirmasi%20transfer%20donasi/tabungan." target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emeraldDeep hover:bg-emerald-950 text-white text-xs font-bold transition hover-lift">
+                            <a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20saya%20ingin%20konfirmasi%20transfer%20infaq%20pembangunan%20masjid." target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emeraldDeep hover:bg-emerald-950 text-white text-xs font-bold transition hover-lift">
                                 <i data-lucide="message-circle" class="w-4 h-4 text-goldSoft icon-anim"></i>
                                 <span>Konfirmasi via WhatsApp</span>
                             </a>
