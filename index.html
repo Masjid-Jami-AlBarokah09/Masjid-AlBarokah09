@@ -362,49 +362,78 @@
             { bulan: 'Oktober 2026', pekan: 'Pekan ke-3', sumber: 'Donatur Hamba Allah & Majelis Taklim', totalKg: 115, distribusi: '23 Keluarga Mustahik' }
         ];
 
-        // Data Lengkap Susunan Kepengurusan DKM Al Barokah Masa Khidmah 2024–2029
-        const seksiKepengurusan = [
+        // Data Susunan Kepengurusan Persis Sesuai Gambar SK Lampiran 010/Al-Barokah/XII/2024
+        const strukturRowsSK = [
             {
-                title: 'Seksi Dakwah',
-                icon: 'book-open',
-                kiri: ['Kasno', 'Zumar', 'Tardi Nurdiansyah'],
-                kanan: ['Sulkhoni', 'Mastur', 'Robby Ilman']
+                jabatan: 'DEWAN PENASEHAT',
+                isBoldHeader: true,
+                col1: [
+                    'Ketua RW 09 Cigending',
+                    'DR. H. Asep Hilman, M.Pd',
+                    'H. Aep Syaepulloh',
+                    'H. Gatot st'
+                ],
+                col2: []
             },
             {
-                title: 'Seksi Pendidikan',
-                icon: 'graduation-cap',
-                kiri: ['Siti Parlina, S.Pd', 'Teti Supriatin, S.Pd'],
-                kanan: ['Imam Mauludin']
+                jabatan: 'Ketua',
+                col1: ['H. Suwandi'],
+                col2: []
             },
             {
-                title: 'Seksi Pemberdayaan',
-                icon: 'hand-helping',
-                kiri: ['Lingga, S.Sos', 'Atep Permana', 'Dedi Cahyana'],
-                kanan: ['Imas Suciawati', 'Nurdini Homsah']
+                jabatan: 'Sekretaris',
+                col1: ['H. Agus Gunadi Ismail, ST'],
+                col2: []
             },
             {
-                title: 'Seksi Humas',
-                icon: 'megaphone',
-                kiri: ['Ending', 'Gugum Gumilar', 'Syamsu'],
-                kanan: ['Tono Haryanto', 'Haryono', 'Zaenal Mutaqim']
+                jabatan: 'Sekretaris 2',
+                col1: ['Ir Aang Utarya'],
+                col2: []
             },
             {
-                title: 'Seksi Kerumahtanggaan',
-                icon: 'home',
-                kiri: ['Engkos Kosidin', 'Suwarto', 'Sarjono'],
-                kanan: ['Sugito', 'Budianto']
+                jabatan: 'Bendahara',
+                col1: ['Drs. Deni Iskandar'],
+                col2: []
             },
             {
-                title: 'Seksi Muslimat',
-                icon: 'heart',
-                kiri: ['Rika Nisa', 'Ning Hartati', 'Tarmini', 'Yeuis Purnamawati'],
-                kanan: ['Surip Romlah', 'Titin Aisah', 'Siti Warliyah', 'Aisyah']
+                jabatan: 'Bendahara 2',
+                col1: ['Zulkarnaen'],
+                col2: []
             },
             {
-                title: 'Seksi Remaja',
-                icon: 'sparkles',
-                kiri: ['Firdaus', 'Hisyam Nur Chairuddin', 'Sibab'],
-                kanan: ['Radella Bilqisthi Gunawan', 'Najmi Tsaqib Nurhasani']
+                jabatan: 'Seksi Dakwah',
+                col1: ['Kasno', 'Zumar', 'Tardi Nurdiansyah'],
+                col2: ['Sulkhoni', 'Mastur', 'Robby Ilman']
+            },
+            {
+                jabatan: 'Seksi Pendidikan',
+                col1: ['Siti Parlina, S.Pd', 'Teti Supriatin, S.Pd'],
+                col2: ['Imam Mauludin']
+            },
+            {
+                jabatan: 'Seksi Pemberdayaan',
+                col1: ['Lingga, S.Sos', 'Atep Permana', 'Dedi Cahyana'],
+                col2: ['Imas Suciawati', 'Nurdini Homsah']
+            },
+            {
+                jabatan: 'Seksi Humas',
+                col1: ['Ending', 'Gugum Gumilar', 'Syamsu'],
+                col2: ['Tono Haryanto', 'Haryono', 'Zaenal Mutaqim']
+            },
+            {
+                jabatan: 'Seksi Kerumahtanggaan',
+                col1: ['Engkos Kosidin', 'Suwarto', 'Sarjono'],
+                col2: ['Sugito', 'Budianto']
+            },
+            {
+                jabatan: 'Seksi Muslimat',
+                col1: ['Rika Nisa', 'Ning Hartati', 'Tarmini', 'Yeuis Purnamawati'],
+                col2: ['Surip Romlah', 'Titin Aisah', 'Siti Warliyah', 'Aisyah']
+            },
+            {
+                jabatan: 'Seksi Remaja',
+                col1: ['Firdaus', 'Hisyam Nur Chairuddin', 'Sibab'],
+                col2: ['Radella Bilqisthi Gunawan', 'Najmi Tsaqib Nurhasani']
             }
         ];
 
@@ -736,7 +765,7 @@
                                 <div class="curtain-inner">
                                     <div class="pt-3 border-t border-emeraldDeep/15 text-xs text-stone-700 space-y-1.5 bg-emeraldLight/50 p-3.5 rounded-2xl">
                                         <p class="font-bold text-emeraldDeep">📖 Detail & Materi:</p>
-                                        <p>Bimbingan talaqqi surah Al-Fatihah dan Juz Amma bersama Ustadzah Siti Parlina, S.Pd. Mulai pukul 13.00 – 14.30 WIB di ruang utama masjid.</p>
+                                        <p>Bimbingan talaqqi surah Al-Fatihah dan Juz Amma bersama Siti Parlina, S.Pd. Mulai pukul 13.00 – 14.30 WIB di ruang utama masjid.</p>
                                     </div>
                                 </div>
                             </div>
@@ -795,103 +824,62 @@
                     </div>
                 `;
             }
-            // HALAMAN 1D: SUSUNAN KEPENGURUSAN DALAM BENTUK TULISAN SIMETRIS LENGKAP
+            // HALAMAN 1D: SUSUNAN KEPENGURUSAN PERSIS FORMAT DOKUMEN SK LAMPIRAN 010/Al-Barokah/XII/2024
             else if (currentCategory === 'profil' && currentSubmenu === 'struktur') {
                 wrapper.innerHTML = `
                     <div class="max-w-4xl mx-auto">
-                        <!-- Header Dokumen Resmi Simetris -->
-                        <div class="text-center mb-8 bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm">
-                            <span class="inline-block text-[11px] font-bold uppercase tracking-widest text-emeraldDeep bg-emeraldLight px-3.5 py-1 rounded-full mb-2">
-                                Lampiran : 010/Al-Barokah/XII/2024
-                            </span>
-                            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mt-1">
-                                Susunan Kepengurusan DKM Al Barokah
-                            </h2>
-                            <p class="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-800 mt-1">
-                                Masa Khidmah 2024 – 2029
-                            </p>
-                            <p class="text-xs text-stone-500 mt-1">RT 03 RW 09 Kel. Cigending – Kec. Ujungberung – Kota Bandung</p>
-                        </div>
-
-                        <!-- 1. Dewan Penasehat (Simetris Terpusat) -->
-                        <div class="bg-[#FCFBF7] p-6 rounded-3xl border-2 border-goldSoft/60 shadow-sm mb-6 text-center hover-lift">
-                            <span class="text-xs font-bold uppercase tracking-widest text-amber-900 bg-amber-100 px-3.5 py-1 rounded-full">
-                                Dewan Penasehat
-                            </span>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-4 max-w-2xl mx-auto text-sm font-semibold text-gray-800">
-                                <div class="bg-[#F4F0E6] py-2.5 px-4 rounded-xl border border-stone-200">Ketua RW 09 Cigending</div>
-                                <div class="bg-[#F4F0E6] py-2.5 px-4 rounded-xl border border-stone-200">DR. H. Asep Hilman, M.Pd</div>
-                                <div class="bg-[#F4F0E6] py-2.5 px-4 rounded-xl border border-stone-200">H. Aep Syaepulloh</div>
-                                <div class="bg-[#F4F0E6] py-2.5 px-4 rounded-xl border border-stone-200">H. Gatot ST</div>
-                            </div>
-                        </div>
-
-                        <!-- 2. Pengurus Inti Harian (Ketua, Sekretaris 1 & 2, Bendahara 1 & 2) -->
-                        <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm mb-6 hover-lift">
-                            <div class="text-center mb-5">
-                                <span class="text-xs font-bold uppercase tracking-widest text-emeraldDeep bg-emeraldLight px-3.5 py-1 rounded-full">
-                                    Pengurus Inti Harian
-                                </span>
+                        <div class="bg-[#FCFBF7] p-6 sm:p-10 rounded-3xl border-2 border-emeraldDeep/20 shadow-md">
+                            <!-- Kop Surat / Judul SK Simetris -->
+                            <div class="text-center border-b-2 border-stone-800 pb-5 mb-6">
+                                <h2 class="font-heading text-xl sm:text-2xl font-extrabold tracking-wide text-gray-900 uppercase">
+                                    DEWAN KEMAKMURAN MASJID AL BAROKAH
+                                </h2>
+                                <p class="text-xs sm:text-sm text-stone-600 font-medium mt-1">
+                                    RT 03 RW 09 Kel. Cigending – Kec. Ujungberung – Kota Bandung
+                                </p>
+                                <div class="mt-4 inline-block bg-[#F4F0E6] px-4 py-1.5 rounded-xl border border-stone-300 text-xs font-mono text-stone-700">
+                                    Lampiran : 010/Al-Barokah/XII/2024
+                                </div>
+                                <h3 class="font-heading text-sm sm:text-base font-extrabold text-emeraldDeep uppercase tracking-wider mt-4">
+                                    SUSUNAN KEPENGURUSAN DKM AL BAROKAH MASA KHIDMAH 2024–2029
+                                </h3>
                             </div>
 
-                            <!-- Ketua Utama -->
-                            <div class="bg-emeraldDeep text-white p-4 rounded-2xl text-center max-w-md mx-auto mb-5 shadow-md border border-goldSoft/50">
-                                <div class="text-[11px] uppercase tracking-widest text-goldSoft font-bold">Ketua DKM</div>
-                                <div class="font-heading text-xl font-extrabold mt-0.5">H. Suwandi</div>
-                            </div>
+                            <!-- Baris Susunan Jabatan & Nama Pengurus Simetris -->
+                            <div class="divide-y divide-stone-200/80">
+                                ${strukturRowsSK.map((item, idx) => {
+                                    const isBPHDivider = idx === 5;
+                                    return `
+                                        <div class="py-3.5 ${isBPHDivider ? 'pb-6 mb-2 border-b-2 border-stone-300' : ''} grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 items-start hover:bg-[#F4F0E6]/50 px-3 rounded-xl transition">
+                                            <!-- Kolom Kiri: Nama Jabatan / Seksi -->
+                                            <div class="md:col-span-4 flex items-center justify-between md:pr-2">
+                                                <span class="font-heading font-bold text-sm ${item.isBoldHeader ? 'text-emeraldDeep uppercase tracking-wide' : 'text-gray-900'}">
+                                                    ${item.jabatan}
+                                                </span>
+                                                <span class="hidden md:inline font-bold text-stone-500">:</span>
+                                            </div>
 
-                            <!-- Grid Simetris Sekretaris & Bendahara -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div class="bg-[#F4F0E6] p-4 rounded-2xl border border-stone-200 text-center">
-                                    <div class="text-[11px] font-bold uppercase tracking-wider text-emeraldDeep">Sekretaris</div>
-                                    <div class="font-bold text-gray-900 text-sm mt-1">H. Agus Gunadi Ismail, ST</div>
-                                </div>
-                                <div class="bg-[#F4F0E6] p-4 rounded-2xl border border-stone-200 text-center">
-                                    <div class="text-[11px] font-bold uppercase tracking-wider text-emeraldDeep">Bendahara</div>
-                                    <div class="font-bold text-gray-900 text-sm mt-1">Drs. Deni Iskandar</div>
-                                </div>
-                                <div class="bg-[#F4F0E6] p-4 rounded-2xl border border-stone-200 text-center">
-                                    <div class="text-[11px] font-bold uppercase tracking-wider text-emeraldDeep">Sekretaris 2</div>
-                                    <div class="font-bold text-gray-900 text-sm mt-1">Ir. Aang Utarya</div>
-                                </div>
-                                <div class="bg-[#F4F0E6] p-4 rounded-2xl border border-stone-200 text-center">
-                                    <div class="text-[11px] font-bold uppercase tracking-wider text-emeraldDeep">Bendahara 2</div>
-                                    <div class="font-bold text-gray-900 text-sm mt-1">Zulkarnaen</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 3. Seksi-Seksi Kepengurusan (Daftar Tulisan 2 Kolom Simetris) -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            ${seksiKepengurusan.map((seksi, idx) => {
-                                const isLastOdd = (idx === seksiKepengurusan.length - 1) && (seksiKepengurusan.length % 2 !== 0);
-                                return `
-                                    <div class="bg-[#FCFBF7] p-6 rounded-3xl border border-stone-300/80 shadow-sm hover-lift ${isLastOdd ? 'md:col-span-2 md:max-w-xl md:mx-auto md:w-full' : ''}">
-                                        <div class="flex items-center justify-center gap-2 pb-3 mb-4 border-b border-stone-200">
-                                            <i data-lucide="${seksi.icon}" class="w-4 h-4 text-emeraldDeep icon-anim"></i>
-                                            <h3 class="font-heading font-bold text-base text-emeraldDeep uppercase tracking-wide">${seksi.title}</h3>
+                                            <!-- Kolom Kanan: Daftar Nama (1 Kolom untuk Inti, 2 Kolom Sejajar untuk Seksi) -->
+                                            <div class="md:col-span-8">
+                                                ${item.col2.length > 0 ? `
+                                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 text-sm text-gray-800">
+                                                        <div class="space-y-1">
+                                                            ${item.col1.map(nama => `<div class="font-medium">${nama}</div>`).join('')}
+                                                        </div>
+                                                        <div class="space-y-1">
+                                                            ${item.col2.map(nama => `<div class="font-medium">${nama}</div>`).join('')}
+                                                        </div>
+                                                    </div>
+                                                ` : `
+                                                    <div class="space-y-1 text-sm text-gray-800">
+                                                        ${item.col1.map(nama => `<div class="font-semibold">${nama}</div>`).join('')}
+                                                    </div>
+                                                `}
+                                            </div>
                                         </div>
-                                        <div class="grid grid-cols-2 gap-4 text-xs sm:text-sm text-gray-800">
-                                            <ul class="space-y-2">
-                                                ${seksi.kiri.map(nama => `
-                                                    <li class="flex items-start gap-2">
-                                                        <span class="text-goldSoft font-bold">•</span>
-                                                        <span class="font-medium">${nama}</span>
-                                                    </li>
-                                                `).join('')}
-                                            </ul>
-                                            <ul class="space-y-2 border-l border-stone-200 pl-4">
-                                                ${seksi.kanan.map(nama => `
-                                                    <li class="flex items-start gap-2">
-                                                        <span class="text-goldSoft font-bold">•</span>
-                                                        <span class="font-medium">${nama}</span>
-                                                    </li>
-                                                `).join('')}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                `;
-                            }).join('')}
+                                    `;
+                                }).join('')}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1001,7 +989,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <p class="text-[11px] text-stone-500 mt-3">* Data diperbarui secara berkala oleh Seksi Pemberdayaan Umat DKM Masjid Jami' Al-Barokah 09.</p>
+                        <p class="text-[11px] text-stone-500 mt-3">* Data diperbarui secara berkala oleh Seksi Pemberdayaan DKM Masjid Jami' Al-Barokah 09.</p>
                     </div>
                 `;
 
@@ -1043,7 +1031,7 @@
                     subtitle: "Berbagi kebahagiaan setiap hari Jum'at melalui pembagian paket nasi box, minuman segar, dan santunan ba'da Sholat Jum'at.",
                     emoji: '🍱',
                     cardTitle: "Layanan Donasi Jum'at Berkah",
-                    cardSubtitle: "Dikelola bersama DKM dan Remaja Masjid Al-Barokah 09",
+                    cardSubtitle: "Dikelola bersama DKM dan Seksi Remaja Masjid Al-Barokah 09",
                     bullets: [
                         '<b>Paket Nasi Box Jum\'at:</b> Rp 15.000 – Rp 20.000 per porsi',
                         '<b>Sedekah Takjil & Minuman:</b> Disediakan di pelataran masjid untuk jamaah',
