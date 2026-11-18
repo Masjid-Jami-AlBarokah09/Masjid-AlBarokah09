@@ -307,15 +307,18 @@
     <div id="toast-container" class="fixed bottom-20 md:bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
     <script>
-        // Konfigurasi Google Spreadsheet Keuangan (Otomatis Update)
+        // Konfigurasi Google Spreadsheet Infaq Pembangunan
         const SHEET_ID = '135ZDz6L9AKgm4znvvPPkJxCdtCjy_Qd8EBhEcAVv7D0';
         const SHEET_GID = '0';
 
-        // Default nilai awal sebelum/jika spreadsheet gagal dimuat
+        // Data Keuangan & Mutasi dari Spreadsheet
         let keuanganData = {
             kasOperasional: 14850000,
-            danaPembangunan: 45200000,
-            lastSync: 'Memuat data terbaru...'
+            danaPembangunan: 0,
+            totalPemasukan: 0,
+            totalPengeluaran: 0,
+            mutasiPembangunan: [],
+            lastSync: 'Memuat data dari Google Sheets...'
         };
 
         const menuConfig = {
@@ -425,54 +428,101 @@
         let currentSubmenu = 'beranda';
 
         function formatRupiah(angka) {
-            return 'Rp ' + Number(angka || 0).toLocaleString('id-ID');
+            const num = Number(angka || 0);
+            const prefix = num < 0 ? '-Rp ' : 'Rp ';
+            return prefix + Math.abs(num).toLocaleString('id-ID');
         }
 
-        // Fungsi Mengambil Data Saldo Otomatis dari Google Spreadsheet
+        function parseNominalCell(cell) {
+            if (!cell || cell.v === null || cell.v === undefined) return 0;
+            if (typeof cell.v === 'number') return cell.v;
+            const cleaned = String(cell.v).replace(/[^0-9-]/g, '');
+            return Number(cleaned) || 0;
+        }
+
+        // Ambil Data Infaq Pembangunan dari Kolom A (Tanggal), B (Pemasukan), C (Pengeluaran), D (Total), E (Donasi)
         async function fetchKeuanganFromSheet() {
             const statusEl = document.getElementById('sheet-sync-status');
             if (statusEl) statusEl.textContent = 'Menyinkronkan data dari Google Sheets...';
 
             try {
-                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}`;
+                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}&_=${Date.now()}`;
                 const response = await fetch(url);
                 const text = await response.text();
                 
-                // Ekstrak JSON dari pembungkus google.visualization.Query.setResponse(...)
                 const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
                 const json = JSON.parse(jsonString);
-                const rows = json.table.rows;
+                const rows = json.table.rows || [];
 
-                // Cari baris berdasarkan kata kunci atau posisi baris
-                rows.forEach((row, index) => {
-                    const label = row.c[0]?.v ? String(row.c[0].v).toLowerCase() : '';
-                    const rawVal = row.c[1]?.v;
-                    const numVal = typeof rawVal === 'number'
-                        ? rawVal
-                        : Number(String(rawVal || '').replace(/[^0-9]/g, ''));
+                let sumPemasukan = 0;
+                let sumPengeluaran = 0;
+                const mutasiList = [];
 
-                    if (!isNaN(numVal) && numVal > 0) {
-                        if (label.includes('operasional') || (index === 0 && !label.includes('pembangunan'))) {
-                            keuanganData.kasOperasional = numVal;
-                        } else if (label.includes('pembangunan') || index === 1) {
-                            keuanganData.danaPembangunan = numVal;
-                        }
+                rows.forEach((row) => {
+                    const tanggal = row.c[0]?.f || (row.c[0]?.v ? String(row.c[0].v) : '');
+                    const pemasukan = parseNominalCell(row.c[1]);
+                    const pengeluaran = parseNominalCell(row.c[2]);
+                    const donasiBarang = row.c[4]?.v ? String(row.c[4].v) : '-';
+
+                    // Abaikan baris header jika terbaca sebagai baris data
+                    if (tanggal.toLowerCase() === 'tanggal') return;
+
+                    if (tanggal || pemasukan !== 0 || pengeluaran !== 0 || donasiBarang !== '-') {
+                        sumPemasukan += pemasukan;
+                        sumPengeluaran += pengeluaran;
+                        mutasiList.push({
+                            tanggal: tanggal || '-',
+                            pemasukan,
+                            pengeluaran,
+                            donasi: donasiBarang
+                        });
                     }
                 });
 
-                const nowStr = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-                keuanganData.lastSync = `Tersinkron otomatis dengan Google Sheets (Pukul ${nowStr} WIB)`;
+                // Otomatis hitung Total Saldo Pembangunan = Total Pemasukan - Total Pengeluaran
+                keuanganData.totalPemasukan = sumPemasukan;
+                keuanganData.totalPengeluaran = sumPengeluaran;
+                keuanganData.danaPembangunan = sumPemasukan - sumPengeluaran;
+                keuanganData.mutasiPembangunan = mutasiList;
 
-                const kasEl = document.getElementById('val-kas-operasional');
-                const pembEl = document.getElementById('val-dana-pembangunan');
-                if (kasEl) kasEl.textContent = formatRupiah(keuanganData.kasOperasional);
-                if (pembEl) pembEl.textContent = formatRupiah(keuanganData.danaPembangunan);
-                if (statusEl) statusEl.textContent = keuanganData.lastSync;
+                const nowStr = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                keuanganData.lastSync = `Tersinkron otomatis dengan Google Sheets (Update ${nowStr} WIB)`;
+
+                if (currentCategory === 'informasi' && currentSubmenu === 'kas') {
+                    updateKasUI();
+                }
 
             } catch (error) {
                 console.error('Gagal mengambil data Spreadsheet:', error);
-                if (statusEl) {
-                    statusEl.textContent = 'Pastikan akses Spreadsheet diset ke "Siapa saja yang memiliki link (Pelihat)".';
+                keuanganData.lastSync = 'Gagal menyinkronkan: Pastikan akses Spreadsheet diset ke "Siapa saja yang memiliki link (Pelihat)".';
+                if (statusEl) statusEl.textContent = keuanganData.lastSync;
+            }
+        }
+
+        function updateKasUI() {
+            const pembEl = document.getElementById('val-dana-pembangunan');
+            const subPembEl = document.getElementById('sub-dana-pembangunan');
+            const statusEl = document.getElementById('sheet-sync-status');
+            const tbodyEl = document.getElementById('mutasi-pembangunan-tbody');
+
+            if (pembEl) pembEl.textContent = formatRupiah(keuanganData.danaPembangunan);
+            if (subPembEl) {
+                subPembEl.textContent = `Masuk: ${formatRupiah(keuanganData.totalPemasukan)} • Keluar: ${formatRupiah(keuanganData.totalPengeluaran)}`;
+            }
+            if (statusEl) statusEl.textContent = keuanganData.lastSync;
+
+            if (tbodyEl) {
+                if (keuanganData.mutasiPembangunan.length === 0) {
+                    tbodyEl.innerHTML = `<tr><td colspan="4" class="py-6 px-4 text-center text-stone-500">Belum ada data atau Spreadsheet belum diatur ke akses publik (Siapa saja yang memiliki link).</td></tr>`;
+                } else {
+                    tbodyEl.innerHTML = keuanganData.mutasiPembangunan.map(item => `
+                        <tr class="hover:bg-tealLight/40 transition">
+                            <td class="py-3 px-4 font-semibold text-gray-900 whitespace-nowrap">${item.tanggal}</td>
+                            <td class="py-3 px-4 font-mono font-bold text-emeraldDeep text-right whitespace-nowrap">${item.pemasukan ? formatRupiah(item.pemasukan) : '-'}</td>
+                            <td class="py-3 px-4 font-mono font-bold text-rose-700 text-right whitespace-nowrap">${item.pengeluaran ? formatRupiah(item.pengeluaran) : '-'}</td>
+                            <td class="py-3 px-4 text-stone-700">${item.donasi}</td>
+                        </tr>
+                    `).join('');
                 }
             }
         }
@@ -1088,7 +1138,7 @@
                 });
             }
 
-            // HALAMAN 3: INFORMASI & KAS (OTOMATIS SINKRON DENGAN GOOGLE SPREADSHEET)
+            // HALAMAN 3: INFORMASI & KAS (OTOMATIS SINKRON DENGAN KOLOM SPREADSHEET INFAQ PEMBANGUNAN)
             else if (currentCategory === 'informasi' && currentSubmenu === 'kas') {
                 wrapper.innerHTML = `
                     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
@@ -1097,7 +1147,7 @@
                             <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Rekening Donasi & Saldo Kas</h2>
                             <p id="sheet-sync-status" class="text-xs text-stone-500 mt-1">${keuanganData.lastSync}</p>
                         </div>
-                        <button onclick="fetchKeuanganFromSheet(); showToast('Memperbarui data dari Google Sheets...');" class="group self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-stone-300 text-xs font-bold text-midnightTeal hover:bg-tealLight transition shadow-sm">
+                        <button onclick="fetchKeuanganFromSheet(); showToast('Menyinkronkan data dari Google Sheets...');" class="group self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-stone-300 text-xs font-bold text-midnightTeal hover:bg-tealLight transition shadow-sm">
                             <i data-lucide="refresh-cw" class="w-3.5 h-3.5 icon-anim"></i>
                             <span>Segarkan Saldo</span>
                         </button>
@@ -1109,12 +1159,13 @@
                             <p id="val-kas-operasional" class="font-heading text-3xl font-bold mt-1">${formatRupiah(keuanganData.kasOperasional)}</p>
                         </div>
                         <div class="bg-[#FCFBF7] p-6 rounded-3xl border border-stone-300/80 shadow-sm hover-lift">
-                            <span class="text-xs text-stone-500 uppercase font-semibold">Dana Pembangunan Masjid</span>
+                            <span class="text-xs text-stone-500 uppercase font-semibold">Dana Pembangunan Masjid (Otomatis Sheets)</span>
                             <p id="val-dana-pembangunan" class="font-heading text-3xl font-bold text-gray-900 mt-1">${formatRupiah(keuanganData.danaPembangunan)}</p>
+                            <p id="sub-dana-pembangunan" class="text-xs text-stone-500 mt-1.5 font-medium">Masuk: ${formatRupiah(keuanganData.totalPemasukan)} • Keluar: ${formatRupiah(keuanganData.totalPengeluaran)}</p>
                         </div>
                     </div>
 
-                    <div class="bg-tealLight/90 p-8 rounded-3xl border border-midnightTeal/20 space-y-4 max-w-xl mx-auto text-center hover-lift">
+                    <div class="bg-tealLight/90 p-8 rounded-3xl border border-midnightTeal/20 space-y-4 max-w-xl mx-auto text-center hover-lift mb-10">
                         <h3 class="font-heading font-bold text-lg text-midnightTeal">Rekening Resmi Masjid Al-Barokah 09</h3>
                         <div class="bg-[#FCFBF7] p-5 rounded-2xl border border-stone-300/80 shadow-sm">
                             <span class="text-xs font-bold text-teal-800 bg-teal-100 px-3 py-1 rounded-full">Bank Syariah Indonesia (BSI)</span>
@@ -1132,6 +1183,29 @@
                             </a>
                         </div>
                     </div>
+
+                    <!-- TABEL RINCIAN MUTASI INFAQ PEMBANGUNAN DARI GOOGLE SHEETS -->
+                    <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm hover-lift">
+                        <div class="mb-5 pb-4 border-b border-stone-200">
+                            <span class="text-xs font-bold uppercase tracking-widest text-midnightTeal">Laporan Real-Time Spreadsheet</span>
+                            <h3 class="font-heading text-xl font-bold text-gray-900 mt-0.5">Rincian Mutasi & Donasi Material Pembangunan</h3>
+                        </div>
+                        <div class="overflow-x-auto rounded-2xl border border-stone-200">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-[#EDF2F4] text-midnightTeal text-xs uppercase tracking-wider border-b border-stone-200">
+                                        <th class="py-3.5 px-4 font-bold">Tanggal</th>
+                                        <th class="py-3.5 px-4 font-bold text-right">Pemasukan</th>
+                                        <th class="py-3.5 px-4 font-bold text-right">Pengeluaran</th>
+                                        <th class="py-3.5 px-4 font-bold">Donasi Material / Ket.</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mutasi-pembangunan-tbody" class="divide-y divide-stone-200 text-xs sm:text-sm">
+                                    <tr><td colspan="4" class="py-6 px-4 text-center text-stone-500">Memuat data mutasi pembangunan...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 `;
             }
 
@@ -1144,6 +1218,7 @@
                 applyTimeBasedWeatherTheme();
                 fetchWeatherDataAndPrayer();
             } else if (currentCategory === 'informasi' && currentSubmenu === 'kas') {
+                updateKasUI();
                 fetchKeuanganFromSheet();
             }
         }
