@@ -49,7 +49,6 @@
             transition: background-color 0.5s ease;
         }
 
-        /* Pola Geometris Islami (Arabesque Tessellation) per Tema */
         .theme-profil {
             background-color: #F3EFE6;
             background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%230B3B2E' stroke-width='0.9' stroke-opacity='0.06'%3E%3Cpath d='M40 0L51.7 28.3L80 40L51.7 51.7L40 80L28.3 51.7L0 40L28.3 28.3Z'/%3E%3Ccircle cx='40' cy='40' r='16'/%3E%3Cpath d='M11.7 11.7L68.3 68.3M68.3 11.7L11.7 68.3'/%3E%3C/g%3E%3C/svg%3E");
@@ -69,7 +68,6 @@
             border-radius: 9999px 9999px 1.5rem 1.5rem;
         }
 
-        /* Animasi Kartu & Ikon Saat Disentuh / Hover */
         .hover-lift {
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -91,7 +89,6 @@
             transform: scale(1.22) rotate(-6deg);
         }
 
-        /* Animasi Gerakan Cuaca */
         @keyframes weatherFloat {
             0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
             50% { transform: translateY(-6px) rotate(5deg) scale(1.08); }
@@ -101,7 +98,6 @@
             display: inline-block;
         }
 
-        /* Efek Tirai Dropdown pada Kartu Kajian */
         .curtain-panel {
             display: grid;
             grid-template-rows: 0fr;
@@ -120,7 +116,6 @@
             margin-top: 1rem;
         }
 
-        /* Flipbox Jam & Countdown Ramadhan */
         .flip-box {
             background: linear-gradient(to bottom, #ffffff 0%, #f1f5f9 100%);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.22), inset 0 2px 4px rgba(255, 255, 255, 0.95);
@@ -312,6 +307,17 @@
     <div id="toast-container" class="fixed bottom-20 md:bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
     <script>
+        // Konfigurasi Google Spreadsheet Keuangan (Otomatis Update)
+        const SHEET_ID = '135ZDz6L9AKgm4znvvPPkJxCdtCjy_Qd8EBhEcAVv7D0';
+        const SHEET_GID = '0';
+
+        // Default nilai awal sebelum/jika spreadsheet gagal dimuat
+        let keuanganData = {
+            kasOperasional: 14850000,
+            danaPembangunan: 45200000,
+            lastSync: 'Memuat data terbaru...'
+        };
+
         const menuConfig = {
             profil: {
                 label: 'Profil Masjid',
@@ -354,7 +360,6 @@
             }
         };
 
-        // Data Perolehan & Distribusi Program Beras Barokah
         const berasBarokahData = [
             { bulan: 'November 2026', pekan: 'Pekan ke-1', sumber: 'Jamaah & Warga RT 01–03 RW 09', totalKg: 125, distribusi: '25 Keluarga Mustahik & Lansia' },
             { bulan: 'November 2026', pekan: 'Pekan ke-2', sumber: 'Infaq Kotak Beras & Donatur Tetap', totalKg: 150, distribusi: '30 Keluarga Mustahik & Janda' },
@@ -362,7 +367,6 @@
             { bulan: 'Oktober 2026', pekan: 'Pekan ke-3', sumber: 'Donatur Hamba Allah & Majelis Taklim', totalKg: 115, distribusi: '23 Keluarga Mustahik' }
         ];
 
-        // Data Susunan Kepengurusan Persis Sesuai Gambar SK Lampiran 010/Al-Barokah/XII/2024
         const strukturRowsSK = [
             {
                 jabatan: 'DEWAN PENASEHAT',
@@ -375,31 +379,11 @@
                 ],
                 col2: []
             },
-            {
-                jabatan: 'Ketua',
-                col1: ['H. Suwandi'],
-                col2: []
-            },
-            {
-                jabatan: 'Sekretaris',
-                col1: ['H. Agus Gunadi Ismail, ST'],
-                col2: []
-            },
-            {
-                jabatan: 'Sekretaris 2',
-                col1: ['Ir Aang Utarya'],
-                col2: []
-            },
-            {
-                jabatan: 'Bendahara',
-                col1: ['Drs. Deni Iskandar'],
-                col2: []
-            },
-            {
-                jabatan: 'Bendahara 2',
-                col1: ['Zulkarnaen'],
-                col2: []
-            },
+            { jabatan: 'Ketua', col1: ['H. Suwandi'], col2: [] },
+            { jabatan: 'Sekretaris', col1: ['H. Agus Gunadi Ismail, ST'], col2: [] },
+            { jabatan: 'Sekretaris 2', col1: ['Ir Aang Utarya'], col2: [] },
+            { jabatan: 'Bendahara', col1: ['Drs. Deni Iskandar'], col2: [] },
+            { jabatan: 'Bendahara 2', col1: ['Zulkarnaen'], col2: [] },
             {
                 jabatan: 'Seksi Dakwah',
                 col1: ['Kasno', 'Zumar', 'Tardi Nurdiansyah'],
@@ -439,6 +423,59 @@
 
         let currentCategory = 'profil';
         let currentSubmenu = 'beranda';
+
+        function formatRupiah(angka) {
+            return 'Rp ' + Number(angka || 0).toLocaleString('id-ID');
+        }
+
+        // Fungsi Mengambil Data Saldo Otomatis dari Google Spreadsheet
+        async function fetchKeuanganFromSheet() {
+            const statusEl = document.getElementById('sheet-sync-status');
+            if (statusEl) statusEl.textContent = 'Menyinkronkan data dari Google Sheets...';
+
+            try {
+                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}`;
+                const response = await fetch(url);
+                const text = await response.text();
+                
+                // Ekstrak JSON dari pembungkus google.visualization.Query.setResponse(...)
+                const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+                const json = JSON.parse(jsonString);
+                const rows = json.table.rows;
+
+                // Cari baris berdasarkan kata kunci atau posisi baris
+                rows.forEach((row, index) => {
+                    const label = row.c[0]?.v ? String(row.c[0].v).toLowerCase() : '';
+                    const rawVal = row.c[1]?.v;
+                    const numVal = typeof rawVal === 'number'
+                        ? rawVal
+                        : Number(String(rawVal || '').replace(/[^0-9]/g, ''));
+
+                    if (!isNaN(numVal) && numVal > 0) {
+                        if (label.includes('operasional') || (index === 0 && !label.includes('pembangunan'))) {
+                            keuanganData.kasOperasional = numVal;
+                        } else if (label.includes('pembangunan') || index === 1) {
+                            keuanganData.danaPembangunan = numVal;
+                        }
+                    }
+                });
+
+                const nowStr = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                keuanganData.lastSync = `Tersinkron otomatis dengan Google Sheets (Pukul ${nowStr} WIB)`;
+
+                const kasEl = document.getElementById('val-kas-operasional');
+                const pembEl = document.getElementById('val-dana-pembangunan');
+                if (kasEl) kasEl.textContent = formatRupiah(keuanganData.kasOperasional);
+                if (pembEl) pembEl.textContent = formatRupiah(keuanganData.danaPembangunan);
+                if (statusEl) statusEl.textContent = keuanganData.lastSync;
+
+            } catch (error) {
+                console.error('Gagal mengambil data Spreadsheet:', error);
+                if (statusEl) {
+                    statusEl.textContent = 'Pastikan akses Spreadsheet diset ke "Siapa saja yang memiliki link (Pelihat)".';
+                }
+            }
+        }
 
         function showToast(message) {
             const container = document.getElementById('toast-container');
@@ -829,7 +866,6 @@
                 wrapper.innerHTML = `
                     <div class="max-w-4xl mx-auto">
                         <div class="bg-[#FCFBF7] p-6 sm:p-10 rounded-3xl border-2 border-emeraldDeep/20 shadow-md">
-                            <!-- Kop Surat / Judul SK Simetris -->
                             <div class="text-center border-b-2 border-stone-800 pb-5 mb-6">
                                 <h2 class="font-heading text-xl sm:text-2xl font-extrabold tracking-wide text-gray-900 uppercase">
                                     DEWAN KEMAKMURAN MASJID AL BAROKAH
@@ -845,13 +881,11 @@
                                 </h3>
                             </div>
 
-                            <!-- Baris Susunan Jabatan & Nama Pengurus Simetris -->
                             <div class="divide-y divide-stone-200/80">
                                 ${strukturRowsSK.map((item, idx) => {
                                     const isBPHDivider = idx === 5;
                                     return `
                                         <div class="py-3.5 ${isBPHDivider ? 'pb-6 mb-2 border-b-2 border-stone-300' : ''} grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 items-start hover:bg-[#F4F0E6]/50 px-3 rounded-xl transition">
-                                            <!-- Kolom Kiri: Nama Jabatan / Seksi -->
                                             <div class="md:col-span-4 flex items-center justify-between md:pr-2">
                                                 <span class="font-heading font-bold text-sm ${item.isBoldHeader ? 'text-emeraldDeep uppercase tracking-wide' : 'text-gray-900'}">
                                                     ${item.jabatan}
@@ -859,7 +893,6 @@
                                                 <span class="hidden md:inline font-bold text-stone-500">:</span>
                                             </div>
 
-                                            <!-- Kolom Kanan: Daftar Nama (1 Kolom untuk Inti, 2 Kolom Sejajar untuk Seksi) -->
                                             <div class="md:col-span-8">
                                                 ${item.col2.length > 0 ? `
                                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 text-sm text-gray-800">
@@ -1055,22 +1088,29 @@
                 });
             }
 
-            // HALAMAN 3: INFORMASI & KAS
+            // HALAMAN 3: INFORMASI & KAS (OTOMATIS SINKRON DENGAN GOOGLE SPREADSHEET)
             else if (currentCategory === 'informasi' && currentSubmenu === 'kas') {
                 wrapper.innerHTML = `
-                    <div class="mb-8">
-                        <span class="text-xs font-bold uppercase tracking-widest text-midnightTeal">Transparansi Keuangan</span>
-                        <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Rekening Donasi & Saldo Kas</h2>
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest text-midnightTeal">Transparansi Keuangan</span>
+                            <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Rekening Donasi & Saldo Kas</h2>
+                            <p id="sheet-sync-status" class="text-xs text-stone-500 mt-1">${keuanganData.lastSync}</p>
+                        </div>
+                        <button onclick="fetchKeuanganFromSheet(); showToast('Memperbarui data dari Google Sheets...');" class="group self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-stone-300 text-xs font-bold text-midnightTeal hover:bg-tealLight transition shadow-sm">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 icon-anim"></i>
+                            <span>Segarkan Saldo</span>
+                        </button>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div class="bg-midnightTeal text-white p-6 rounded-3xl shadow-md hover-lift border border-white/10">
                             <span class="text-xs text-blue-200 uppercase font-semibold">Saldo Kas Operasional</span>
-                            <p class="font-heading text-3xl font-bold mt-1">Rp 14.850.000</p>
+                            <p id="val-kas-operasional" class="font-heading text-3xl font-bold mt-1">${formatRupiah(keuanganData.kasOperasional)}</p>
                         </div>
                         <div class="bg-[#FCFBF7] p-6 rounded-3xl border border-stone-300/80 shadow-sm hover-lift">
                             <span class="text-xs text-stone-500 uppercase font-semibold">Dana Pembangunan Masjid</span>
-                            <p class="font-heading text-3xl font-bold text-gray-900 mt-1">Rp 45.200.000</p>
+                            <p id="val-dana-pembangunan" class="font-heading text-3xl font-bold text-gray-900 mt-1">${formatRupiah(keuanganData.danaPembangunan)}</p>
                         </div>
                     </div>
 
@@ -1099,9 +1139,12 @@
             lucide.createIcons();
             updateClock();
             updateRamadanCountdown();
+
             if (currentCategory === 'profil' && currentSubmenu === 'beranda') {
                 applyTimeBasedWeatherTheme();
                 fetchWeatherDataAndPrayer();
+            } else if (currentCategory === 'informasi' && currentSubmenu === 'kas') {
+                fetchKeuanganFromSheet();
             }
         }
 
@@ -1249,6 +1292,7 @@
             renderPage();
             updateClock();
             updateRamadanCountdown();
+            fetchKeuanganFromSheet();
         };
     </script>
 </body>
