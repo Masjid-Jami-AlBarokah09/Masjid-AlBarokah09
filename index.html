@@ -344,7 +344,8 @@
                 inactiveSubClass: 'text-stone-700 hover:bg-terracottaLight hover:text-terracotta',
                 submenus: [
                     { id: 'qurban', title: 'Layanan & Tabungan Qurban', icon: 'award' },
-                    { id: 'zakat', title: 'Zakat, Infaq & Shodaqoh', icon: 'hand-coins' },
+                    { id: 'zakat', title: 'Layanan Zakat (Maal & Fitrah)', icon: 'scale' },
+                    { id: 'infaq', title: 'Infaq & Shodaqoh', icon: 'hand-coins' },
                     { id: 'beras', title: 'Program Beras Barokah', icon: 'wheat' },
                     { id: 'jumat', title: "Program Jum'at Berkah", icon: 'utensils' }
                 ]
@@ -435,6 +436,7 @@
         let currentSubmenu = 'beranda';
         let strukturFilter = 'all';
         let strukturSearch = '';
+        let currentZakatNominal = 0;
 
         function formatRupiah(angka) {
             const num = Number(angka || 0);
@@ -602,6 +604,27 @@
             lucide.createIcons();
         }
 
+        // Kalkulator Zakat Maal 2,5%
+        function hitungZakatMaal(inputVal) {
+            const rawNum = Number(String(inputVal).replace(/[^0-9]/g, '')) || 0;
+            const inputEl = document.getElementById('zakat-harta-input');
+            if (inputEl) {
+                inputEl.value = rawNum > 0 ? rawNum.toLocaleString('id-ID') : '';
+            }
+            currentZakatNominal = Math.round(rawNum * 0.025);
+
+            const hasilEl = document.getElementById('zakat-hasil-nominal');
+            const waBtn = document.getElementById('btn-wa-akad-zakat');
+            if (hasilEl) {
+                hasilEl.textContent = formatRupiah(currentZakatNominal);
+            }
+            if (waBtn) {
+                const nominalText = currentZakatNominal > 0 ? ` sebesar ${formatRupiah(currentZakatNominal)}` : '';
+                const pesanWa = `Assalamu'alaikum Pengurus UPZ/DKM Masjid Jami' Al-Barokah 09, Bismillah saya berniat menunaikan Zakat${nominalText} untuk disalurkan kepada 8 asnaf mustahik di lingkungan RW 09 Cigending.`;
+                waBtn.href = `https://wa.me/6288218271505?text=${encodeURIComponent(pesanWa)}`;
+            }
+        }
+
         function setStrukturFilter(filterVal) {
             strukturFilter = filterVal;
             renderStrukturGrid();
@@ -616,7 +639,6 @@
             const container = document.getElementById('struktur-dynamic-container');
             if (!container) return;
 
-            // Update tombol filter aktif
             ['all', 'penasehat', 'bph', 'bidang'].forEach(key => {
                 const btn = document.getElementById(`filter-btn-${key}`);
                 if (!btn) return;
@@ -645,7 +667,6 @@
 
             let html = '';
 
-            // 1. DEWAN PENASEHAT
             if ((strukturFilter === 'all' || strukturFilter === 'penasehat') && filteredPenasehat.length > 0) {
                 html += `
                     <section class="mb-8">
@@ -675,7 +696,6 @@
                 `;
             }
 
-            // 2. BADAN PENGURUS HARIAN (PENGURUS INTI)
             if ((strukturFilter === 'all' || strukturFilter === 'bph') && filteredBph.length > 0) {
                 html += `
                     <section class="mb-8">
@@ -705,7 +725,6 @@
                 `;
             }
 
-            // 3. BIDANG / SEKSI-SEKSI
             if ((strukturFilter === 'all' || strukturFilter === 'bidang') && filteredBidang.length > 0) {
                 html += `
                     <section>
@@ -760,7 +779,7 @@
             lucide.createIcons();
         }
 
-        function buildLayananCard({ badge, title, subtitle, emoji, cardTitle, cardSubtitle, bullets, primaryBtn, secondaryBtn, extraSection = '' }) {
+        function buildLayananCard({ badge, title, subtitle, emoji, cardTitle, cardSubtitle, bullets, customMiddleHtml = '', primaryBtn, secondaryBtn, extraSection = '' }) {
             return `
                 <div class="mb-8">
                     <span class="text-xs font-bold uppercase tracking-widest text-terracotta">${badge}</span>
@@ -787,6 +806,8 @@
                             </li>
                         `).join('')}
                     </ul>
+
+                    ${customMiddleHtml}
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                         ${primaryBtn}
@@ -818,7 +839,7 @@
                                 Assalamu'alaikum Selamat Datang di Portal Digital Masjid Jami' Al-Barokah 09
                             </h2>
                             <p class="text-emerald-100/90 text-sm sm:text-base leading-relaxed max-w-3xl">
-                                Pusat informasi ibadah, kajian, transparansi dana pembangunan, serta layanan qurban dan sosial untuk warga RW 09 Cigending, Ujungberung, Bandung.
+                                Pusat informasi ibadah, kajian, transparansi dana pembangunan, serta layanan qurban, zakat, dan sosial untuk warga RW 09 Cigending, Ujungberung, Bandung.
                             </p>
 
                             <div class="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -1082,7 +1103,6 @@
                 strukturSearch = '';
                 wrapper.innerHTML = `
                     <div class="max-w-6xl mx-auto">
-                        <!-- Header & Info SK -->
                         <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
                             <div>
                                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emeraldLight text-emeraldDeep text-xs font-bold border border-emeraldDeep/15 mb-2">
@@ -1093,7 +1113,6 @@
                                 <p class="text-sm text-stone-600 mt-1">RT 03 RW 09 Kel. Cigending, Kec. Ujungberung, Kota Bandung</p>
                             </div>
 
-                            <!-- Kolom Pencarian Nama / Bidang -->
                             <div class="relative w-full lg:w-72">
                                 <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
                                 <input type="text" oninput="handleStrukturSearch(this.value)" placeholder="Cari nama pengurus atau seksi..." 
@@ -1101,7 +1120,6 @@
                             </div>
                         </div>
 
-                        <!-- Bar Filter Kategori -->
                         <div class="flex flex-wrap items-center gap-2 mb-8 pb-4 border-b border-stone-300/70">
                             <button id="filter-btn-all" onclick="setStrukturFilter('all')" class="px-4 py-2 rounded-xl text-xs font-bold bg-emeraldDeep text-white shadow-sm transition">
                                 Semua Pengurus
@@ -1117,7 +1135,6 @@
                             </button>
                         </div>
 
-                        <!-- Kontainer Kartu Pengurus Dinamis -->
                         <div id="struktur-dynamic-container"></div>
                     </div>
                 `;
@@ -1154,38 +1171,116 @@
                     `
                 });
             }
-            // HALAMAN 2B: ZAKAT, INFAQ & SHODAQOH
+            // HALAMAN 2B: LAYANAN ZAKAT (MAAL & FITRAH) + KALKULATOR 2,5%
             else if (currentCategory === 'layanan' && currentSubmenu === 'zakat') {
+                currentZakatNominal = 0;
+                const kalkulatorZakatHtml = `
+                    <div class="bg-emeraldLight/60 p-5 sm:p-6 rounded-2xl border border-emeraldDeep/20 space-y-4">
+                        <div class="flex items-center justify-between gap-2">
+                            <div>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-emeraldDeep">Kalkulator Zakat Maal / Profesi (2,5%)</span>
+                                <h4 class="font-heading font-bold text-base text-gray-900 mt-0.5">Hitung Kewajiban Zakat Anda</h4>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-emeraldDeep text-goldSoft">Kadar 2,5%</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                            <div>
+                                <label for="zakat-harta-input" class="block text-xs font-bold text-stone-700 mb-1.5">Total Harta / Penghasilan (Rp)</label>
+                                <div class="relative">
+                                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-stone-500">Rp</span>
+                                    <input id="zakat-harta-input" type="text" inputmode="numeric" oninput="hitungZakatMaal(this.value)" placeholder="Contoh: 10.000.000"
+                                        class="w-full pl-10 pr-4 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm text-gray-900 focus:outline-none focus:border-emeraldDeep shadow-sm" />
+                                </div>
+                            </div>
+                            <div class="bg-white p-3.5 rounded-xl border border-emeraldDeep/20 text-center sm:text-right">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-stone-500 block">Zakat Wajib Ditunaikan (2,5%)</span>
+                                <span id="zakat-hasil-nominal" class="font-mono font-black text-xl sm:text-2xl text-emeraldDeep mt-0.5 block">Rp 0</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-stone-600 leading-relaxed">
+                            * Dana zakat dicatat secara terpisah dari kas pembangunan masjid dan disalurkan 100% kepada <b>8 Asnaf Mustahik</b> (fakir, miskin, amil, mualaf, riqab, gharimin, fisabilillah, ibnu sabil) di lingkungan RW 09 Cigending.
+                        </p>
+                    </div>
+                `;
+
                 wrapper.innerHTML = buildLayananCard({
-                    badge: 'UPZ Resmi & Donasi Umat',
-                    title: 'Zakat, Infaq & Shodaqoh (ZIS) RW 09 Cigending',
-                    subtitle: 'Penghimpunan dan penyaluran zakat maal, zakat fitrah, serta infaq jariyah untuk kemakmuran masjid dan pemberdayaan mustahik sekitar.',
-                    emoji: '🤲',
-                    cardTitle: 'Layanan Penyaluran Zakat, Infaq & Shodaqoh',
-                    cardSubtitle: 'Tercatat rapi & dilaporkan berkala oleh Bendahara DKM Al-Barokah 09',
+                    badge: 'Unit Pengumpul Zakat (UPZ) Al-Barokah 09',
+                    title: 'Layanan Zakat Maal & Zakat Fitrah',
+                    subtitle: 'Penghimpunan dan penyaluran kewajiban zakat sesuai ketentuan syariah dengan pencatatan khusus mustahik (8 asnaf) yang terpisah dari kas umum masjid.',
+                    emoji: '⚖️',
+                    cardTitle: 'Penunaian & Akad Zakat Syariah',
+                    cardSubtitle: 'Khusus penyaluran kepada 8 golongan (Asnaf) mustahik RW 09 Cigending',
                     bullets: [
-                        '<b>Zakat Maal & Profesi:</b> Dihitung 2,5% dari harta yang mencapai nisab',
-                        '<b>Infaq Operasional Masjid:</b> Mendukung listrik, kebersihan & kegiatan ibadah',
-                        '<b>Shodaqoh Yatim & Dhuafa:</b> Santunan rutin bagi warga yang membutuhkan',
-                        'Bukti konfirmasi resmi & transparansi laporan pembangunan masjid'
+                        '<b>Zakat Maal & Penghasilan:</b> Kadar 2,5% dari harta/penghasilan yang telah mencapai nisab',
+                        '<b>Zakat Fitrah (Ramadhan):</b> Berupa beras 2,5 kg / 3,5 liter atau nilai uang setara per jiwa',
+                        '<b>Pencatatan Terpisah:</b> Dana zakat tidak dicampur dengan infaq fisik pembangunan masjid',
+                        '<b>Akad & Doa Penerimaan:</b> Diterima langsung oleh amil/pengurus disertai doa keberkahan'
                     ],
+                    customMiddleHtml: kalkulatorZakatHtml,
                     primaryBtn: `
-                        <button onclick="switchPage('informasi', 'kas')" 
-                           class="group w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
-                            <div class="text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 leading-snug"><span class="icon-anim">✨</span> <span>Bismillah saya mau menyisihkan dan membersihkan harta saya</span></div>
-                            <span class="text-[11px] text-amber-100 font-medium">Tunaikan ZIS via Rekening Resmi BSI Masjid</span>
-                        </button>
+                        <a id="btn-wa-akad-zakat" href="https://wa.me/6288218271505?text=Assalamu'alaikum%20Pengurus%20UPZ/DKM%20Masjid%20Jami'%20Al-Barokah%2009,%20Bismillah%20saya%20berniat%20menunaikan%20Zakat%20untuk%20disalurkan%20kepada%208%20asnaf%20mustahik%20di%20lingkungan%20RW%2009%20Cigending." target="_blank" rel="noopener noreferrer" 
+                           class="group w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                            <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">🤝</span> <span>Konfirmasi Akad Zakat (WhatsApp)</span></div>
+                            <span class="text-[11px] text-emerald-200 font-medium">Ikrar niat zakat & koordinasi penyaluran</span>
+                        </a>
                     `,
                     secondaryBtn: `
-                        <a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20Bismillah%20saya%20mau%20menyisihkan%20dan%20membersihkan%20harta%20saya%20(ZIS)." target="_blank" rel="noopener noreferrer"
-                                class="group w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
-                            <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">📲</span> <span>Konfirmasi Akad ZIS (WhatsApp)</span></div>
-                            <span class="text-[11px] text-emerald-200 font-medium">Kirim bukti transfer & akad kepada pengurus</span>
-                        </a>
+                        <button onclick="copyRekening('7302811959', 'BSI (Titipan Zakat)')" 
+                                class="group w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                            <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">📋</span> <span>Salin Rekening BSI (7302 811 959)</span></div>
+                            <span class="text-[11px] text-amber-100 font-medium">Beri keterangan "ZAKAT" saat transfer</span>
+                        </button>
                     `
                 });
             }
-            // HALAMAN 2C: PROGRAM BERAS BAROKAH + TABEL PEROLEHAN & DISTRIBUSI
+            // HALAMAN 2C: INFAQ & SHODAQOH (TERPISAH DARI ZAKAT)
+            else if (currentCategory === 'layanan' && currentSubmenu === 'infaq') {
+                const infoRekeningInfaqHtml = `
+                    <div class="bg-[#F4F0E6] p-5 rounded-2xl border border-stone-300/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">Rekening Resmi Infaq & Shodaqoh</span>
+                            <div class="font-mono font-black text-xl sm:text-2xl text-gray-900 mt-0.5 tracking-wider">BSI • 7302 811 959</div>
+                            <div class="text-xs text-stone-600 font-medium">a.n. MESJID AL-BAROKAH (Cigending, Ujungberung)</div>
+                        </div>
+                        <button onclick="copyRekening('7302811959', 'BSI')" class="group shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold transition hover-lift">
+                            <i data-lucide="copy" class="w-4 h-4 text-goldSoft icon-anim"></i>
+                            <span>Salin No. Rekening</span>
+                        </button>
+                    </div>
+                `;
+
+                wrapper.innerHTML = buildLayananCard({
+                    badge: 'Sedekah Sunnah & Amal Jariyah',
+                    title: 'Infaq & Shodaqoh Kemakmuran Masjid',
+                    subtitle: 'Wadah berbagi kebaikan tanpa batas nominal untuk operasional ibadah harian, santunan yatim & dhuafa, serta amal jariyah pengembangan fasilitas masjid.',
+                    emoji: '🤲',
+                    cardTitle: 'Salurkan Infaq & Shodaqoh Terbaik Anda',
+                    cardSubtitle: 'Dikelola amanah & dilaporkan berkala oleh Bendahara DKM Al-Barokah 09',
+                    bullets: [
+                        '<b>Infaq Operasional Masjid:</b> Mendukung kebutuhan listrik, air, kebersihan & sarana ibadah',
+                        '<b>Shodaqoh Yatim & Dhuafa:</b> Santunan sosial berkala bagi anak yatim dan warga membutuhkan',
+                        '<b>Infaq Jariyah Pembangunan:</b> Pahala mengalir berkelanjutan untuk perluasan & renovasi masjid',
+                        '<b>Bebas Nominal:</b> Dapat ditunaikan kapan saja sesuai kelapangan rezeki'
+                    ],
+                    customMiddleHtml: infoRekeningInfaqHtml,
+                    primaryBtn: `
+                        <a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20Bismillah%20saya%20ingin%20konfirmasi%20penyaluran%20Infaq%20/%20Shodaqoh%20untuk%20Masjid%20Jami'%20Al-Barokah%2009." target="_blank" rel="noopener noreferrer" 
+                           class="group w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                            <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">📲</span> <span>Konfirmasi Infaq (WhatsApp)</span></div>
+                            <span class="text-[11px] text-amber-100 font-medium">Kirim bukti transfer & peruntukan infaq</span>
+                        </a>
+                    `,
+                    secondaryBtn: `
+                        <button onclick="switchPage('informasi', 'kas')" 
+                                class="group w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl transition shadow-lg flex flex-col items-center justify-center space-y-1 hover-lift">
+                            <div class="text-sm font-extrabold flex items-center gap-1.5"><span class="icon-anim">📊</span> <span>Lihat Laporan Kas Pembangunan</span></div>
+                            <span class="text-[11px] text-emerald-200 font-medium">Cek transparansi mutasi dana masuk & keluar</span>
+                        </button>
+                    `
+                });
+            }
+            // HALAMAN 2D: PROGRAM BERAS BAROKAH + TABEL PEROLEHAN & DISTRIBUSI
             else if (currentCategory === 'layanan' && currentSubmenu === 'beras') {
                 const totalKgKeseluruhan = berasBarokahData.reduce((acc, row) => acc + row.totalKg, 0);
                 const tabelPerolehanBeras = `
@@ -1261,7 +1356,7 @@
                     extraSection: tabelPerolehanBeras
                 });
             }
-            // HALAMAN 2D: PROGRAM JUM'AT BERKAH
+            // HALAMAN 2E: PROGRAM JUM'AT BERKAH
             else if (currentCategory === 'layanan' && currentSubmenu === 'jumat') {
                 wrapper.innerHTML = buildLayananCard({
                     badge: 'Sedekah Rutin Pekanan',
@@ -1308,7 +1403,6 @@
                         </button>
                     </div>
 
-                    <!-- BANNER STATUS PEMBANGUNAN -->
                     <div class="bg-midnightTeal text-white p-6 sm:p-8 rounded-3xl shadow-lg mb-8 border border-white/10 hover-lift">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                             <div class="space-y-2 max-w-2xl">
@@ -1328,7 +1422,6 @@
                         </div>
                     </div>
 
-                    <!-- GALERI DOKUMENTASI FOTO PEMBANGUNAN -->
                     <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm hover-lift">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 pb-4 border-b border-stone-200">
                             <div>
@@ -1368,7 +1461,6 @@
                         </button>
                     </div>
 
-                    <!-- KARTU UTAMA DANA PEMBANGUNAN MASJID -->
                     <div class="bg-midnightTeal text-white p-7 sm:p-9 rounded-3xl shadow-lg hover-lift border border-white/10 max-w-2xl mx-auto mb-8 text-center">
                         <span class="text-xs text-amber-300 uppercase tracking-widest font-bold bg-white/10 px-3.5 py-1 rounded-full">Saldo Dana Pembangunan Masjid</span>
                         <p id="val-dana-pembangunan" class="font-heading text-3xl sm:text-5xl font-extrabold text-white mt-4 tracking-tight">${formatRupiah(keuanganData.danaPembangunan)}</p>
@@ -1394,7 +1486,6 @@
                         </div>
                     </div>
 
-                    <!-- TABEL RINCIAN MUTASI INFAQ PEMBANGUNAN DARI GOOGLE SHEETS -->
                     <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm hover-lift">
                         <div class="mb-5 pb-4 border-b border-stone-200">
                             <span class="text-xs font-bold uppercase tracking-widest text-midnightTeal">Laporan Real-Time Spreadsheet</span>
