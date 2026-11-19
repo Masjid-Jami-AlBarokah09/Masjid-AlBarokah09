@@ -370,62 +370,71 @@
             { bulan: 'Oktober 2026', pekan: 'Pekan ke-3', sumber: 'Donatur Hamba Allah & Majelis Taklim', totalKg: 115, distribusi: '23 Keluarga Mustahik' }
         ];
 
-        const strukturRowsSK = [
-            {
-                jabatan: 'DEWAN PENASEHAT',
-                isBoldHeader: true,
-                col1: [
-                    'Ketua RW 09 Cigending',
-                    'DR. H. Asep Hilman, M.Pd',
-                    'H. Aep Syaepulloh',
-                    'H. Gatot st'
-                ],
-                col2: []
-            },
-            { jabatan: 'Ketua', col1: ['H. Suwandi'], col2: [] },
-            { jabatan: 'Sekretaris', col1: ['H. Agus Gunadi Ismail, ST'], col2: [] },
-            { jabatan: 'Sekretaris 2', col1: ['Ir Aang Utarya'], col2: [] },
-            { jabatan: 'Bendahara', col1: ['Drs. Deni Iskandar'], col2: [] },
-            { jabatan: 'Bendahara 2', col1: ['Zulkarnaen'], col2: [] },
-            {
-                jabatan: 'Seksi Dakwah',
-                col1: ['Kasno', 'Zumar', 'Tardi Nurdiansyah'],
-                col2: ['Sulkhoni', 'Mastur', 'Robby Ilman']
-            },
-            {
-                jabatan: 'Seksi Pendidikan',
-                col1: ['Siti Parlina, S.Pd', 'Teti Supriatin, S.Pd'],
-                col2: ['Imam Mauludin']
-            },
-            {
-                jabatan: 'Seksi Pemberdayaan',
-                col1: ['Lingga, S.Sos', 'Atep Permana', 'Dedi Cahyana'],
-                col2: ['Imas Suciawati', 'Nurdini Homsah']
-            },
-            {
-                jabatan: 'Seksi Humas',
-                col1: ['Ending', 'Gugum Gumilar', 'Syamsu'],
-                col2: ['Tono Haryanto', 'Haryono', 'Zaenal Mutaqim']
-            },
-            {
-                jabatan: 'Seksi Kerumahtanggaan',
-                col1: ['Engkos Kosidin', 'Suwarto', 'Sarjono'],
-                col2: ['Sugito', 'Budianto']
-            },
-            {
-                jabatan: 'Seksi Muslimat',
-                col1: ['Rika Nisa', 'Ning Hartati', 'Tarmini', 'Yeuis Purnamawati'],
-                col2: ['Surip Romlah', 'Titin Aisah', 'Siti Warliyah', 'Aisyah']
-            },
-            {
-                jabatan: 'Seksi Remaja',
-                col1: ['Firdaus', 'Hisyam Nur Chairuddin', 'Sibab'],
-                col2: ['Radella Bilqisthi Gunawan', 'Najmi Tsaqib Nurhasani']
-            }
-        ];
+        // Data Kepengurusan Terstruktur (SK 010/Al-Barokah/XII/2024)
+        const pengurusData = {
+            penasehat: [
+                { nama: 'Ketua RW 09 Cigending', peran: 'Penasehat Wilayah' },
+                { nama: 'DR. H. Asep Hilman, M.Pd', peran: 'Dewan Penasehat' },
+                { nama: 'H. Aep Syaepulloh', peran: 'Dewan Penasehat' },
+                { nama: 'H. Gatot st', peran: 'Dewan Penasehat' }
+            ],
+            bph: [
+                { jabatan: 'Ketua DKM', nama: 'H. Suwandi', icon: 'crown', highlight: true },
+                { jabatan: 'Sekretaris 1', nama: 'H. Agus Gunadi Ismail, ST', icon: 'file-signature', highlight: false },
+                { jabatan: 'Sekretaris 2', nama: 'Ir Aang Utarya', icon: 'file-text', highlight: false },
+                { jabatan: 'Bendahara 1', nama: 'Drs. Deni Iskandar', icon: 'wallet', highlight: false },
+                { jabatan: 'Bendahara 2', nama: 'Zulkarnaen', icon: 'coins', highlight: false }
+            ],
+            bidang: [
+                {
+                    namaBidang: 'Seksi Dakwah',
+                    icon: 'mic',
+                    accentBg: 'bg-emerald-100 text-emeraldDeep',
+                    anggota: ['Kasno', 'Zumar', 'Tardi Nurdiansyah', 'Sulkhoni', 'Mastur', 'Robby Ilman']
+                },
+                {
+                    namaBidang: 'Seksi Pendidikan',
+                    icon: 'graduation-cap',
+                    accentBg: 'bg-amber-100 text-amber-900',
+                    anggota: ['Siti Parlina, S.Pd', 'Teti Supriatin, S.Pd', 'Imam Mauludin']
+                },
+                {
+                    namaBidang: 'Seksi Pemberdayaan',
+                    icon: 'sprout',
+                    accentBg: 'bg-teal-100 text-teal-900',
+                    anggota: ['Lingga, S.Sos', 'Atep Permana', 'Dedi Cahyana', 'Imas Suciawati', 'Nurdini Homsah']
+                },
+                {
+                    namaBidang: 'Seksi Humas',
+                    icon: 'megaphone',
+                    accentBg: 'bg-sky-100 text-sky-900',
+                    anggota: ['Ending', 'Gugum Gumilar', 'Syamsu', 'Tono Haryanto', 'Haryono', 'Zaenal Mutaqim']
+                },
+                {
+                    namaBidang: 'Seksi Kerumahtanggaan',
+                    icon: 'home',
+                    accentBg: 'bg-orange-100 text-orange-900',
+                    anggota: ['Engkos Kosidin', 'Suwarto', 'Sarjono', 'Sugito', 'Budianto']
+                },
+                {
+                    namaBidang: 'Seksi Muslimat',
+                    icon: 'heart',
+                    accentBg: 'bg-rose-100 text-rose-900',
+                    anggota: ['Rika Nisa', 'Ning Hartati', 'Tarmini', 'Yeuis Purnamawati', 'Surip Romlah', 'Titin Aisah', 'Siti Warliyah', 'Aisyah']
+                },
+                {
+                    namaBidang: 'Seksi Remaja',
+                    icon: 'sparkles',
+                    accentBg: 'bg-purple-100 text-purple-900',
+                    anggota: ['Firdaus', 'Hisyam Nur Chairuddin', 'Sibab', 'Radella Bilqisthi Gunawan', 'Najmi Tsaqib Nurhasani']
+                }
+            ]
+        };
 
         let currentCategory = 'profil';
         let currentSubmenu = 'beranda';
+        let strukturFilter = 'all';
+        let strukturSearch = '';
 
         function formatRupiah(angka) {
             const num = Number(angka || 0);
@@ -590,6 +599,164 @@
                 `;
             }).join('');
 
+            lucide.createIcons();
+        }
+
+        function setStrukturFilter(filterVal) {
+            strukturFilter = filterVal;
+            renderStrukturGrid();
+        }
+
+        function handleStrukturSearch(val) {
+            strukturSearch = val.toLowerCase().trim();
+            renderStrukturGrid();
+        }
+
+        function renderStrukturGrid() {
+            const container = document.getElementById('struktur-dynamic-container');
+            if (!container) return;
+
+            // Update tombol filter aktif
+            ['all', 'penasehat', 'bph', 'bidang'].forEach(key => {
+                const btn = document.getElementById(`filter-btn-${key}`);
+                if (!btn) return;
+                if (strukturFilter === key) {
+                    btn.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-emeraldDeep text-white shadow-sm transition';
+                } else {
+                    btn.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-white text-stone-700 border border-stone-300/80 hover:bg-emeraldLight hover:text-emeraldDeep transition';
+                }
+            });
+
+            const q = strukturSearch;
+
+            const filteredPenasehat = pengurusData.penasehat.filter(p =>
+                !q || p.nama.toLowerCase().includes(q) || p.peran.toLowerCase().includes(q) || 'dewan penasehat'.includes(q)
+            );
+
+            const filteredBph = pengurusData.bph.filter(p =>
+                !q || p.nama.toLowerCase().includes(q) || p.jabatan.toLowerCase().includes(q) || 'pengurus inti bph'.includes(q)
+            );
+
+            const filteredBidang = pengurusData.bidang.map(b => {
+                const matchBidang = b.namaBidang.toLowerCase().includes(q);
+                const matchedAnggota = matchBidang ? b.anggota : b.anggota.filter(a => a.toLowerCase().includes(q));
+                return { ...b, anggota: matchedAnggota };
+            }).filter(b => b.anggota.length > 0);
+
+            let html = '';
+
+            // 1. DEWAN PENASEHAT
+            if ((strukturFilter === 'all' || strukturFilter === 'penasehat') && filteredPenasehat.length > 0) {
+                html += `
+                    <section class="mb-8">
+                        <div class="flex items-center gap-2.5 mb-4">
+                            <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center">
+                                <i data-lucide="shield" class="w-4 h-4"></i>
+                            </span>
+                            <div>
+                                <h3 class="font-heading font-extrabold text-base sm:text-lg text-gray-900">Dewan Penasehat</h3>
+                                <p class="text-xs text-stone-500">Pembina & Pengarah Kebijakan DKM Al-Barokah 09</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            ${filteredPenasehat.map(item => `
+                                <div class="bg-[#FCFBF7] p-5 rounded-2xl border border-amber-600/25 shadow-sm hover-lift flex items-start gap-3.5">
+                                    <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 flex items-center justify-center shrink-0 mt-0.5">
+                                        <i data-lucide="award" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-full">${item.peran}</span>
+                                        <h4 class="font-heading font-bold text-sm text-gray-900 mt-1.5 leading-snug">${item.nama}</h4>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+                `;
+            }
+
+            // 2. BADAN PENGURUS HARIAN (PENGURUS INTI)
+            if ((strukturFilter === 'all' || strukturFilter === 'bph') && filteredBph.length > 0) {
+                html += `
+                    <section class="mb-8">
+                        <div class="flex items-center gap-2.5 mb-4">
+                            <span class="w-8 h-8 rounded-xl bg-emeraldDeep text-goldSoft flex items-center justify-center">
+                                <i data-lucide="star" class="w-4 h-4"></i>
+                            </span>
+                            <div>
+                                <h3 class="font-heading font-extrabold text-base sm:text-lg text-gray-900">Badan Pengurus Harian (Pengurus Inti)</h3>
+                                <p class="text-xs text-stone-500">Koordinator Utama Operasional & Amanah Masjid</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${filteredBph.map(item => `
+                                <div class="${item.highlight ? 'bg-emeraldDeep text-white border-goldSoft/40 sm:col-span-2 lg:col-span-1' : 'bg-[#FCFBF7] text-gray-900 border-stone-300/80'} p-5 rounded-2xl border shadow-sm hover-lift flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-2xl ${item.highlight ? 'bg-goldSoft/20 text-goldSoft border border-goldSoft/30' : 'bg-emeraldLight text-emeraldDeep'} flex items-center justify-center shrink-0">
+                                        <i data-lucide="${item.icon}" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-[11px] font-bold uppercase tracking-wider ${item.highlight ? 'text-goldSoft' : 'text-emeraldDeep'}">${item.jabatan}</span>
+                                        <h4 class="font-heading font-extrabold text-base mt-0.5 leading-snug ${item.highlight ? 'text-white' : 'text-gray-900'}">${item.nama}</h4>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+                `;
+            }
+
+            // 3. BIDANG / SEKSI-SEKSI
+            if ((strukturFilter === 'all' || strukturFilter === 'bidang') && filteredBidang.length > 0) {
+                html += `
+                    <section>
+                        <div class="flex items-center gap-2.5 mb-4">
+                            <span class="w-8 h-8 rounded-xl bg-emeraldLight text-emeraldDeep flex items-center justify-center">
+                                <i data-lucide="layers" class="w-4 h-4"></i>
+                            </span>
+                            <div>
+                                <h3 class="font-heading font-extrabold text-base sm:text-lg text-gray-900">Bidang & Seksi Pelaksana</h3>
+                                <p class="text-xs text-stone-500">7 Seksi Kerja Kemakmuran Masjid & Pemberdayaan Umat</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                            ${filteredBidang.map(bid => `
+                                <div class="bg-[#FCFBF7] p-6 rounded-3xl border border-stone-300/80 shadow-sm hover-lift flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center justify-between gap-3 pb-3.5 mb-3.5 border-b border-stone-200">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 rounded-xl ${bid.accentBg} flex items-center justify-center shrink-0">
+                                                    <i data-lucide="${bid.icon}" class="w-5 h-5"></i>
+                                                </div>
+                                                <h4 class="font-heading font-bold text-base text-gray-900">${bid.namaBidang}</h4>
+                                            </div>
+                                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-stone-200/80 text-stone-700">${bid.anggota.length} Orang</span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2">
+                                            ${bid.anggota.map(nama => `
+                                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F4F0E6] border border-stone-200/90 text-xs font-semibold text-gray-800">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-emeraldDeep"></span>
+                                                    ${nama}
+                                                </span>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+                `;
+            }
+
+            if (!html) {
+                html = `
+                    <div class="bg-[#FCFBF7] p-8 rounded-3xl border border-stone-300/80 text-center space-y-2">
+                        <p class="font-heading font-bold text-gray-800">Nama atau bidang tidak ditemukan</p>
+                        <p class="text-xs text-stone-500">Coba kata kunci lain atau klik tombol "Semua Pengurus".</p>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
             lucide.createIcons();
         }
 
@@ -909,59 +1076,49 @@
                     </div>
                 `;
             }
-            // HALAMAN 1D: SUSUNAN KEPENGURUSAN PERSIS FORMAT DOKUMEN SK LAMPIRAN 010/Al-Barokah/XII/2024
+            // HALAMAN 1D: STRUKTUR KEPENGURUSAN MODERN DENGAN FILTER BIDANG & PENCARIAN
             else if (currentCategory === 'profil' && currentSubmenu === 'struktur') {
+                strukturFilter = 'all';
+                strukturSearch = '';
                 wrapper.innerHTML = `
-                    <div class="max-w-4xl mx-auto">
-                        <div class="bg-[#FCFBF7] p-6 sm:p-10 rounded-3xl border-2 border-emeraldDeep/20 shadow-md">
-                            <div class="text-center border-b-2 border-stone-800 pb-5 mb-6">
-                                <h2 class="font-heading text-xl sm:text-2xl font-extrabold tracking-wide text-gray-900 uppercase">
-                                    DEWAN KEMAKMURAN MASJID AL BAROKAH
-                                </h2>
-                                <p class="text-xs sm:text-sm text-stone-600 font-medium mt-1">
-                                    RT 03 RW 09 Kel. Cigending – Kec. Ujungberung – Kota Bandung
-                                </p>
-                                <div class="mt-4 inline-block bg-[#F4F0E6] px-4 py-1.5 rounded-xl border border-stone-300 text-xs font-mono text-stone-700">
-                                    Lampiran : 010/Al-Barokah/XII/2024
+                    <div class="max-w-6xl mx-auto">
+                        <!-- Header & Info SK -->
+                        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
+                            <div>
+                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emeraldLight text-emeraldDeep text-xs font-bold border border-emeraldDeep/15 mb-2">
+                                    <i data-lucide="file-check-2" class="w-3.5 h-3.5"></i>
+                                    <span>SK DKM No. 010/Al-Barokah/XII/2024 • Masa Khidmah 2024–2029</span>
                                 </div>
-                                <h3 class="font-heading text-sm sm:text-base font-extrabold text-emeraldDeep uppercase tracking-wider mt-4">
-                                    SUSUNAN KEPENGURUSAN DKM AL BAROKAH MASA KHIDMAH 2024–2029
-                                </h3>
+                                <h2 class="font-serif text-3xl font-bold text-gray-900">Susunan Kepengurusan DKM Al-Barokah 09</h2>
+                                <p class="text-sm text-stone-600 mt-1">RT 03 RW 09 Kel. Cigending, Kec. Ujungberung, Kota Bandung</p>
                             </div>
 
-                            <div class="divide-y divide-stone-200/80">
-                                ${strukturRowsSK.map((item, idx) => {
-                                    const isBPHDivider = idx === 5;
-                                    return `
-                                        <div class="py-3.5 ${isBPHDivider ? 'pb-6 mb-2 border-b-2 border-stone-300' : ''} grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 items-start hover:bg-[#F4F0E6]/50 px-3 rounded-xl transition">
-                                            <div class="md:col-span-4 flex items-center justify-between md:pr-2">
-                                                <span class="font-heading font-bold text-sm ${item.isBoldHeader ? 'text-emeraldDeep uppercase tracking-wide' : 'text-gray-900'}">
-                                                    ${item.jabatan}
-                                                </span>
-                                                <span class="hidden md:inline font-bold text-stone-500">:</span>
-                                            </div>
-
-                                            <div class="md:col-span-8">
-                                                ${item.col2.length > 0 ? `
-                                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 text-sm text-gray-800">
-                                                        <div class="space-y-1">
-                                                            ${item.col1.map(nama => `<div class="font-medium">${nama}</div>`).join('')}
-                                                        </div>
-                                                        <div class="space-y-1">
-                                                            ${item.col2.map(nama => `<div class="font-medium">${nama}</div>`).join('')}
-                                                        </div>
-                                                    </div>
-                                                ` : `
-                                                    <div class="space-y-1 text-sm text-gray-800">
-                                                        ${item.col1.map(nama => `<div class="font-semibold">${nama}</div>`).join('')}
-                                                    </div>
-                                                `}
-                                            </div>
-                                        </div>
-                                    `;
-                                }).join('')}
+                            <!-- Kolom Pencarian Nama / Bidang -->
+                            <div class="relative w-full lg:w-72">
+                                <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                                <input type="text" oninput="handleStrukturSearch(this.value)" placeholder="Cari nama pengurus atau seksi..." 
+                                    class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-stone-300 text-xs sm:text-sm text-gray-800 placeholder-stone-400 focus:outline-none focus:border-emeraldDeep shadow-sm" />
                             </div>
                         </div>
+
+                        <!-- Bar Filter Kategori -->
+                        <div class="flex flex-wrap items-center gap-2 mb-8 pb-4 border-b border-stone-300/70">
+                            <button id="filter-btn-all" onclick="setStrukturFilter('all')" class="px-4 py-2 rounded-xl text-xs font-bold bg-emeraldDeep text-white shadow-sm transition">
+                                Semua Pengurus
+                            </button>
+                            <button id="filter-btn-penasehat" onclick="setStrukturFilter('penasehat')" class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-stone-700 border border-stone-300/80 hover:bg-emeraldLight hover:text-emeraldDeep transition">
+                                Dewan Penasehat
+                            </button>
+                            <button id="filter-btn-bph" onclick="setStrukturFilter('bph')" class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-stone-700 border border-stone-300/80 hover:bg-emeraldLight hover:text-emeraldDeep transition">
+                                Pengurus Inti (BPH)
+                            </button>
+                            <button id="filter-btn-bidang" onclick="setStrukturFilter('bidang')" class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-stone-700 border border-stone-300/80 hover:bg-emeraldLight hover:text-emeraldDeep transition">
+                                Bidang & Seksi (7 Seksi)
+                            </button>
+                        </div>
+
+                        <!-- Kontainer Kartu Pengurus Dinamis -->
+                        <div id="struktur-dynamic-container"></div>
                     </div>
                 `;
             }
@@ -1270,6 +1427,8 @@
             if (currentCategory === 'profil' && currentSubmenu === 'beranda') {
                 applyTimeBasedWeatherTheme();
                 fetchWeatherDataAndPrayer();
+            } else if (currentCategory === 'profil' && currentSubmenu === 'struktur') {
+                renderStrukturGrid();
             } else if (currentCategory === 'informasi' && currentSubmenu === 'kas') {
                 updateKasUI();
                 fetchKeuanganFromSheet();
