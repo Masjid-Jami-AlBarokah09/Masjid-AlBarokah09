@@ -194,7 +194,7 @@
                 <span class="hidden sm:inline text-white/30">|</span>
                 <span id="weather-topbar" class="text-amber-200 font-medium">🌡️ Memuat cuaca Bandung...</span>
             </div>
-            <div id="current-date-display" class="text-white/85 font-medium">Rabu, 18 Nov 2026</div>
+            <div id="current-date-display" class="text-white/85 font-medium">Kamis, 19 Nov 2026</div>
         </div>
     </div>
 
@@ -357,6 +357,7 @@
                 activeSubClass: 'bg-midnightTeal text-white shadow-sm',
                 inactiveSubClass: 'text-stone-700 hover:bg-tealLight hover:text-midnightTeal',
                 submenus: [
+                    { id: 'pembangunan', title: 'Seputar Pembangunan Masjid', icon: 'hammer' },
                     { id: 'kas', title: 'Infaq Pembangunan & Rekening', icon: 'wallet' }
                 ]
             }
@@ -720,23 +721,23 @@
                             <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
                                 <div class="flex items-center gap-2.5 bg-[#F4F0E6] p-2 rounded-2xl border border-stone-300/80 flex-1 sm:flex-initial">
                                     <div class="flip-date-card w-11 h-12 rounded-xl flex flex-col items-center justify-center shrink-0">
-                                        <span id="masehi-day-num" class="text-base font-black text-gray-900 leading-none font-mono">18</span>
+                                        <span id="masehi-day-num" class="text-base font-black text-gray-900 leading-none font-mono">19</span>
                                         <span id="masehi-month-short" class="text-[9px] font-bold uppercase text-emeraldDeep mt-0.5">NOV</span>
                                     </div>
                                     <div class="pr-2">
                                         <div class="text-[10px] font-bold uppercase tracking-wider text-stone-400">Kalender Masehi</div>
-                                        <div id="masehi-full-text" class="text-xs font-bold text-gray-800">Rabu, 18 Nov 2026</div>
+                                        <div id="masehi-full-text" class="text-xs font-bold text-gray-800">Kamis, 19 Nov 2026</div>
                                     </div>
                                 </div>
 
                                 <div class="flex items-center gap-2.5 bg-emeraldLight/70 p-2 rounded-2xl border border-emeraldDeep/20 flex-1 sm:flex-initial">
                                     <div class="flip-date-card w-11 h-12 rounded-xl flex flex-col items-center justify-center shrink-0 border-emeraldDeep/20">
-                                        <span id="hijri-day-num" class="text-base font-black text-emeraldDeep leading-none font-mono">08</span>
+                                        <span id="hijri-day-num" class="text-base font-black text-emeraldDeep leading-none font-mono">09</span>
                                         <span class="text-[9px] font-bold uppercase text-amber-700 mt-0.5">HIJRI</span>
                                     </div>
                                     <div class="pr-2">
                                         <div class="text-[10px] font-bold uppercase tracking-wider text-emeraldDeep/70">Kalender Hijriah</div>
-                                        <div id="hijri-full-text" class="text-xs font-bold text-emeraldDeep">8 Jumadilakhir 1448 H</div>
+                                        <div id="hijri-full-text" class="text-xs font-bold text-emeraldDeep">9 Jumadilakhir 1448 H</div>
                                     </div>
                                 </div>
                             </div>
@@ -1135,7 +1136,67 @@
                 });
             }
 
-            // HALAMAN 3: INFORMASI & INFAQ PEMBANGUNAN (OTOMATIS SINKRON DENGAN GOOGLE SHEETS)
+            // HALAMAN 3A: SEPUTAR PEMBANGUNAN MASJID (SUB-MENU PERTAMA DI KIRI)
+            else if (currentCategory === 'informasi' && currentSubmenu === 'pembangunan') {
+                wrapper.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest text-midnightTeal">Perkembangan Renovasi & Sarana</span>
+                            <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Seputar Pembangunan Masjid</h2>
+                            <p class="text-sm text-stone-600 mt-1 max-w-2xl">Informasi terkini tahapan pembangunan, kebutuhan material, serta dokumentasi lapangan Masjid Jami' Al-Barokah 09.</p>
+                        </div>
+                        <button onclick="switchPage('informasi', 'kas')" class="group self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-midnightTeal hover:bg-slate-800 text-white text-xs font-bold transition shadow-sm hover-lift">
+                            <i data-lucide="wallet" class="w-4 h-4 text-goldSoft icon-anim"></i>
+                            <span>Lihat Dana & Rekening Infaq</span>
+                        </button>
+                    </div>
+
+                    <!-- BANNER STATUS PEMBANGUNAN -->
+                    <div class="bg-midnightTeal text-white p-6 sm:p-8 rounded-3xl shadow-lg mb-8 border border-white/10 hover-lift">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                            <div class="space-y-2 max-w-2xl">
+                                <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-300 bg-white/10 px-3 py-1 rounded-full">
+                                    <i data-lucide="hard-hat" class="w-3.5 h-3.5"></i> Status Pekerjaan Berjalan
+                                </span>
+                                <h3 class="font-heading text-xl sm:text-2xl font-bold text-white">Peningkatan Fasilitas & Perluasan Area Ibadah</h3>
+                                <p class="text-xs sm:text-sm text-blue-100 leading-relaxed">
+                                    Pembangunan dilakukan secara bertahap dengan dukungan swadaya warga RW 09 Cigending dan para muhsinin. Seluruh dana dan donasi material tercatat transparan pada menu <b>Infaq Pembangunan & Rekening</b>.
+                                </p>
+                            </div>
+                            <div class="bg-white/10 border border-white/15 rounded-2xl p-4 text-center shrink-0 min-w-[200px]">
+                                <div class="text-[11px] uppercase tracking-wider text-blue-200 font-bold">Saldo Dana Pembangunan</div>
+                                <div class="font-heading text-xl sm:text-2xl font-extrabold text-goldSoft mt-1">${formatRupiah(keuanganData.danaPembangunan)}</div>
+                                <button onclick="switchPage('informasi', 'kas')" class="mt-2 text-[11px] underline text-white/90 hover:text-amber-300">Rincian Mutasi &rarr;</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GALERI DOKUMENTASI FOTO PEMBANGUNAN -->
+                    <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm hover-lift">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 pb-4 border-b border-stone-200">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-widest text-midnightTeal">Dokumentasi Lapangan</span>
+                                <h3 class="font-heading text-xl font-bold text-gray-900 mt-0.5">Galeri Foto Kegiatan Pembangunan</h3>
+                            </div>
+                            <span class="text-xs text-stone-500">Siap terhubung otomatis ke tab <b>Foto_Pembangunan</b></span>
+                        </div>
+
+                        <div id="galeri-pembangunan-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="col-span-full bg-tealLight/60 border border-dashed border-midnightTeal/30 rounded-2xl p-8 text-center space-y-2">
+                                <div class="w-12 h-12 rounded-2xl bg-midnightTeal text-goldSoft flex items-center justify-center mx-auto mb-2">
+                                    <i data-lucide="image-plus" class="w-6 h-6"></i>
+                                </div>
+                                <h4 class="font-heading font-bold text-base text-midnightTeal">Menunggu Tautan Tab Foto_Pembangunan</h4>
+                                <p class="text-xs text-stone-600 max-w-md mx-auto leading-relaxed">
+                                    Setelah Anda membuat tab <b>Foto_Pembangunan</b> di Google Spreadsheet dan membagikan angka <b>gid</b>-nya, foto-foto kegiatan pembangunan akan otomatis muncul di sini.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // HALAMAN 3B: INFAQ PEMBANGUNAN & REKENING (OTOMATIS SINKRON DENGAN GOOGLE SHEETS)
             else if (currentCategory === 'informasi' && currentSubmenu === 'kas') {
                 wrapper.innerHTML = `
                     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
@@ -1288,7 +1349,7 @@
                     day: 'numeric', month: 'long', year: 'numeric'
                 }).formatToParts(now);
 
-                const hDay = hijriParts.find(p => p.type === 'day')?.value || '08';
+                const hDay = hijriParts.find(p => p.type === 'day')?.value || '09';
                 const hMonth = hijriParts.find(p => p.type === 'month')?.value || 'Jumadilakhir';
                 const hYear = hijriParts.find(p => p.type === 'year')?.value || '1448';
 
