@@ -1,296 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masjid Jami' Al-Barokah 09 — Portal Digital & Layanan Umat</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        alabaster: '#F4F0E6',
-                        emeraldDeep: '#0B3B2E',
-                        emeraldLight: '#E3EFEA',
-                        goldSoft: '#D4AF37',
-                        terracotta: '#B85D3B',
-                        terracottaLight: '#F9ECE6',
-                        sage: '#4A7C59',
-                        midnightTeal: '#13384C',
-                        tealLight: '#E6F0F5',
-                    },
-                    fontFamily: {
-                        serif: ['"Playfair Display"', 'serif'],
-                        heading: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        sans: ['"Inter"', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            background-color: #F4F0E6;
-            color: #1F2937;
-            font-family: 'Inter', sans-serif;
-            transition: background-color 0.5s ease;
-        }
-
-        .theme-profil {
-            background-color: #F3EFE6;
-            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%230B3B2E' stroke-width='0.9' stroke-opacity='0.06'%3E%3Cpath d='M40 0L51.7 28.3L80 40L51.7 51.7L40 80L28.3 51.7L0 40L28.3 28.3Z'/%3E%3Ccircle cx='40' cy='40' r='16'/%3E%3Cpath d='M11.7 11.7L68.3 68.3M68.3 11.7L11.7 68.3'/%3E%3C/g%3E%3C/svg%3E");
-        }
-
-        .theme-layanan {
-            background-color: #F8F1E9;
-            background-image: url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23B85D3B' stroke-width='0.9' stroke-opacity='0.065'%3E%3Cpolygon points='36,4 68,36 36,68 4,36'/%3E%3Crect x='15' y='15' width='42' height='42'/%3E%3Ccircle cx='36' cy='36' r='10'/%3E%3C/g%3E%3C/svg%3E");
-        }
-
-        .theme-informasi {
-            background-color: #EDF2F4;
-            background-image: url("data:image/svg+xml,%3Csvg width='84' height='84' viewBox='0 0 84 84' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%2313384C' stroke-width='0.9' stroke-opacity='0.06'%3E%3Cpath d='M42 0L54 30L84 42L54 54L42 84L30 54L0 42L30 30Z'/%3E%3Ccircle cx='42' cy='42' r='22'/%3E%3C/g%3E%3C/svg%3E");
-        }
-
-        .islamic-arch {
-            border-radius: 9999px 9999px 1.5rem 1.5rem;
-        }
-
-        .hover-lift {
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .hover-lift:hover, .hover-lift:active {
-            transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 14px 32px -10px rgba(0,0,0,0.14);
-        }
-
-        .icon-anim {
-            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.25s ease;
-            display: inline-flex;
-        }
-        .group:hover .icon-anim,
-        .group:active .icon-anim,
-        button:hover .icon-anim,
-        button:active .icon-anim,
-        a:hover .icon-anim,
-        a:active .icon-anim {
-            transform: scale(1.22) rotate(-6deg);
-        }
-
-        @keyframes weatherFloat {
-            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
-            50% { transform: translateY(-6px) rotate(5deg) scale(1.08); }
-        }
-        .weather-motion {
-            animation: weatherFloat 3.5s ease-in-out infinite;
-            display: inline-block;
-        }
-
-        .curtain-panel {
-            display: grid;
-            grid-template-rows: 0fr;
-            transition: grid-template-rows 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease, margin-top 0.35s ease;
-            opacity: 0;
-            margin-top: 0;
-        }
-        .curtain-inner {
-            overflow: hidden;
-        }
-        .kajian-card:hover .curtain-panel,
-        .kajian-card:focus-within .curtain-panel,
-        .kajian-card.is-open .curtain-panel {
-            grid-template-rows: 1fr;
-            opacity: 1;
-            margin-top: 1rem;
-        }
-
-        .flip-box {
-            background: linear-gradient(to bottom, #ffffff 0%, #f1f5f9 100%);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.22), inset 0 2px 4px rgba(255, 255, 255, 0.95);
-            border-bottom: 3px solid #cbd5e1;
-            position: relative;
-        }
-        .flip-box::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 50%;
-            height: 1px;
-            background: rgba(15, 23, 42, 0.1);
-            pointer-events: none;
-        }
-
-        .flip-countdown-box {
-            background: linear-gradient(to bottom, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%);
-            box-shadow: 0 8px 20px -4px rgba(11, 59, 46, 0.14), inset 0 2px 3px rgba(255, 255, 255, 0.95);
-            border: 1px solid #cbd5e1;
-            border-bottom: 3px solid #94a3b8;
-            position: relative;
-        }
-        .flip-countdown-box::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 50%;
-            height: 1px;
-            background: rgba(15, 23, 42, 0.1);
-            pointer-events: none;
-        }
-
-        .flip-date-card {
-            background: linear-gradient(to bottom, #ffffff 0%, #f8fafc 50%, #eef2f6 100%);
-            box-shadow: 0 6px 16px -4px rgba(15, 23, 42, 0.12), inset 0 1px 2px rgba(255, 255, 255, 0.9);
-            border: 1px solid #e2e8f0;
-            border-bottom: 3px solid #cbd5e1;
-            position: relative;
-        }
-        .flip-date-card::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 50%;
-            height: 1px;
-            background: rgba(15, 23, 42, 0.08);
-            pointer-events: none;
-        }
-
-        .page-fade {
-            animation: fadeIn 0.38s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
-</head>
-<body id="app-body" class="theme-profil min-h-screen flex flex-col antialiased selection:bg-emeraldDeep selection:text-white pb-20 md:pb-0">
-
-    <!-- TOP BAR INFO LOKASI -->
-    <div id="top-prayer-bar" class="bg-emeraldDeep text-white transition-colors duration-500 border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs sm:text-sm">
-            <div class="flex items-center gap-3 text-white/95">
-                <span class="group inline-flex items-center gap-1.5 font-medium">
-                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-goldSoft icon-anim"></i>
-                    RT 03 RW 09 Kel. Cigending, Kec. Ujungberung, Kota Bandung
-                </span>
-                <span class="hidden sm:inline text-white/30">|</span>
-                <span id="weather-topbar" class="text-amber-200 font-medium">🌡️ Memuat cuaca Bandung...</span>
-            </div>
-            <div id="current-date-display" class="text-white/85 font-medium">Jum'at, 20 Nov 2026</div>
-        </div>
-    </div>
-
-    <!-- HEADER & NAVIGASI UTAMA -->
-    <header class="sticky top-0 z-40 bg-[#F9F6EE]/90 backdrop-blur-md border-b border-stone-300/70 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between py-3">
-                <!-- Brand Logo -->
-                <button onclick="switchPage('profil', 'beranda')" class="flex items-center gap-3 text-left group focus:outline-none">
-                    <div id="brand-icon-box" class="w-11 h-11 rounded-2xl bg-emeraldDeep text-goldSoft flex items-center justify-center shadow-md transition-colors duration-300">
-                        <svg class="w-6 h-6 icon-anim" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M12 2C9 5 6 7.5 6 11v9h12v-9c0-3.5-3-6-6-9z"/>
-                            <path d="M12 2v2M4 20h16M10 20v-4a2 2 0 0 1 4 0v4"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h1 class="font-serif font-bold text-lg sm:text-xl text-gray-900 leading-tight">Masjid Jami' Al-Barokah 09</h1>
-                        <p class="text-xs text-stone-600 font-medium">Cigending, Ujungberung, Bandung</p>
-                    </div>
-                </button>
-
-                <!-- Menu Halaman Utama (Desktop) -->
-                <nav class="hidden md:flex items-center gap-2 bg-stone-200/75 p-1.5 rounded-2xl">
-                    <button id="cat-btn-profil" onclick="switchCategory('profil')" class="cat-btn group flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-heading font-semibold transition-all duration-200">
-                        <i data-lucide="landmark" class="w-4 h-4 icon-anim"></i>
-                        <span>Profil Masjid</span>
-                    </button>
-                    <button id="cat-btn-layanan" onclick="switchCategory('layanan')" class="cat-btn group flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-heading font-semibold transition-all duration-200">
-                        <i data-lucide="heart-handshake" class="w-4 h-4 icon-anim"></i>
-                        <span>Layanan Umat</span>
-                    </button>
-                    <button id="cat-btn-informasi" onclick="switchCategory('informasi')" class="cat-btn group flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-heading font-semibold transition-all duration-200">
-                        <i data-lucide="shield-check" class="w-4 h-4 icon-anim"></i>
-                        <span>Informasi & Kas</span>
-                    </button>
-                </nav>
-
-                <!-- Tombol Aksi Cepat -->
-                <div class="flex items-center">
-                    <button onclick="switchPage('informasi', 'kas')" class="group inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs sm:text-sm font-semibold shadow-sm transition hover-lift">
-                        <i data-lucide="wallet" class="w-4 h-4 text-goldSoft icon-anim"></i>
-                        <span>Infaq Cepat</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sub-Navigasi Halaman -->
-        <div id="sub-nav-container" class="border-t border-stone-200/80 bg-[#FCFBF7]/85 backdrop-blur-sm transition-colors duration-300">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div id="sub-nav-list" class="flex items-center gap-2 py-2.5 overflow-x-auto no-scrollbar"></div>
-            </div>
-        </div>
-    </header>
-
-    <!-- BOTTOM NAVIGATION BAR (KHUSUS MOBILE) -->
-    <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#FAF7F0]/95 backdrop-blur-md border-t border-stone-300 shadow-lg px-3 py-2">
-        <div class="grid grid-cols-3 gap-2">
-            <button id="mob-cat-profil" onclick="switchCategory('profil')" class="group flex flex-col items-center justify-center py-2 px-1 rounded-xl text-xs font-bold transition">
-                <i data-lucide="landmark" class="w-5 h-5 mb-1 icon-anim"></i>
-                <span>Profil</span>
-            </button>
-            <button id="mob-cat-layanan" onclick="switchCategory('layanan')" class="group flex flex-col items-center justify-center py-2 px-1 rounded-xl text-xs font-bold transition">
-                <i data-lucide="heart-handshake" class="w-5 h-5 mb-1 icon-anim"></i>
-                <span>Layanan</span>
-            </button>
-            <button id="mob-cat-informasi" onclick="switchCategory('informasi')" class="group flex flex-col items-center justify-center py-2 px-1 rounded-xl text-xs font-bold transition">
-                <i data-lucide="shield-check" class="w-5 h-5 mb-1 icon-anim"></i>
-                <span>Info & Kas</span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- KONTEN HALAMAN DINAMIS -->
-    <main id="main-content" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8"></main>
-
-    <!-- FOOTER DENGAN LOGO IG & TIKTOK MINIMALIS -->
-    <footer class="bg-[#FAF7F0] border-t border-stone-300/80 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-                <div>
-                    <div class="flex items-center gap-2.5 mb-2">
-                        <span class="w-3 h-3 rounded-full bg-emeraldDeep"></span>
-                        <span class="font-serif font-bold text-lg text-gray-900">Masjid Jami' Al-Barokah 09</span>
-                    </div>
-                    <p class="text-sm text-stone-600 leading-relaxed">
-                        RT 03 RW 09 Kel. Cigending, Kec. Ujungberung, Kota Bandung, Jawa Barat. Terbuka 24 jam untuk ibadah dan musafir.
-                    </p>
-                </div>
-                
-                <!-- Ikon Logo IG & TikTok -->
-                <div class="flex items-center justify-start md:justify-center gap-4">
-                    <a href="https://instagram.com/remajamasjid_albarokah2025" target="_blank" rel="noopener noreferrer" title="Instagram @remajamasjid_albarokah2025" aria-label="Instagram" class="group w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 via-pink-600 to-purple-600 text-white flex items-center justify-center shadow-md hover-lift">
-                        <svg class="w-6 h-6 fill-current icon-anim" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                    </a>
-                    <a href="https://www.tiktok.com/@remajamasjidalbarokah09" target="_blank" rel="noopener noreferrer" title="TikTok @remajamasjidalbarokah09" aria-label="TikTok" class="group w-12 h-12 rounded-2xl bg-stone-900 hover:bg-black text-white flex items-center justify-center shadow-md hover-lift border border-stone-700">
+-lift border border-stone-700">
                         <svg class="w-5 h-5 fill-current icon-anim" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
                     </a>
                 </div>
@@ -438,6 +146,8 @@
         let strukturFilter = 'all';
         let strukturSearch = '';
         let currentZakatNominal = 0;
+        let currentZakatJiwa = 0;
+        let currentZakatBerasKg = 0;
 
         function formatRupiah(angka) {
             const num = Number(angka || 0);
@@ -452,7 +162,6 @@
             return Number(cleaned) || 0;
         }
 
-        // Ambil Data Infaq Pembangunan dari Kolom A (Tanggal), B (Pemasukan), C (Pengeluaran), D (Total), E (Donasi)
         async function fetchKeuanganFromSheet() {
             const statusEl = document.getElementById('sheet-sync-status');
             if (statusEl) statusEl.textContent = 'Menyinkronkan data dari Google Sheets...';
@@ -605,7 +314,24 @@
             lucide.createIcons();
         }
 
-        // Kalkulator Zakat Maal 2,5%
+        function updateWaZakatLink() {
+            const waBtn = document.getElementById('btn-wa-akad-zakat');
+            if (!waBtn) return;
+
+            let detailZakat = [];
+            if (currentZakatNominal > 0) {
+                detailZakat.push(`Zakat Maal/Profesi sebesar ${formatRupiah(currentZakatNominal)}`);
+            }
+            if (currentZakatJiwa > 0) {
+                const kgFormatted = currentZakatBerasKg.toLocaleString('id-ID', { minimumFractionDigits: currentZakatBerasKg % 1 === 0 ? 0 : 1, maximumFractionDigits: 1 });
+                detailZakat.push(`Zakat Fitrah untuk ${currentZakatJiwa} jiwa (${kgFormatted} kg beras)`);
+            }
+
+            const rincianTeks = detailZakat.length > 0 ? ` (${detailZakat.join(' dan ')})` : '';
+            const pesanWa = `Assalamu'alaikum Pengurus UPZ/DKM Masjid Jami' Al-Barokah 09, Bismillah saya berniat menunaikan Zakat${rincianTeks} untuk disalurkan kepada 8 asnaf mustahik di lingkungan RW 09 Cigending.`;
+            waBtn.href = `https://wa.me/6288218271505?text=${encodeURIComponent(pesanWa)}`;
+        }
+
         function hitungZakatMaal(inputVal) {
             const rawNum = Number(String(inputVal).replace(/[^0-9]/g, '')) || 0;
             const inputEl = document.getElementById('zakat-harta-input');
@@ -615,15 +341,34 @@
             currentZakatNominal = Math.round(rawNum * 0.025);
 
             const hasilEl = document.getElementById('zakat-hasil-nominal');
-            const waBtn = document.getElementById('btn-wa-akad-zakat');
             if (hasilEl) {
                 hasilEl.textContent = formatRupiah(currentZakatNominal);
             }
-            if (waBtn) {
-                const nominalText = currentZakatNominal > 0 ? ` sebesar ${formatRupiah(currentZakatNominal)}` : '';
-                const pesanWa = `Assalamu'alaikum Pengurus UPZ/DKM Masjid Jami' Al-Barokah 09, Bismillah saya berniat menunaikan Zakat${nominalText} untuk disalurkan kepada 8 asnaf mustahik di lingkungan RW 09 Cigending.`;
-                waBtn.href = `https://wa.me/6288218271505?text=${encodeURIComponent(pesanWa)}`;
+            updateWaZakatLink();
+        }
+
+        function hitungZakatFitrah(inputVal) {
+            const jiwa = Math.max(0, parseInt(String(inputVal).replace(/[^0-9]/g, ''), 10) || 0);
+            const inputEl = document.getElementById('zakat-jiwa-input');
+            if (inputEl) {
+                inputEl.value = jiwa > 0 ? jiwa : '';
             }
+
+            currentZakatJiwa = jiwa;
+            currentZakatBerasKg = jiwa * 2.5;
+            const totalLiter = jiwa * 3.5;
+
+            const hasilBerasEl = document.getElementById('zakat-hasil-beras');
+            const subLiterEl = document.getElementById('zakat-hasil-liter');
+            if (hasilBerasEl) {
+                const kgFormatted = currentZakatBerasKg.toLocaleString('id-ID', { minimumFractionDigits: currentZakatBerasKg % 1 === 0 ? 0 : 1, maximumFractionDigits: 1 });
+                hasilBerasEl.textContent = `${kgFormatted} Kg`;
+            }
+            if (subLiterEl) {
+                const literFormatted = totalLiter.toLocaleString('id-ID', { minimumFractionDigits: totalLiter % 1 === 0 ? 0 : 1, maximumFractionDigits: 1 });
+                subLiterEl.textContent = `Setara ${literFormatted} Liter (${jiwa} Jiwa × 2,5 Kg)`;
+            }
+            updateWaZakatLink();
         }
 
         function setStrukturFilter(filterVal) {
@@ -1172,36 +917,70 @@
                     `
                 });
             }
-            // HALAMAN 2B: LAYANAN ZAKAT (MAAL & FITRAH) + KALKULATOR 2,5%
+            // HALAMAN 2B: LAYANAN ZAKAT (MAAL & FITRAH) + KALKULATOR 2,5% (RUPIAH) & BERAT BERAS (KG)
             else if (currentCategory === 'layanan' && currentSubmenu === 'zakat') {
                 currentZakatNominal = 0;
-                const kalkulatorZakatHtml = `
-                    <div class="bg-emeraldLight/60 p-5 sm:p-6 rounded-2xl border border-emeraldDeep/20 space-y-4">
-                        <div class="flex items-center justify-between gap-2">
-                            <div>
-                                <span class="text-[11px] font-bold uppercase tracking-wider text-emeraldDeep">Kalkulator Zakat Maal / Profesi (2,5%)</span>
-                                <h4 class="font-heading font-bold text-base text-gray-900 mt-0.5">Hitung Kewajiban Zakat Anda</h4>
-                            </div>
-                            <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-emeraldDeep text-goldSoft">Kadar 2,5%</span>
-                        </div>
+                currentZakatJiwa = 0;
+                currentZakatBerasKg = 0;
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
-                            <div>
-                                <label for="zakat-harta-input" class="block text-xs font-bold text-stone-700 mb-1.5">Total Harta / Penghasilan (Rp)</label>
-                                <div class="relative">
-                                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-stone-500">Rp</span>
-                                    <input id="zakat-harta-input" type="text" inputmode="numeric" oninput="hitungZakatMaal(this.value)" placeholder="Contoh: 10.000.000"
-                                        class="w-full pl-10 pr-4 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm text-gray-900 focus:outline-none focus:border-emeraldDeep shadow-sm" />
+                const kalkulatorZakatHtml = `
+                    <div class="space-y-4">
+                        <!-- 1. KALKULATOR NOMINAL RUPIAH (ZAKAT MAAL / PROFESI 2,5%) -->
+                        <div class="bg-emeraldLight/60 p-5 sm:p-6 rounded-2xl border border-emeraldDeep/20 space-y-4">
+                            <div class="flex items-center justify-between gap-2">
+                                <div>
+                                    <span class="text-[11px] font-bold uppercase tracking-wider text-emeraldDeep">Kalkulator Zakat Maal / Profesi (2,5%)</span>
+                                    <h4 class="font-heading font-bold text-base text-gray-900 mt-0.5">Hitung Nominal Zakat Harta (Rupiah)</h4>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-emeraldDeep text-goldSoft">Kadar 2,5%</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                                <div>
+                                    <label for="zakat-harta-input" class="block text-xs font-bold text-stone-700 mb-1.5">Total Harta / Penghasilan (Rp)</label>
+                                    <div class="relative">
+                                        <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-stone-500">Rp</span>
+                                        <input id="zakat-harta-input" type="text" inputmode="numeric" oninput="hitungZakatMaal(this.value)" placeholder="Contoh: 3.200.000"
+                                            class="w-full pl-10 pr-4 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm text-gray-900 focus:outline-none focus:border-emeraldDeep shadow-sm" />
+                                    </div>
+                                </div>
+                                <div class="bg-white p-3.5 rounded-xl border border-emeraldDeep/20 text-center sm:text-right">
+                                    <span class="text-[11px] font-bold uppercase tracking-wider text-stone-500 block">Zakat Wajib Ditunaikan (2,5%)</span>
+                                    <span id="zakat-hasil-nominal" class="font-mono font-black text-2xl sm:text-3xl text-emeraldDeep mt-0.5 block">Rp 0</span>
                                 </div>
                             </div>
-                            <div class="bg-white p-3.5 rounded-xl border border-emeraldDeep/20 text-center sm:text-right">
-                                <span class="text-[11px] font-bold uppercase tracking-wider text-stone-500 block">Zakat Wajib Ditunaikan (2,5%)</span>
-                                <span id="zakat-hasil-nominal" class="font-mono font-black text-xl sm:text-2xl text-emeraldDeep mt-0.5 block">Rp 0</span>
-                            </div>
                         </div>
-                        <p class="text-[11px] text-stone-600 leading-relaxed">
-                            * Dana zakat dicatat secara terpisah dari kas pembangunan masjid dan disalurkan 100% kepada <b>8 Asnaf Mustahik</b> di lingkungan RW 09 Cigending.
-                        </p>
+
+                        <!-- 2. KALKULATOR BERAT BERAS (ZAKAT FITRAH 2,5 KG / JIWA) -->
+                        <div class="bg-amber-50/90 p-5 sm:p-6 rounded-2xl border border-amber-700/20 space-y-4">
+                            <div class="flex items-center justify-between gap-2">
+                                <div>
+                                    <span class="text-[11px] font-bold uppercase tracking-wider text-amber-800">Kalkulator Zakat Fitrah (Beras)</span>
+                                    <h4 class="font-heading font-bold text-base text-gray-900 mt-0.5">Hitung Berat Beras Zakat Fitrah</h4>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-amber-800 text-amber-100">2,5 Kg / Jiwa</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                                <div>
+                                    <label for="zakat-jiwa-input" class="block text-xs font-bold text-stone-700 mb-1.5">Jumlah Anggota Keluarga (Jiwa)</label>
+                                    <div class="relative">
+                                        <input id="zakat-jiwa-input" type="text" inputmode="numeric" oninput="hitungZakatFitrah(this.value)" placeholder="Contoh: 4"
+                                            class="w-full pl-4 pr-14 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm text-gray-900 focus:outline-none focus:border-amber-700 shadow-sm" />
+                                        <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-stone-500">Jiwa</span>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-3.5 rounded-xl border border-amber-700/20 text-center sm:text-right">
+                                    <span class="text-[11px] font-bold uppercase tracking-wider text-stone-500 block">Total Berat Beras Zakat</span>
+                                    <span id="zakat-hasil-beras" class="font-mono font-black text-2xl sm:text-3xl text-amber-800 mt-0.5 block">0 Kg</span>
+                                    <span id="zakat-hasil-liter" class="text-[11px] font-medium text-stone-500 block mt-0.5">Setara 0 Liter (0 Jiwa × 2,5 Kg)</span>
+                                </div>
+                            </div>
+
+                            <p class="text-[11px] text-stone-600 leading-relaxed">
+                                * Dana maupun beras zakat dicatat secara terpisah dari kas pembangunan masjid dan disalurkan 100% kepada <b>8 Asnaf Mustahik</b> di lingkungan RW 09 Cigending.
+                            </p>
+                        </div>
                     </div>
                 `;
 
