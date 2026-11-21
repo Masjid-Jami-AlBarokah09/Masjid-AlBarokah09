@@ -1,3 +1,10 @@
+Semua penyesuaian tampilan tersebut sudah diterapkan dalam **1 file `index.html` utuh**:
+
+1. **Tanggal Masehi & Hijriah menyatu dalam 1 kotak 2 baris** di bagian header Jadwal Sholat (baris atas **Masehi** lengkap, baris bawah **Hijriah** otomatis dari API Aladhan).
+2. **Judul "Portal Digital Masjid Jami' Al-Barokah 09" & deskripsinya digeser rata tengah (`text-center`)**.
+3. **Kotak Waktu Real-Time di sudut kiri, Animasi Cuaca Dinamis (SVG beranimasi yang berubah otomatis mengikuti `weathercode` API Open-Meteo: cerah berputar, awan melayang, hujan turun, atau petir menyala) di tengah, dan Kotak Suhu & Keterangan Cuaca Cigending di sudut kanan** dengan ukuran kotak yang sejajar simetris.
+
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -41,6 +48,18 @@
         .flip-box { background: linear-gradient(to bottom, #ffffff 0%, #f1f5f9 100%); border: 1px solid #cbd5e1; border-bottom: 3px solid #94a3b8; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Animasi Cuaca Dinamis */
+        @keyframes spinSun { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes floatCloud { 0%, 100% { transform: translateX(-4px); } 50% { transform: translateX(5px); } }
+        @keyframes rainFall { 0% { transform: translateY(-4px); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(10px); opacity: 0; } }
+        @keyframes flashBolt { 0%, 85%, 100% { opacity: 0.2; } 90%, 95% { opacity: 1; } }
+        .anim-sun { transform-origin: center; animation: spinSun 16s linear infinite; }
+        .anim-cloud { animation: floatCloud 4s ease-in-out infinite; }
+        .anim-rain-1 { animation: rainFall 1.1s linear infinite; }
+        .anim-rain-2 { animation: rainFall 1.1s linear infinite 0.35s; }
+        .anim-rain-3 { animation: rainFall 1.1s linear infinite 0.7s; }
+        .anim-bolt { animation: flashBolt 2.5s infinite; }
     </style>
 </head>
 <body id="app-body" class="theme-profil min-h-screen flex flex-col pb-20 md:pb-0">
@@ -134,7 +153,7 @@
         const SHEET_ID = '135ZDz6L9AKgm4znvvPPkJxCdtCjy_Qd8EBhEcAVv7D0';
         const SHEET_GID = '0';
         const DOCS_ARTIKEL_URL = 'https://docs.google.com/document/d/1i7G_1kQ8vS8q3s9x7vF2mL4nK8pQ2wR9tY5uI0oP3aS/preview';
-        let keuanganData = { danaPembangunan: 0, totalPemasukan: 0, totalPengeluaran: 0, mutasiPembangunan: [], lastSync: 'Memuat...' };
+        let keuanganData = { danaPembangunan: 0, totalPemasukan: 0, totalPengeluaran: 0, mutasiPembangunan: [] };
 
         const artikelList = [
             { id: 1, kategori: 'Fiqih Ibadah', tanggal: '20 Nov 2026', penulis: 'Seksi Dakwah DKM', judul: 'Keutamaan Memakmurkan Masjid & Sholat Berjamaah di Awal Waktu', ringkasan: 'Memakmurkan masjid bukan hanya membangun fisiknya, melainkan menghidupkan sholat berjamaah dan majelis ilmu.', isi: ['Allah SWT berfirman dalam QS. At-Taubah ayat 18 bahwa orang-orang yang memakmurkan masjid-masjid Allah hanyalah mereka yang beriman kepada Allah dan hari akhir, mendirikan sholat, menunaikan zakat, serta tidak takut kepada selain Allah.', 'Di lingkungan RW 09 Cigending, semangat memakmurkan Masjid Jami\' Al-Barokah 09 terus dijaga melalui sholat lima waktu berjamaah, pengajian malam Jum\'at, tahsin Al-Qur\'an, dan pembinaan TPA.'] },
@@ -170,6 +189,37 @@
 
         let currentCategory = 'profil', currentSubmenu = 'beranda';
 
+        function getWeatherVisual(code) {
+            if (code === 0) {
+                return {
+                    label: 'Cerah Terik',
+                    svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-sun"><circle cx="32" cy="32" r="13" fill="#FBBF24"/><path d="M32 6V12M32 52V58M6 32H12M52 32H58M13.6 13.6L17.8 17.8M46.2 46.2L50.4 50.4M50.4 13.6L46.2 17.8M17.8 46.2L13.6 50.4" stroke="#F59E0B" stroke-width="3.5" stroke-linecap="round"/></g></svg>`
+                };
+            }
+            if (code >= 1 && code <= 3) {
+                return {
+                    label: code === 1 ? 'Cerah Berawan' : 'Berawan Sejuk',
+                    svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-sun"><circle cx="24" cy="24" r="10" fill="#FBBF24"/><path d="M24 8V11M24 37V40M8 24H11M37 24H40M12.7 12.7L14.8 14.8M33.2 33.2L35.3 35.3M35.3 12.7L33.2 14.8M14.8 33.2L12.7 35.3" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round"/></g><g class="anim-cloud"><path d="M22 46H47C51.4 46 55 42.4 55 38C55 33.8 51.8 30.4 47.7 30.1C46.3 24.3 41.1 20 35 20C28.4 20 23 25 22.1 31.4C18.6 32.1 16 35.2 16 38.9C16 42.8 18.7 46 22 46Z" fill="#F8FAFC"/></g></svg>`
+                };
+            }
+            if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) {
+                return {
+                    label: 'Hujan Ringan / Sedang',
+                    svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-cloud"><path d="M18 38H46C50.9 38 55 34 55 29C55 24.3 51.4 20.5 46.8 20.1C45.2 13.7 39.4 9 32.5 9C25.1 9 19 14.6 18 21.8C14.1 22.6 11 26 11 30.1C11 34.5 14.1 38 18 38Z" fill="#E2E8F0"/></g><line class="anim-rain-1" x1="22" y1="42" x2="19" y2="52" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/><line class="anim-rain-2" x1="32" y1="42" x2="29" y2="52" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/><line class="anim-rain-3" x1="42" y1="42" x2="39" y2="52" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/></svg>`
+                };
+            }
+            if (code >= 95) {
+                return {
+                    label: 'Hujan Petir',
+                    svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-cloud"><path d="M18 37H46C50.9 37 55 33 55 28C55 23.3 51.4 19.5 46.8 19.1C45.2 12.7 39.4 8 32.5 8C25.1 8 19 13.6 18 20.8C14.1 21.6 11 25 11 29.1C11 33.5 14.1 37 18 37Z" fill="#CBD5E1"/></g><path class="anim-bolt" d="M34 36L26 47H33L30 57L41 44H34L34 36Z" fill="#FACC15"/></svg>`
+                };
+            }
+            return {
+                label: 'Berawan Sejuk',
+                svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-cloud"><path d="M18 42H46C50.9 42 55 38 55 33C55 28.3 51.4 24.5 46.8 24.1C45.2 17.7 39.4 13 32.5 13C25.1 13 19 18.6 18 25.8C14.1 26.6 11 30 11 34.1C11 38.5 14.1 42 18 42Z" fill="#F1F5F9"/></g></svg>`
+            };
+        }
+
         function bukaArtikelModal(id) {
             const art = artikelList.find(a => a.id === id);
             if (!art) return;
@@ -197,7 +247,7 @@
                     if (tgl.toLowerCase() === 'tanggal') return;
                     if (tgl || masuk || keluar || donasi !== '-') { sumIn += masuk; sumOut += keluar; list.push({ tanggal: tgl || '-', pemasukan: masuk, pengeluaran: keluar, donasi }); }
                 });
-                keuanganData = { totalPemasukan: sumIn, totalPengeluaran: sumOut, danaPembangunan: sumIn - sumOut, mutasiPembangunan: list, lastSync: 'Tersinkron otomatis' };
+                keuanganData = { totalPemasukan: sumIn, totalPengeluaran: sumOut, danaPembangunan: sumIn - sumOut, mutasiPembangunan: list };
                 if (currentCategory === 'informasi' && currentSubmenu === 'kas') updateKasUI();
             } catch (e) {}
         }
@@ -253,31 +303,55 @@
         function renderPage() {
             const main = document.getElementById('main-content'); main.innerHTML = ''; const w = document.createElement('div');
             if (currentCategory === 'profil' && currentSubmenu === 'beranda') {
+                const defaultVis = getWeatherVisual(2);
                 w.innerHTML = `
+                    <!-- HERO BANNER RATA TENGAH + 3 KOLOM (JAM KIRI | ANIMASI CUACA TENGAH | SUHU KANAN) -->
                     <div class="bg-emeraldDeep text-white p-6 sm:p-10 rounded-3xl shadow-xl mb-8 border border-goldSoft/40">
-                        <span class="px-3 py-1 rounded-full bg-goldSoft/20 text-goldSoft text-xs font-semibold uppercase">✨ Selamat Datang</span>
-                        <h2 class="font-serif text-2xl sm:text-4xl font-bold mt-3">Portal Digital Masjid Jami' Al-Barokah 09</h2>
-                        <p class="text-emerald-100/90 text-sm sm:text-base mt-2 max-w-2xl">Pusat informasi ibadah, kajian, transparansi dana pembangunan, serta layanan qurban, zakat, infaq, dan sosial warga RW 09 Cigending.</p>
-                        <div class="pt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="bg-black/25 px-4 py-4 rounded-2xl border border-white/15">
-                                <div class="text-[11px] uppercase text-amber-300 font-bold mb-2">Waktu Real-Time:</div>
+                        <div class="text-center max-w-3xl mx-auto">
+                            <span class="inline-block px-3.5 py-1 rounded-full bg-goldSoft/20 text-goldSoft text-xs font-semibold uppercase tracking-wide">✨ Selamat Datang</span>
+                            <h2 class="font-serif text-2xl sm:text-4xl font-bold mt-3">Portal Digital Masjid Jami' Al-Barokah 09</h2>
+                            <p class="text-emerald-100/90 text-sm sm:text-base mt-2.5 leading-relaxed">Pusat informasi ibadah, kajian, transparansi dana pembangunan, serta layanan qurban, zakat, infaq, dan sosial warga RW 09 Cigending.</p>
+                        </div>
+
+                        <div class="pt-7 grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
+                            <!-- SUDUT KIRI: WAKTU REAL-TIME -->
+                            <div class="bg-black/25 px-5 py-4 rounded-2xl border border-white/15 flex flex-col justify-center items-center md:items-start">
+                                <div class="text-[11px] uppercase tracking-wider text-amber-300 font-bold mb-2">Waktu Real-Time:</div>
                                 <div class="flex items-center space-x-2">
                                     <div class="flip-box w-12 h-14 rounded-xl flex items-center justify-center text-gray-900 font-black text-xl font-mono"><span id="flip-hour">00</span></div><span class="text-xl font-bold text-amber-300">:</span>
                                     <div class="flip-box w-12 h-14 rounded-xl flex items-center justify-center text-gray-900 font-black text-xl font-mono"><span id="flip-minute">00</span></div><span class="text-xl font-bold text-amber-300">:</span>
                                     <div class="flip-box w-12 h-14 rounded-xl flex items-center justify-center text-gray-900 font-black text-xl font-mono"><span id="flip-second">00</span></div>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between px-4 py-4 rounded-2xl border bg-white/10 border-white/20">
-                                <div><span class="text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full bg-white/15 text-amber-200">Cuaca Cigending</span><div class="flex items-baseline gap-2 mt-2"><span id="weather-temp" class="text-3xl font-black text-white font-mono">--°C</span><span class="text-xs text-white/90">Bandung</span></div></div>
-                                <div class="text-4xl">⛅</div>
+
+                            <!-- TENGAH: ANIMASI CUACA REAL-TIME -->
+                            <div class="bg-white/10 px-5 py-4 rounded-2xl border border-white/20 flex flex-col items-center justify-center text-center">
+                                <div id="weather-anim-container" class="flex items-center justify-center">${defaultVis.svg}</div>
+                                <span id="weather-status-badge" class="mt-1 px-3 py-0.5 rounded-full bg-black/25 text-amber-200 text-[11px] font-bold tracking-wide">${defaultVis.label}</span>
+                            </div>
+
+                            <!-- SUDUT KANAN: INFO SUHU & LOKASI -->
+                            <div class="bg-black/25 px-5 py-4 rounded-2xl border border-white/15 flex flex-col justify-center items-center md:items-end text-center md:text-right">
+                                <span class="text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full bg-white/15 text-amber-200">Cuaca Cigending</span>
+                                <div class="flex items-baseline gap-2 mt-2">
+                                    <span id="weather-temp" class="text-3xl sm:text-4xl font-black text-white font-mono">--°C</span>
+                                    <span class="text-xs text-white/90 font-medium">Bandung</span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- JADWAL SHOLAT + 1 KOTAK TANGGAL GABUNG (ATAS MASEHI, BAWAH HIJRIAH) -->
                     <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm mb-10">
-                        <div class="flex flex-wrap justify-between items-center gap-4 border-b pb-4 mb-5">
-                            <div><span class="text-xs font-bold text-amber-800 uppercase">⏰ Jadwal Sholat Kota Bandung</span><p class="text-xs text-emeraldDeep font-bold mt-1">Kalender Hijriah 1448 H</p></div>
-                            <div id="masehi-full-text" class="text-xs font-bold text-gray-800 bg-[#F4F0E6] px-3 py-2 rounded-xl border">Sabtu, 21 Nov 2026</div>
+                        <div class="flex flex-wrap justify-between items-center gap-4 border-b border-stone-200 pb-4 mb-5">
+                            <div>
+                                <span class="text-xs font-bold text-amber-800 uppercase tracking-wider">⏰ Jadwal Sholat Kota Bandung</span>
+                                <p class="text-xs text-stone-500 mt-0.5">Kementerian Agama RI • Wilayah Bandung & Sekitarnya</p>
+                            </div>
+                            <div class="bg-[#F4F0E6] px-4 py-2.5 rounded-2xl border border-stone-300/80 text-right shadow-xs">
+                                <div id="masehi-full-text" class="text-xs sm:text-sm font-extrabold text-gray-900 leading-snug">Sabtu, 21 Nov 2026</div>
+                                <div id="hijri-full-text" class="text-[11px] sm:text-xs font-bold text-emeraldDeep mt-0.5">11 Jumadil Akhir 1448 H</div>
+                            </div>
                         </div>
                         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-center">
                             <div class="p-3 rounded-2xl border bg-[#F4F0E6]/70"><div class="text-[11px] font-bold">IMSAK</div><div id="sholat-imsak" class="text-lg font-black mt-1">--:--</div></div>
@@ -297,11 +371,9 @@
                                 <span class="text-xs font-bold uppercase tracking-widest text-emeraldDeep">📖 Khazanah & Literasi Umat</span>
                                 <h3 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mt-1">Artikel & Buletin Dakwah Al-Barokah</h3>
                             </div>
-                            <div class="flex flex-wrap items-center gap-2">
-                                <button onclick="toggleDocsEmbed()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold shadow-sm hover:bg-emerald-950">
-                                    <i data-lucide="book-open" class="w-4 h-4 text-goldSoft"></i><span>Buka / Tutup Buletin Google Docs</span>
-                                </button>
-                            </div>
+                            <button onclick="toggleDocsEmbed()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold shadow-sm hover:bg-emerald-950">
+                                <i data-lucide="book-open" class="w-4 h-4 text-goldSoft"></i><span>Buka / Tutup Buletin Google Docs</span>
+                            </button>
                         </div>
 
                         <div id="docs-embed-box" class="rounded-2xl overflow-hidden border border-stone-300 bg-white">
@@ -389,15 +461,42 @@
         }
 
         function copyRekening(norek, bank) { if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(norek).then(() => showToast(`Rekening ${bank} (${norek}) disalin!`)); else { const t = document.createElement('textarea'); t.value = norek; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); showToast(`Rekening ${bank} (${norek}) disalin!`); } }
-        function updateClock() { const now = new Date(); if (document.getElementById('flip-hour')) { document.getElementById('flip-hour').textContent = String(now.getHours()).padStart(2, '0'); document.getElementById('flip-minute').textContent = String(now.getMinutes()).padStart(2, '0'); document.getElementById('flip-second').textContent = String(now.getSeconds()).padStart(2, '0'); } const tgl = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' }); if (document.getElementById('current-date-display')) document.getElementById('current-date-display').textContent = tgl; if (document.getElementById('masehi-full-text')) document.getElementById('masehi-full-text').textContent = tgl; }
+        function updateClock() {
+            const now = new Date();
+            if (document.getElementById('flip-hour')) {
+                document.getElementById('flip-hour').textContent = String(now.getHours()).padStart(2, '0');
+                document.getElementById('flip-minute').textContent = String(now.getMinutes()).padStart(2, '0');
+                document.getElementById('flip-second').textContent = String(now.getSeconds()).padStart(2, '0');
+            }
+            const tglShort = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' });
+            const tglLong = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            if (document.getElementById('current-date-display')) document.getElementById('current-date-display').textContent = tglShort;
+            if (document.getElementById('masehi-full-text')) document.getElementById('masehi-full-text').textContent = tglLong;
+        }
         setInterval(updateClock, 1000);
 
         async function fetchPrayerAndWeather() {
             try {
-                const t = (await (await fetch('https://api.aladhan.com/v1/timingsByCity?city=Bandung&country=Indonesia&method=20')).json()).data.timings;
-                if (document.getElementById('sholat-imsak')) { document.getElementById('sholat-imsak').textContent = t.Imsak; document.getElementById('sholat-subuh').textContent = t.Fajr; document.getElementById('sholat-terbit').textContent = t.Sunrise; document.getElementById('sholat-dzuhur').textContent = t.Dhuhr; document.getElementById('sholat-ashar').textContent = t.Asr; document.getElementById('sholat-maghrib').textContent = t.Maghrib; document.getElementById('sholat-isya').textContent = t.Isha; }
+                const resPrayer = await (await fetch('https://api.aladhan.com/v1/timingsByCity?city=Bandung&country=Indonesia&method=20')).json();
+                const t = resPrayer.data.timings;
+                const h = resPrayer.data.date.hijri;
+                if (document.getElementById('sholat-imsak')) {
+                    document.getElementById('sholat-imsak').textContent = t.Imsak; document.getElementById('sholat-subuh').textContent = t.Fajr;
+                    document.getElementById('sholat-terbit').textContent = t.Sunrise; document.getElementById('sholat-dzuhur').textContent = t.Dhuhr;
+                    document.getElementById('sholat-ashar').textContent = t.Asr; document.getElementById('sholat-maghrib').textContent = t.Maghrib;
+                    document.getElementById('sholat-isya').textContent = t.Isha;
+                }
+                if (h && document.getElementById('hijri-full-text')) {
+                    const bulanHijri = ['Muharram', 'Safar', 'Rabiul Awal', 'Rabiul Akhir', 'Jumadil Awal', 'Jumadil Akhir', 'Rajab', 'Sya\'ban', 'Ramadhan', 'Syawal', 'Dzulqa\'dah', 'Dzulhijjah'];
+                    const namaBulan = bulanHijri[(Number(h.month.number) || 1) - 1] || h.month.en;
+                    document.getElementById('hijri-full-text').textContent = `${h.day} ${namaBulan} ${h.year} H`;
+                }
                 const cw = (await (await fetch('https://api.open-meteo.com/v1/forecast?latitude=-6.9125&longitude=107.7025&current_weather=true')).json()).current_weather;
-                if (document.getElementById('weather-temp')) { document.getElementById('weather-temp').textContent = `${cw.temperature}°C`; document.getElementById('weather-topbar').innerHTML = `🌡️ Cigending, Bandung • <b>${cw.temperature}°C</b>`; }
+                const vis = getWeatherVisual(cw.weathercode);
+                if (document.getElementById('weather-temp')) document.getElementById('weather-temp').textContent = `${cw.temperature}°C`;
+                if (document.getElementById('weather-anim-container')) document.getElementById('weather-anim-container').innerHTML = vis.svg;
+                if (document.getElementById('weather-status-badge')) document.getElementById('weather-status-badge').textContent = vis.label;
+                if (document.getElementById('weather-topbar')) document.getElementById('weather-topbar').innerHTML = `🌡️ Cigending, Bandung • <b>${cw.temperature}°C</b> (${vis.label})`;
             } catch (e) {}
         }
 
@@ -405,3 +504,5 @@
     </script>
 </body>
 </html>
+
+```
