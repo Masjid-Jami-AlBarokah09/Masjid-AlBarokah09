@@ -38,10 +38,7 @@
         .curtain-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease, margin-top 0.35s ease; opacity: 0; margin-top: 0; }
         .curtain-inner { overflow: hidden; }
         .kajian-card:hover .curtain-panel, .kajian-card:focus-within .curtain-panel, .kajian-card.is-open .curtain-panel { grid-template-rows: 1fr; opacity: 1; margin-top: 1rem; }
-        .flip-box, .flip-countdown-box, .flip-date-card {
-            background: linear-gradient(to bottom, #ffffff 0%, #f1f5f9 100%);
-            border: 1px solid #cbd5e1; border-bottom: 3px solid #94a3b8; position: relative;
-        }
+        .flip-box { background: linear-gradient(to bottom, #ffffff 0%, #f1f5f9 100%); border: 1px solid #cbd5e1; border-bottom: 3px solid #94a3b8; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -71,13 +68,11 @@
                         <p class="text-xs text-stone-600 font-medium">Cigending, Ujungberung, Bandung</p>
                     </div>
                 </button>
-
                 <nav class="hidden md:flex items-center gap-2 bg-stone-200/75 p-1.5 rounded-2xl">
                     <button id="cat-btn-profil" onclick="switchCategory('profil')" class="px-5 py-2.5 rounded-xl text-sm font-heading font-semibold">Profil Masjid</button>
                     <button id="cat-btn-layanan" onclick="switchCategory('layanan')" class="px-5 py-2.5 rounded-xl text-sm font-heading font-semibold">Layanan Umat</button>
                     <button id="cat-btn-informasi" onclick="switchCategory('informasi')" class="px-5 py-2.5 rounded-xl text-sm font-heading font-semibold">Informasi & Kas</button>
                 </nav>
-
                 <button onclick="switchPage('informasi', 'kas')" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs sm:text-sm font-semibold shadow-sm">
                     <i data-lucide="wallet" class="w-4 h-4 text-goldSoft"></i><span>Infaq Cepat</span>
                 </button>
@@ -100,23 +95,36 @@
 
     <main id="main-content" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8"></main>
 
-    <footer class="bg-[#FAF7F0] border-t border-stone-300/80 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div>
-                    <span class="font-serif font-bold text-lg text-gray-900">Masjid Jami' Al-Barokah 09</span>
-                    <p class="text-xs text-stone-600 mt-1">RT 03 RW 09 Kel. Cigending, Kec. Ujungberung, Kota Bandung.</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <a href="https://instagram.com/remajamasjid_albarokah2025" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-pink-600 to-purple-600 text-white flex items-center justify-center shadow-md hover-lift" aria-label="Instagram">
-                        <svg width="22" height="22" style="width:22px;height:22px;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                    </a>
-                    <a href="https://www.tiktok.com/@remajamasjidalbarokah09" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-2xl bg-stone-900 text-white flex items-center justify-center shadow-md hover-lift" aria-label="TikTok">
-                        <svg width="20" height="20" style="width:20px;height:20px;" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
-                    </a>
-                </div>
-                <div class="text-xs text-stone-500 text-center md:text-right">&copy; 2026 DKM Masjid Jami' Al-Barokah 09</div>
+    <!-- MODAL BACA ARTIKEL LENGKAP -->
+    <div id="artikel-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this) tutupArtikelModal()">
+        <div class="bg-[#FCFBF7] max-w-2xl w-full rounded-3xl border border-stone-300 shadow-2xl overflow-hidden max-h-[88vh] flex flex-col">
+            <div class="bg-emeraldDeep text-white px-6 py-4 flex items-center justify-between">
+                <span id="modal-artikel-kategori" class="text-xs font-bold uppercase tracking-wider text-goldSoft">Buletin Dakwah</span>
+                <button onclick="tutupArtikelModal()" class="w-8 h-8 rounded-xl bg-white/15 hover:bg-white/25 flex items-center justify-center text-white font-bold">✕</button>
             </div>
+            <div class="p-6 sm:p-8 overflow-y-auto space-y-4">
+                <h3 id="modal-artikel-judul" class="font-serif text-2xl font-bold text-gray-900"></h3>
+                <div id="modal-artikel-meta" class="text-xs text-stone-500 font-medium border-b border-stone-200 pb-3"></div>
+                <div id="modal-artikel-isi" class="text-sm text-stone-700 leading-relaxed space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-[#FAF7F0] border-t border-stone-300/80 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+                <span class="font-serif font-bold text-lg text-gray-900">Masjid Jami' Al-Barokah 09</span>
+                <p class="text-xs text-stone-600 mt-1">RT 03 RW 09 Kel. Cigending, Kec. Ujungberung, Kota Bandung.</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="https://instagram.com/remajamasjid_albarokah2025" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-pink-600 to-purple-600 text-white flex items-center justify-center shadow-md hover-lift" aria-label="Instagram">
+                    <svg width="22" height="22" style="width:22px;height:22px;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://www.tiktok.com/@remajamasjidalbarokah09" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-2xl bg-stone-900 text-white flex items-center justify-center shadow-md hover-lift" aria-label="TikTok">
+                    <svg width="20" height="20" style="width:20px;height:20px;" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                </a>
+            </div>
+            <div class="text-xs text-stone-500 text-center md:text-right">&copy; 2026 DKM Masjid Jami' Al-Barokah 09</div>
         </div>
     </footer>
 
@@ -125,42 +133,19 @@
     <script>
         const SHEET_ID = '135ZDz6L9AKgm4znvvPPkJxCdtCjy_Qd8EBhEcAVv7D0';
         const SHEET_GID = '0';
-        let keuanganData = { danaPembangunan: 0, totalPemasukan: 0, totalPengeluaran: 0, mutasiPembangunan: [], lastSync: 'Memuat data dari Google Sheets...' };
+        const DOCS_ARTIKEL_URL = 'https://docs.google.com/document/d/1i7G_1kQ8vS8q3s9x7vF2mL4nK8pQ2wR9tY5uI0oP3aS/preview';
+        let keuanganData = { danaPembangunan: 0, totalPemasukan: 0, totalPengeluaran: 0, mutasiPembangunan: [], lastSync: 'Memuat...' };
+
+        const artikelList = [
+            { id: 1, kategori: 'Fiqih Ibadah', tanggal: '20 Nov 2026', penulis: 'Seksi Dakwah DKM', judul: 'Keutamaan Memakmurkan Masjid & Sholat Berjamaah di Awal Waktu', ringkasan: 'Memakmurkan masjid bukan hanya membangun fisiknya, melainkan menghidupkan sholat berjamaah dan majelis ilmu.', isi: ['Allah SWT berfirman dalam QS. At-Taubah ayat 18 bahwa orang-orang yang memakmurkan masjid-masjid Allah hanyalah mereka yang beriman kepada Allah dan hari akhir, mendirikan sholat, menunaikan zakat, serta tidak takut kepada selain Allah.', 'Di lingkungan RW 09 Cigending, semangat memakmurkan Masjid Jami\' Al-Barokah 09 terus dijaga melalui sholat lima waktu berjamaah, pengajian malam Jum\'at, tahsin Al-Qur\'an, dan pembinaan TPA.'] },
+            { id: 2, kategori: 'Persiapan Qurban', tanggal: '15 Nov 2026', penulis: 'Panitia Qurban & UPZ', judul: 'Merencanakan Ibadah Qurban Lebih Ringan dengan Tabungan Terencana', ringkasan: 'Menabung setiap bulan membantu jamaah mempersiapkan hewan qurban terbaik tanpa terasa berat menjelang Idul Adha.', isi: ['Ibadah qurban merupakan wujud ketakwaan dan kepedulian kepada sesama pada hari raya Idul Adha.', 'DKM Masjid Jami\' Al-Barokah 09 memfasilitasi Tabungan Qurban warga RW 09 Cigending. Gunakan kalkulator di menu Layanan & Tabungan Qurban untuk menghitung progres tabungan dan sisa kekurangannya.'] },
+            { id: 3, kategori: 'Sosial & Umat', tanggal: '08 Nov 2026', penulis: 'Seksi Pemberdayaan', judul: 'Indahnya Berbagi Melalui Program Beras Barokah & Jum\'at Berkah', ringkasan: 'Sinergi warga RW 09 Cigending dalam menjaga ketahanan pangan keluarga dhuafa dan lansia melalui sedekah beras.', isi: ['Melalui gerakan Beras Barokah dan Jum\'at Berkah, donasi beras maupun paket makanan dari para dermawan RW 09 Cigending disalurkan rutin kepada keluarga mustahik dan lansia.'] }
+        ];
 
         const menuConfig = {
-            profil: {
-                themeClass: 'theme-profil', themeColor: '#0B3B2E',
-                activeCatClass: 'bg-emeraldDeep text-white shadow-md', activeSubClass: 'bg-emeraldDeep text-white',
-                inactiveSubClass: 'text-stone-700 hover:bg-emeraldLight',
-                submenus: [
-                    { id: 'beranda', title: 'Beranda Utama', icon: 'home' },
-                    { id: 'sejarah', title: 'Sejarah & Visi Misi', icon: 'book-open' },
-                    { id: 'kajian', title: 'Jadwal Kajian & Diskusi', icon: 'calendar-days' },
-                    { id: 'struktur', title: 'Struktur Kepengurusan', icon: 'users' }
-                ]
-            },
-            layanan: {
-                themeClass: 'theme-layanan', themeColor: '#B85D3B',
-                activeCatClass: 'bg-terracotta text-white shadow-md', activeSubClass: 'bg-terracotta text-white',
-                inactiveSubClass: 'text-stone-700 hover:bg-terracottaLight',
-                submenus: [
-                    { id: 'qurban', title: 'Layanan & Tabungan Qurban', icon: 'award' },
-                    { id: 'zakat', title: 'Layanan Zakat', icon: 'scale' },
-                    { id: 'infaq', title: 'Layanan Infaq', icon: 'landmark' },
-                    { id: 'shodaqoh', title: 'Layanan Shodaqoh', icon: 'heart-handshake' },
-                    { id: 'beras', title: 'Program Beras Barokah', icon: 'wheat' },
-                    { id: 'jumat', title: "Program Jum'at Berkah", icon: 'utensils' }
-                ]
-            },
-            informasi: {
-                themeClass: 'theme-informasi', themeColor: '#13384C',
-                activeCatClass: 'bg-midnightTeal text-white shadow-md', activeSubClass: 'bg-midnightTeal text-white',
-                inactiveSubClass: 'text-stone-700 hover:bg-tealLight',
-                submenus: [
-                    { id: 'pembangunan', title: 'Seputar Pembangunan Masjid', icon: 'hammer' },
-                    { id: 'kas', title: 'Infaq Pembangunan & Rekening', icon: 'wallet' }
-                ]
-            }
+            profil: { themeClass: 'theme-profil', themeColor: '#0B3B2E', activeCatClass: 'bg-emeraldDeep text-white shadow-md', activeSubClass: 'bg-emeraldDeep text-white', inactiveSubClass: 'text-stone-700 hover:bg-emeraldLight', submenus: [{ id: 'beranda', title: 'Beranda Utama', icon: 'home' }, { id: 'sejarah', title: 'Sejarah & Visi Misi', icon: 'book-open' }, { id: 'kajian', title: 'Jadwal Kajian & Diskusi', icon: 'calendar-days' }, { id: 'struktur', title: 'Struktur Kepengurusan', icon: 'users' }] },
+            layanan: { themeClass: 'theme-layanan', themeColor: '#B85D3B', activeCatClass: 'bg-terracotta text-white shadow-md', activeSubClass: 'bg-terracotta text-white', inactiveSubClass: 'text-stone-700 hover:bg-terracottaLight', submenus: [{ id: 'qurban', title: 'Layanan & Tabungan Qurban', icon: 'award' }, { id: 'zakat', title: 'Layanan Zakat', icon: 'scale' }, { id: 'infaq', title: 'Layanan Infaq', icon: 'landmark' }, { id: 'shodaqoh', title: 'Layanan Shodaqoh', icon: 'heart-handshake' }, { id: 'beras', title: 'Program Beras Barokah', icon: 'wheat' }, { id: 'jumat', title: "Program Jum'at Berkah", icon: 'utensils' }] },
+            informasi: { themeClass: 'theme-informasi', themeColor: '#13384C', activeCatClass: 'bg-midnightTeal text-white shadow-md', activeSubClass: 'bg-midnightTeal text-white', inactiveSubClass: 'text-stone-700 hover:bg-tealLight', submenus: [{ id: 'pembangunan', title: 'Seputar Pembangunan Masjid', icon: 'hammer' }, { id: 'kas', title: 'Infaq Pembangunan & Rekening', icon: 'wallet' }] }
         };
 
         const berasBarokahData = [
@@ -171,13 +156,7 @@
 
         const pengurusData = {
             penasehat: ['Ketua RW 09 Cigending', 'DR. H. Asep Hilman, M.Pd', 'H. Aep Syaepulloh', 'H. Gatot st'],
-            bph: [
-                { jabatan: 'Ketua DKM', nama: 'H. Suwandi', highlight: true },
-                { jabatan: 'Sekretaris 1', nama: 'H. Agus Gunadi Ismail, ST' },
-                { jabatan: 'Sekretaris 2', nama: 'Ir Aang Utarya' },
-                { jabatan: 'Bendahara 1', nama: 'Drs. Deni Iskandar' },
-                { jabatan: 'Bendahara 2', nama: 'Zulkarnaen' }
-            ],
+            bph: [{ jabatan: 'Ketua DKM', nama: 'H. Suwandi', highlight: true }, { jabatan: 'Sekretaris 1', nama: 'H. Agus Gunadi Ismail, ST' }, { jabatan: 'Sekretaris 2', nama: 'Ir Aang Utarya' }, { jabatan: 'Bendahara 1', nama: 'Drs. Deni Iskandar' }, { jabatan: 'Bendahara 2', nama: 'Zulkarnaen' }],
             bidang: [
                 { nama: 'Seksi Dakwah', anggota: ['Kasno', 'Zumar', 'Tardi Nurdiansyah', 'Sulkhoni', 'Mastur', 'Robby Ilman'] },
                 { nama: 'Seksi Pendidikan', anggota: ['Siti Parlina, S.Pd', 'Teti Supriatin, S.Pd', 'Imam Mauludin'] },
@@ -190,18 +169,20 @@
         };
 
         let currentCategory = 'profil', currentSubmenu = 'beranda';
-        let currentZakatNominal = 0, currentZakatJiwa = 0, currentZakatBerasKg = 0;
 
-        function formatRupiah(n) {
-            const num = Number(n || 0);
-            return (num < 0 ? '-Rp ' : 'Rp ') + Math.abs(num).toLocaleString('id-ID');
+        function bukaArtikelModal(id) {
+            const art = artikelList.find(a => a.id === id);
+            if (!art) return;
+            document.getElementById('modal-artikel-kategori').textContent = art.kategori;
+            document.getElementById('modal-artikel-judul').textContent = art.judul;
+            document.getElementById('modal-artikel-meta').textContent = `Ditulis oleh ${art.penulis} • ${art.tanggal}`;
+            document.getElementById('modal-artikel-isi').innerHTML = art.isi.map(p => `<p>${p}</p>`).join('');
+            document.getElementById('artikel-modal').classList.remove('hidden');
         }
-
-        function parseNominalCell(cell) {
-            if (!cell || cell.v === null || cell.v === undefined) return 0;
-            if (typeof cell.v === 'number') return cell.v;
-            return Number(String(cell.v).replace(/[^0-9-]/g, '')) || 0;
-        }
+        function tutupArtikelModal() { document.getElementById('artikel-modal').classList.add('hidden'); }
+        function toggleDocsEmbed() { const el = document.getElementById('docs-embed-box'); if (el) el.classList.toggle('hidden'); }
+        function formatRupiah(n) { const num = Number(n || 0); return (num < 0 ? '-Rp ' : 'Rp ') + Math.abs(num).toLocaleString('id-ID'); }
+        function parseNominalCell(cell) { if (!cell || cell.v === null || cell.v === undefined) return 0; if (typeof cell.v === 'number') return cell.v; return Number(String(cell.v).replace(/[^0-9-]/g, '')) || 0; }
 
         async function fetchKeuanganFromSheet() {
             try {
@@ -214,33 +195,21 @@
                     const masuk = parseNominalCell(r.c[1]), keluar = parseNominalCell(r.c[2]);
                     const donasi = r.c[4]?.v ? String(r.c[4].v) : '-';
                     if (tgl.toLowerCase() === 'tanggal') return;
-                    if (tgl || masuk || keluar || donasi !== '-') {
-                        sumIn += masuk; sumOut += keluar;
-                        list.push({ tanggal: tgl || '-', pemasukan: masuk, pengeluaran: keluar, donasi });
-                    }
+                    if (tgl || masuk || keluar || donasi !== '-') { sumIn += masuk; sumOut += keluar; list.push({ tanggal: tgl || '-', pemasukan: masuk, pengeluaran: keluar, donasi }); }
                 });
-                keuanganData = { totalPemasukan: sumIn, totalPengeluaran: sumOut, danaPembangunan: sumIn - sumOut, mutasiPembangunan: list, lastSync: 'Tersinkron otomatis dengan Google Sheets' };
+                keuanganData = { totalPemasukan: sumIn, totalPengeluaran: sumOut, danaPembangunan: sumIn - sumOut, mutasiPembangunan: list, lastSync: 'Tersinkron otomatis' };
                 if (currentCategory === 'informasi' && currentSubmenu === 'kas') updateKasUI();
-            } catch (e) {
-                keuanganData.lastSync = 'Pastikan akses Spreadsheet diset ke "Siapa saja yang memiliki link".';
-            }
+            } catch (e) {}
         }
 
         function updateKasUI() {
             const el = document.getElementById('val-dana-pembangunan'), sub = document.getElementById('sub-dana-pembangunan'), tb = document.getElementById('mutasi-pembangunan-tbody');
             if (el) el.textContent = formatRupiah(keuanganData.danaPembangunan);
             if (sub) sub.textContent = `Pemasukan: ${formatRupiah(keuanganData.totalPemasukan)} • Pengeluaran: ${formatRupiah(keuanganData.totalPengeluaran)}`;
-            if (tb) tb.innerHTML = keuanganData.mutasiPembangunan.length
-                ? keuanganData.mutasiPembangunan.map(i => `<tr><td class="py-3 px-4 font-semibold">${i.tanggal}</td><td class="py-3 px-4 font-mono font-bold text-emeraldDeep text-right">${i.pemasukan ? formatRupiah(i.pemasukan) : '-'}</td><td class="py-3 px-4 font-mono font-bold text-rose-700 text-right">${i.pengeluaran ? formatRupiah(i.pengeluaran) : '-'}</td><td class="py-3 px-4">${i.donasi}</td></tr>`).join('')
-                : `<tr><td colspan="4" class="py-6 px-4 text-center text-stone-500">Belum ada data mutasi.</td></tr>`;
+            if (tb) tb.innerHTML = keuanganData.mutasiPembangunan.length ? keuanganData.mutasiPembangunan.map(i => `<tr><td class="py-3 px-4 font-semibold">${i.tanggal}</td><td class="py-3 px-4 font-mono font-bold text-emeraldDeep text-right">${i.pemasukan ? formatRupiah(i.pemasukan) : '-'}</td><td class="py-3 px-4 font-mono font-bold text-rose-700 text-right">${i.pengeluaran ? formatRupiah(i.pengeluaran) : '-'}</td><td class="py-3 px-4">${i.donasi}</td></tr>`).join('') : `<tr><td colspan="4" class="py-6 text-center text-stone-500">Belum ada data mutasi.</td></tr>`;
         }
 
-        function showToast(msg) {
-            const c = document.getElementById('toast-container'), t = document.createElement('div');
-            t.className = 'px-4 py-3 rounded-2xl bg-stone-900 text-white text-sm shadow-xl border-l-4 border-goldSoft';
-            t.textContent = msg; c.appendChild(t); setTimeout(() => t.remove(), 3000);
-        }
-
+        function showToast(msg) { const c = document.getElementById('toast-container'), t = document.createElement('div'); t.className = 'px-4 py-3 rounded-2xl bg-stone-900 text-white text-sm shadow-xl border-l-4 border-goldSoft'; t.textContent = msg; c.appendChild(t); setTimeout(() => t.remove(), 3000); }
         function switchCategory(cat) { currentCategory = cat; currentSubmenu = menuConfig[cat].submenus[0].id; updateNavigationUI(); renderPage(); window.scrollTo(0, 0); }
         function switchPage(cat, sub) { currentCategory = cat; currentSubmenu = sub; updateNavigationUI(); renderPage(); window.scrollTo(0, 0); }
 
@@ -257,99 +226,32 @@
             lucide.createIcons();
         }
 
-        // Kalkulator Simulasi Tabungan Qurban:
-        // Input: Jenis/Harga Hewan + Cicilan/Bulan + Lama Cicil (Bulan) -> Output: Uang Terkumpul & Kurangnya Berapa Lagi
-        function ubahJenisHewanQurban(val) {
-            const inp = document.getElementById('qurban-harga-input');
-            if (!inp) return;
-            if (val !== 'custom') { inp.value = Number(val).toLocaleString('id-ID'); } else { inp.value = ''; inp.focus(); }
-            hitungTabunganQurban();
-        }
-
+        function ubahJenisHewanQurban(val) { const inp = document.getElementById('qurban-harga-input'); if (!inp) return; if (val !== 'custom') inp.value = Number(val).toLocaleString('id-ID'); else { inp.value = ''; inp.focus(); } hitungTabunganQurban(); }
         function hitungTabunganQurban() {
-            const sel = document.getElementById('qurban-jenis-select');
-            const inpHarga = document.getElementById('qurban-harga-input');
-            const inpCicil = document.getElementById('qurban-cicil-input');
-            const inpBulan = document.getElementById('qurban-bulan-input');
-
-            const outTerkumpul = document.getElementById('qurban-out-terkumpul');
-            const outSubTerkumpul = document.getElementById('qurban-out-subterkumpul');
-            const outKurang = document.getElementById('qurban-out-kurang');
-            const outSubKurang = document.getElementById('qurban-out-subkurang');
-            const outPersen = document.getElementById('qurban-prog-persen');
-            const outBar = document.getElementById('qurban-prog-bar');
-            const outRincian = document.getElementById('qurban-out-rincian');
-
-            if (!sel || !inpHarga || !inpCicil || !inpBulan || !outTerkumpul || !outKurang) return;
-
-            const harga = Number(String(inpHarga.value).replace(/[^0-9]/g, '')) || 0;
-            inpHarga.value = harga > 0 ? harga.toLocaleString('id-ID') : '';
-
-            const cicil = Number(String(inpCicil.value).replace(/[^0-9]/g, '')) || 0;
-            inpCicil.value = cicil > 0 ? cicil.toLocaleString('id-ID') : '';
-
-            const bulan = Math.max(0, parseInt(String(inpBulan.value).replace(/[^0-9]/g, ''), 10) || 0);
-            inpBulan.value = bulan;
-
-            const terkumpul = cicil * bulan;
-            const kurang = Math.max(0, harga - terkumpul);
-            const lebih = terkumpul > harga ? terkumpul - harga : 0;
-            const persen = harga > 0 ? Math.min(100, Math.round((terkumpul / harga) * 100)) : 0;
-            const sisaBulan = cicil > 0 ? Math.ceil(kurang / cicil) : 0;
+            const sel = document.getElementById('qurban-jenis-select'), inpHarga = document.getElementById('qurban-harga-input'), inpCicil = document.getElementById('qurban-cicil-input'), inpBulan = document.getElementById('qurban-bulan-input');
+            const outTerkumpul = document.getElementById('qurban-out-terkumpul'), outSubTerkumpul = document.getElementById('qurban-out-subterkumpul'), outKurang = document.getElementById('qurban-out-kurang'), outSubKurang = document.getElementById('qurban-out-subkurang'), outPersen = document.getElementById('qurban-prog-persen'), outBar = document.getElementById('qurban-prog-bar'), outRincian = document.getElementById('qurban-out-rincian');
+            if (!sel || !inpHarga || !inpCicil || !inpBulan) return;
+            const harga = Number(String(inpHarga.value).replace(/[^0-9]/g, '')) || 0; inpHarga.value = harga > 0 ? harga.toLocaleString('id-ID') : '';
+            const cicil = Number(String(inpCicil.value).replace(/[^0-9]/g, '')) || 0; inpCicil.value = cicil > 0 ? cicil.toLocaleString('id-ID') : '';
+            const bulan = Math.max(0, parseInt(String(inpBulan.value).replace(/[^0-9]/g, ''), 10) || 0); inpBulan.value = bulan;
+            const terkumpul = cicil * bulan, kurang = Math.max(0, harga - terkumpul), lebih = terkumpul > harga ? terkumpul - harga : 0;
+            const persen = harga > 0 ? Math.min(100, Math.round((terkumpul / harga) * 100)) : 0, sisaBulan = cicil > 0 ? Math.ceil(kurang / cicil) : 0;
             const namaHewan = sel.options[sel.selectedIndex]?.dataset?.label || 'Hewan Qurban';
-
-            outTerkumpul.textContent = formatRupiah(terkumpul);
-            if (outSubTerkumpul) outSubTerkumpul.textContent = `${formatRupiah(cicil)}/bln × ${bulan} bulan`;
-
-            outKurang.textContent = formatRupiah(kurang);
-            if (outSubKurang) {
-                outSubKurang.textContent = kurang === 0 && harga > 0
-                    ? (lebih > 0 ? `Lunas! (Lebih ${formatRupiah(lebih)})` : 'Alhamdulillah, Lunas 100%!')
-                    : (cicil > 0 ? `± ${sisaBulan}x cicilan lagi (@ ${formatRupiah(cicil)})` : 'Isi nominal cicilan/bulan');
-            }
-
-            if (outPersen) outPersen.textContent = `${persen}%`;
-            if (outBar) outBar.style.width = `${persen}%`;
-            if (outRincian) {
-                outRincian.innerHTML = kurang === 0 && harga > 0
-                    ? `Target <b>${namaHewan} (${formatRupiah(harga)})</b> sudah terpenuhi dari tabungan ${bulan} bulan.`
-                    : `Untuk <b>${namaHewan} (${formatRupiah(harga)})</b>, tabungan ${bulan} bulan terkumpul <b>${formatRupiah(terkumpul)}</b> sehingga kurangnya tinggal <b>${formatRupiah(kurang)}</b> lagi.`;
-            }
+            outTerkumpul.textContent = formatRupiah(terkumpul); outSubTerkumpul.textContent = `${formatRupiah(cicil)}/bln × ${bulan} bulan`;
+            outKurang.textContent = formatRupiah(kurang); outSubKurang.textContent = kurang === 0 && harga > 0 ? (lebih > 0 ? `Lunas! (Lebih ${formatRupiah(lebih)})` : 'Alhamdulillah, Lunas 100%!') : (cicil > 0 ? `± ${sisaBulan}x cicilan lagi (@ ${formatRupiah(cicil)})` : 'Isi nominal cicilan/bulan');
+            outPersen.textContent = `${persen}% Terkumpul`; outBar.style.width = `${persen}%`;
+            outRincian.innerHTML = kurang === 0 && harga > 0 ? `Target <b>${namaHewan} (${formatRupiah(harga)})</b> sudah terpenuhi dari tabungan ${bulan} bulan.` : `Untuk <b>${namaHewan} (${formatRupiah(harga)})</b>, tabungan ${bulan} bulan terkumpul <b>${formatRupiah(terkumpul)}</b> sehingga kurangnya tinggal <b>${formatRupiah(kurang)}</b> lagi.`;
         }
 
-        function hitungZakatMaal(val) {
-            const raw = Number(String(val).replace(/[^0-9]/g, '')) || 0;
-            const el = document.getElementById('zakat-harta-input');
-            if (el) el.value = raw > 0 ? raw.toLocaleString('id-ID') : '';
-            currentZakatNominal = Math.round(raw * 0.025);
-            if (document.getElementById('zakat-hasil-nominal')) document.getElementById('zakat-hasil-nominal').textContent = formatRupiah(currentZakatNominal);
-        }
-
-        function hitungZakatFitrah(val) {
-            const jiwa = Math.max(0, parseInt(String(val).replace(/[^0-9]/g, ''), 10) || 0);
-            const el = document.getElementById('zakat-jiwa-input');
-            if (el) el.value = jiwa > 0 ? jiwa : '';
-            currentZakatJiwa = jiwa; currentZakatBerasKg = jiwa * 2.5;
-            if (document.getElementById('zakat-hasil-beras')) document.getElementById('zakat-hasil-beras').textContent = `${currentZakatBerasKg.toLocaleString('id-ID', { maximumFractionDigits: 1 })} Kg`;
-            if (document.getElementById('zakat-hasil-liter')) document.getElementById('zakat-hasil-liter').textContent = `Setara ${(jiwa * 3.5).toLocaleString('id-ID', { maximumFractionDigits: 1 })} Liter (${jiwa} Jiwa × 2,5 Kg)`;
-        }
+        function hitungZakatMaal(val) { const raw = Number(String(val).replace(/[^0-9]/g, '')) || 0; const el = document.getElementById('zakat-harta-input'); if (el) el.value = raw > 0 ? raw.toLocaleString('id-ID') : ''; if (document.getElementById('zakat-hasil-nominal')) document.getElementById('zakat-hasil-nominal').textContent = formatRupiah(Math.round(raw * 0.025)); }
+        function hitungZakatFitrah(val) { const jiwa = Math.max(0, parseInt(String(val).replace(/[^0-9]/g, ''), 10) || 0); const el = document.getElementById('zakat-jiwa-input'); if (el) el.value = jiwa > 0 ? jiwa : ''; if (document.getElementById('zakat-hasil-beras')) document.getElementById('zakat-hasil-beras').textContent = `${(jiwa * 2.5).toLocaleString('id-ID', { maximumFractionDigits: 1 })} Kg`; if (document.getElementById('zakat-hasil-liter')) document.getElementById('zakat-hasil-liter').textContent = `Setara ${(jiwa * 3.5).toLocaleString('id-ID', { maximumFractionDigits: 1 })} Liter (${jiwa} Jiwa × 2,5 Kg)`; }
 
         function buildLayananCard({ badge, title, subtitle, emoji, cardTitle, cardSubtitle, bullets, customHtml = '', btn1, btn2, extra = '' }) {
-            return `
-                <div class="mb-8"><span class="text-xs font-bold uppercase tracking-widest text-terracotta">${badge}</span><h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">${title}</h2><p class="text-sm text-stone-600 mt-1">${subtitle}</p></div>
-                <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border-2 border-terracotta/40 shadow-md space-y-6 max-w-3xl mx-auto">
-                    <div class="flex items-center space-x-4"><span class="w-16 h-16 rounded-2xl bg-terracotta/15 border border-terracotta/40 flex items-center justify-center text-3xl shrink-0">${emoji}</span><div><h3 class="text-xl font-extrabold text-gray-900">${cardTitle}</h3><p class="text-xs text-stone-500">${cardSubtitle}</p></div></div>
-                    <ul class="text-sm text-stone-700 space-y-2.5 bg-[#F8F1E9] p-5 rounded-2xl border border-terracotta/20">${bullets.map(b => `<li class="flex items-start gap-2"><span class="text-terracotta font-bold">✔</span><span>${b}</span></li>`).join('')}</ul>
-                    ${customHtml}
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">${btn1}${btn2}</div>
-                </div>${extra}`;
+            return `<div class="mb-8"><span class="text-xs font-bold uppercase tracking-widest text-terracotta">${badge}</span><h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">${title}</h2><p class="text-sm text-stone-600 mt-1">${subtitle}</p></div><div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border-2 border-terracotta/40 shadow-md space-y-6 max-w-3xl mx-auto"><div class="flex items-center space-x-4"><span class="w-16 h-16 rounded-2xl bg-terracotta/15 border border-terracotta/40 flex items-center justify-center text-3xl shrink-0">${emoji}</span><div><h3 class="text-xl font-extrabold text-gray-900">${cardTitle}</h3><p class="text-xs text-stone-500">${cardSubtitle}</p></div></div><ul class="text-sm text-stone-700 space-y-2.5 bg-[#F8F1E9] p-5 rounded-2xl border border-terracotta/20">${bullets.map(b => `<li class="flex items-start gap-2"><span class="text-terracotta font-bold">✔</span><span>${b}</span></li>`).join('')}</ul>${customHtml}<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">${btn1}${btn2}</div></div>${extra}`;
         }
 
         function renderPage() {
-            const main = document.getElementById('main-content');
-            main.innerHTML = '';
-            const w = document.createElement('div');
-
+            const main = document.getElementById('main-content'); main.innerHTML = ''; const w = document.createElement('div');
             if (currentCategory === 'profil' && currentSubmenu === 'beranda') {
                 w.innerHTML = `
                     <div class="bg-emeraldDeep text-white p-6 sm:p-10 rounded-3xl shadow-xl mb-8 border border-goldSoft/40">
@@ -366,14 +268,15 @@
                                 </div>
                             </div>
                             <div class="flex items-center justify-between px-4 py-4 rounded-2xl border bg-white/10 border-white/20">
-                                <div><span class="text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full bg-white/15 text-amber-200">Cuaca Cigending</span><div class="flex items-baseline gap-2 mt-2"><span id="weather-temp" class="text-3xl font-black text-white font-mono">--°C</span><span id="weather-desc" class="text-xs text-white/90">Bandung</span></div></div>
+                                <div><span class="text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full bg-white/15 text-amber-200">Cuaca Cigending</span><div class="flex items-baseline gap-2 mt-2"><span id="weather-temp" class="text-3xl font-black text-white font-mono">--°C</span><span class="text-xs text-white/90">Bandung</span></div></div>
                                 <div class="text-4xl">⛅</div>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm mb-8">
+
+                    <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm mb-10">
                         <div class="flex flex-wrap justify-between items-center gap-4 border-b pb-4 mb-5">
-                            <div><span class="text-xs font-bold text-amber-800 uppercase">⏰ Jadwal Sholat Kota Bandung</span><p id="hijri-full-text" class="text-xs text-emeraldDeep font-bold mt-1">Kalender Hijriah 1448 H</p></div>
+                            <div><span class="text-xs font-bold text-amber-800 uppercase">⏰ Jadwal Sholat Kota Bandung</span><p class="text-xs text-emeraldDeep font-bold mt-1">Kalender Hijriah 1448 H</p></div>
                             <div id="masehi-full-text" class="text-xs font-bold text-gray-800 bg-[#F4F0E6] px-3 py-2 rounded-xl border">Sabtu, 21 Nov 2026</div>
                         </div>
                         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-center">
@@ -385,245 +288,116 @@
                             <div class="p-3 rounded-2xl border bg-[#F4F0E6]/70"><div class="text-[11px] font-bold">MAGHRIB</div><div id="sholat-maghrib" class="text-lg font-black text-emeraldDeep mt-1">--:--</div></div>
                             <div class="p-3 rounded-2xl border bg-[#F4F0E6]/70 col-span-2 lg:col-span-1"><div class="text-[11px] font-bold">ISYA</div><div id="sholat-isya" class="text-lg font-black text-emeraldDeep mt-1">--:--</div></div>
                         </div>
-                    </div>`;
+                    </div>
+
+                    <!-- KOLOM ARTIKEL & BULETIN DAKWAH -->
+                    <section id="kolom-artikel-beranda" class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border-2 border-emeraldDeep/20 shadow-sm space-y-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-stone-200 pb-4">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-widest text-emeraldDeep">📖 Khazanah & Literasi Umat</span>
+                                <h3 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mt-1">Artikel & Buletin Dakwah Al-Barokah</h3>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button onclick="toggleDocsEmbed()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold shadow-sm hover:bg-emerald-950">
+                                    <i data-lucide="book-open" class="w-4 h-4 text-goldSoft"></i><span>Buka / Tutup Buletin Google Docs</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="docs-embed-box" class="rounded-2xl overflow-hidden border border-stone-300 bg-white">
+                            <div class="bg-[#F4F0E6] px-4 py-2 text-xs font-bold text-stone-700 flex items-center justify-between border-b">
+                                <span>Pratinjau Buletin Dakwah (Google Docs)</span>
+                                <a href="https://docs.google.com/document/d/1i7G_1kQ8vS8q3s9x7vF2mL4nK8pQ2wR9tY5uI0oP3aS/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-emeraldDeep underline">Buka Layar Penuh ↗</a>
+                            </div>
+                            <iframe src="${DOCS_ARTIKEL_URL}" class="w-full h-80 border-0" loading="lazy" title="Buletin Dakwah Google Docs"></iframe>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            ${artikelList.map(art => `
+                                <article class="bg-[#F9F6EE] p-5 rounded-2xl border border-stone-300/80 hover-lift flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center justify-between gap-2 mb-3">
+                                            <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emeraldLight text-emeraldDeep">${art.kategori}</span>
+                                            <span class="text-[11px] text-stone-500">${art.tanggal}</span>
+                                        </div>
+                                        <h4 class="font-serif font-bold text-lg text-gray-900 leading-snug mb-2">${art.judul}</h4>
+                                        <p class="text-xs text-stone-600 leading-relaxed mb-4">${art.ringkasan}</p>
+                                    </div>
+                                    <div class="pt-3 border-t border-stone-200 flex items-center justify-between">
+                                        <span class="text-[11px] font-medium text-stone-500">${art.penulis}</span>
+                                        <button onclick="bukaArtikelModal(${art.id})" class="inline-flex items-center gap-1 text-xs font-bold text-emeraldDeep hover:text-amber-800">
+                                            <span>Baca Artikel</span><i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                    </div>
+                                </article>
+                            `).join('')}
+                        </div>
+                    </section>`;
             } else if (currentCategory === 'profil' && currentSubmenu === 'sejarah') {
                 w.innerHTML = `<div class="bg-[#EFE9D8] p-8 rounded-3xl border border-amber-700/20 mb-6"><h2 class="font-serif text-2xl font-bold mb-3">Sejarah Masjid Jami' Al-Barokah 09</h2><p class="text-sm text-stone-700 leading-relaxed">Berawal dari mushola swadaya masyarakat RW 09 Cigending, Ujungberung, Masjid Jami' Al-Barokah terus tumbuh menjadi pusat pembinaan ibadah, pendidikan Al-Qur'an, dan solidaritas sosial warga.</p></div><div class="grid md:grid-cols-2 gap-6"><div class="bg-emeraldDeep text-white p-7 rounded-3xl"><span class="text-xs font-bold text-goldSoft uppercase">Visi</span><h3 class="font-serif text-xl font-bold mt-2">"Menjadikan Masjid Jami' Al-Barokah 09 sebagai pusat peribadatan yang makmur, transparan, dan memberdayakan umat."</h3></div><div class="bg-[#FCFBF7] p-7 rounded-3xl border"><span class="text-xs font-bold text-emeraldDeep uppercase">Misi</span><ul class="mt-2 space-y-2 text-sm"><li>1. Menyelenggarakan peribadatan berjamaah yang khusyuk.</li><li>2. Mengembangkan kajian rutin & pembinaan remaja masjid.</li><li>3. Mengelola dana ZIS, Qurban & pembangunan secara terbuka.</li></ul></div></div>`;
             } else if (currentCategory === 'profil' && currentSubmenu === 'kajian') {
                 w.innerHTML = `
-                    <div class="text-center max-w-2xl mx-auto mb-10">
-                        <span class="text-xs font-bold uppercase tracking-widest text-emeraldDeep">Majelis Ilmu</span>
-                        <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Jadwal Kajian & Diskusi Rutin</h2>
-                        <p class="text-sm text-stone-600 mt-1">Arahkan kursor atau klik kartu kajian untuk membuka tirai detail materi & waktu pelaksanaan.</p>
-                    </div>
+                    <div class="text-center max-w-2xl mx-auto mb-10"><span class="text-xs font-bold uppercase tracking-widest text-emeraldDeep">Majelis Ilmu</span><h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">Jadwal Kajian & Diskusi Rutin</h2><p class="text-sm text-stone-600 mt-1">Arahkan kursor atau klik kartu kajian untuk membuka tirai detail materi & waktu pelaksanaan.</p></div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
-                        <div tabindex="0" onclick="this.classList.toggle('is-open')" class="kajian-card cursor-pointer bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-emeraldDeep/20 text-center shadow-sm hover-lift">
-                            <div class="w-14 h-14 mx-auto rounded-2xl bg-emeraldDeep text-goldSoft flex items-center justify-center mb-4 shadow-md"><i data-lucide="book-open-check" class="w-7 h-7"></i></div>
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emeraldDeep">Setiap Rabu Siang</span>
-                            <h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Kajian Tahsin Al-Qur'an</h3>
-                            <p class="text-xs text-stone-600 mt-2">Perbaikan bacaan Al-Qur'an, tajwid, dan makharijul huruf untuk jamaah.</p>
-                            <div class="curtain-panel text-left"><div class="curtain-inner"><div class="pt-3 border-t border-emeraldDeep/15 text-xs text-stone-700 space-y-1.5 bg-emeraldLight/50 p-3.5 rounded-2xl"><p class="font-bold text-emeraldDeep">📖 Detail & Materi:</p><p>Bimbingan talaqqi surah Al-Fatihah dan Juz Amma bersama Siti Parlina, S.Pd. Mulai pukul 13.00 – 14.30 WIB di ruang utama masjid.</p></div></div></div>
-                        </div>
-                        <div tabindex="0" onclick="this.classList.toggle('is-open')" class="kajian-card cursor-pointer bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-amber-600/20 text-center shadow-sm hover-lift">
-                            <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-700 text-white flex items-center justify-center mb-4 shadow-md"><i data-lucide="sparkles" class="w-7 h-7"></i></div>
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900">Setiap Malam Jum'at</span>
-                            <h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Pengajian Malam Jum'at</h3>
-                            <p class="text-xs text-stone-600 mt-2">Pembacaan Surah Yasin, Tahlil, Doa Bersama & Tausiyah keagamaan.</p>
-                            <div class="curtain-panel text-left"><div class="curtain-inner"><div class="pt-3 border-t border-amber-700/15 text-xs text-stone-700 space-y-1.5 bg-amber-50/90 p-3.5 rounded-2xl"><p class="font-bold text-amber-900">🕌 Detail & Rangkaian:</p><p>Dimulai ba'da Maghrib berjamaah dengan pembacaan Yasin, dzikir bersama, serta kajian kitab Riyadhus Shalihin hingga menjelang Isya.</p></div></div></div>
-                        </div>
-                        <div tabindex="0" onclick="this.classList.toggle('is-open')" class="kajian-card cursor-pointer bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-teal-700/20 text-center shadow-sm hover-lift">
-                            <div class="w-14 h-14 mx-auto rounded-2xl bg-midnightTeal text-goldSoft flex items-center justify-center mb-4 shadow-md"><i data-lucide="messages-square" class="w-7 h-7"></i></div>
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-900">Waktu Ba'da Maghrib</span>
-                            <h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Diskusi Ba'da Maghrib</h3>
-                            <p class="text-xs text-stone-600 mt-2">Dialog keislaman interaktif, fiqih keseharian & solusi umat bersama jamaah.</p>
-                            <div class="curtain-panel text-left"><div class="curtain-inner"><div class="pt-3 border-t border-midnightTeal/15 text-xs text-stone-700 space-y-1.5 bg-tealLight/70 p-3.5 rounded-2xl"><p class="font-bold text-midnightTeal">💬 Topik Pekan Ini:</p><p>Tanya jawab fiqih muamalah, adab bertetangga, dan penguatan ukhuwah warga RW 09 dipandu oleh Seksi Dakwah DKM.</p></div></div></div>
-                        </div>
-                        <div tabindex="0" onclick="this.classList.toggle('is-open')" class="kajian-card cursor-pointer bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-rose-700/20 text-center shadow-sm hover-lift">
-                            <div class="w-14 h-14 mx-auto rounded-2xl bg-rose-800 text-white flex items-center justify-center mb-4 shadow-md"><i data-lucide="users" class="w-7 h-7"></i></div>
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-900">Rutin Sore Hari</span>
-                            <h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Pengajian Anak-Anak (TPA)</h3>
-                            <p class="text-xs text-stone-600 mt-2">Taman Pendidikan Al-Qur'an, hafalan surat pendek & pembinaan akhlak santri.</p>
-                            <div class="curtain-panel text-left"><div class="curtain-inner"><div class="pt-3 border-t border-rose-800/15 text-xs text-stone-700 space-y-1.5 bg-rose-50/90 p-3.5 rounded-2xl"><p class="font-bold text-rose-900">🎒 Program Santri:</p><p>Belajar Iqra, hafalan doa harian, kisah teladan nabi, dan praktik wudhu/sholat setiap Senin–Jum'at pukul 16.00 – 17.15 WIB.</p></div></div></div>
-                        </div>
+                        <div tabindex="0" onclick="this.classList.toggle('is-open')" class="kajian-card cursor-pointer bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-emeraldDeep/20 text-center shadow-sm hover-lift"><div class="w-14 h-14 mx-auto rounded-2xl bg-emeraldDeep text-goldSoft flex items-center justify-center mb-4 shadow-md"><i data-lucide="book-open-check" class="w-7 h-7"></i></div><span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emeraldDeep">Setiap Rabu Siang</span><h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Kajian Tahsin Al-Qur'an</h3><p class="text-xs text-stone-600 mt-2">Perbaikan bacaan Al-Qur'an, tajwid, dan makharijul huruf untuk jamaah.</p><div class="curtain-panel text-left"><div class="curtain-inner"><div class="pt-3 border-t border-emeraldDeep/15 text-xs text-stone-700 space-y-1.5 bg-emeraldLight/50 p-3.5 rounded-2xl"><p class="font-bold text-emeraldDeep">📖 Detail & Materi:</p><p>Bimbingan talaqqi surah Al-Fatihah dan Juz Amma bersama Siti Parlina, S.Pd. Mulai pukul 13.00 – 14.30 WIB di ruang utama masjid.</p></div></div></div></div>
+                        <div tabindex="0" onclick="this.classList.toggle('is-open')" class="kajian-card cursor-pointer bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-amber-600/20 text-center shadow-sm hover-lift"><div class="w-14 h-14 mx-auto rounded-2xl bg-amber-700 text-white flex items-center justify-center mb-4 shadow-md"><i data-lucide="sparkles" class="w-7 h-7"></i></div><span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900">Setiap Malam Jum'at</span><h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Pengajian Malam Jum'at</h3><p class="text-xs text-stone-600 mt-2">Pembacaan Surah Yasin, Tahlil, Doa Bersama & Tausiyah keagamaan.</p><div class="curtain-panel text-left"><div class="curtain-inner"><div class="pt-3 border-t border-amber-700/15 text-xs text-stone-700 space-y-1.5 bg-amber-50/90 p-3.5 rounded-2xl"><p class="font-bold text-amber-900">🕌 Detail & Rangkaian:</p><p>Dimulai ba'da Maghrib berjamaah dengan pembacaan Yasin, dzikir bersama, serta kajian kitab Riyadhus Shalihin hingga menjelang Isya.</p></div></div></div></div>
+                        <div tabindex="0" onclick="this.classList.toggle('is-open')" class="kajian-card cursor-pointer bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-teal-700/20 text-center shadow-sm hover-lift"><div class="w-14 h-14 mx-auto rounded-2xl bg-midnightTeal text-goldSoft flex items-center justify-center mb-4 shadow-md"><i data-lucide="messages-square" class="w-7 h-7"></i></div><span class="px-3 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-900">Waktu Ba'da Maghrib</span><h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Diskusi Ba'da Maghrib</h3><p class="text-xs text-stone-600 mt-2">Dialog keislaman interaktif, fiqih keseharian & solusi umat bersama jamaah.</p><div class="curtain-panel text-left"><div class="curtain-inner"><div class="pt-3 border-t border-midnightTeal/15 text-xs text-stone-700 space-y-1.5 bg-tealLight/70 p-3.5 rounded-2xl"><p class="font-bold text-midnightTeal">💬 Topik Pekan Ini:</p><p>Tanya jawab fiqih muamalah, adab bertetangga, dan penguatan ukhuwah warga RW 09 dipandu oleh Seksi Dakwah DKM.</p></div></div></div></div>
+                        <div tabindex="0" onclick="this.classList.toggle('is-open')" class="kajian-card cursor-pointer bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-rose-700/20 text-center shadow-sm hover-lift"><div class="w-14 h-14 mx-auto rounded-2xl bg-rose-800 text-white flex items-center justify-center mb-4 shadow-md"><i data-lucide="users" class="w-7 h-7"></i></div><span class="px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-900">Rutin Sore Hari</span><h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Pengajian Anak-Anak (TPA)</h3><p class="text-xs text-stone-600 mt-2">Taman Pendidikan Al-Qur'an, hafalan surat pendek & pembinaan akhlak santri.</p><div class="curtain-panel text-left"><div class="curtain-inner"><div class="pt-3 border-t border-rose-800/15 text-xs text-stone-700 space-y-1.5 bg-rose-50/90 p-3.5 rounded-2xl"><p class="font-bold text-rose-900">🎒 Program Santri:</p><p>Belajar Iqra, hafalan doa harian, kisah teladan nabi, dan praktik wudhu/sholat setiap Senin–Jum'at pukul 16.00 – 17.15 WIB.</p></div></div></div></div>
                     </div>`;
             } else if (currentCategory === 'profil' && currentSubmenu === 'struktur') {
                 w.innerHTML = `<h2 class="font-serif text-3xl font-bold mb-6">Susunan Kepengurusan DKM Al-Barokah 09</h2><div class="mb-6"><h3 class="font-bold text-base mb-3">Dewan Penasehat</h3><div class="grid sm:grid-cols-4 gap-3">${pengurusData.penasehat.map(n => `<div class="bg-[#FCFBF7] p-4 rounded-2xl border font-bold text-sm">${n}</div>`).join('')}</div></div><div class="mb-6"><h3 class="font-bold text-base mb-3">Badan Pengurus Harian (BPH)</h3><div class="grid sm:grid-cols-3 gap-4">${pengurusData.bph.map(p => `<div class="${p.highlight ? 'bg-emeraldDeep text-white' : 'bg-[#FCFBF7]'} p-5 rounded-2xl border"><div class="text-xs uppercase font-bold opacity-80">${p.jabatan}</div><div class="font-bold text-base mt-1">${p.nama}</div></div>`).join('')}</div></div><h3 class="font-bold text-base mb-3">Bidang & Seksi</h3><div class="grid md:grid-cols-3 gap-4">${pengurusData.bidang.map(b => `<div class="bg-[#FCFBF7] p-5 rounded-2xl border"><h4 class="font-bold text-emeraldDeep border-b pb-2 mb-3">${b.nama}</h4><div class="flex flex-wrap gap-1.5">${b.anggota.map(a => `<span class="px-2.5 py-1 rounded-lg bg-[#F4F0E6] text-xs font-medium">${a}</span>`).join('')}</div></div>`).join('')}</div>`;
             } else if (currentCategory === 'layanan' && currentSubmenu === 'qurban') {
                 const calcQurban = `
                     <div class="bg-amber-50/90 p-5 sm:p-6 rounded-2xl border border-terracotta/25 space-y-5">
-                        <div class="flex flex-wrap items-center justify-between gap-2">
-                            <div>
-                                <span class="text-[11px] font-bold uppercase text-terracotta">Simulasi Tabungan Qurban</span>
-                                <h4 class="font-heading font-bold text-base text-gray-900">Hitung Uang Terkumpul & Kekurangannya</h4>
-                            </div>
-                            <span id="qurban-prog-persen" class="px-3 py-1 rounded-full text-xs font-black bg-emeraldDeep text-goldSoft">26% Terkumpul</span>
-                        </div>
-
-                        <!-- BARIS 1: PILIH HEWAN & ESTIMASI HARGA -->
+                        <div class="flex flex-wrap items-center justify-between gap-2"><div><span class="text-[11px] font-bold uppercase text-terracotta">Simulasi Tabungan Qurban</span><h4 class="font-heading font-bold text-base text-gray-900">Hitung Uang Terkumpul & Kekurangannya</h4></div><span id="qurban-prog-persen" class="px-3 py-1 rounded-full text-xs font-black bg-emeraldDeep text-goldSoft">26% Terkumpul</span></div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                            <div>
-                                <label class="block text-xs font-bold text-stone-700 mb-1">1. Pilih Jenis Hewan Qurban</label>
-                                <select id="qurban-jenis-select" onchange="ubahJenisHewanQurban(this.value)" class="w-full px-3.5 py-3 rounded-xl bg-white border border-stone-300 font-semibold text-xs sm:text-sm">
-                                    <option value="3000000" data-label="Domba / Kambing Standar">Domba / Kambing Standar (Rp 3.000.000)</option>
-                                    <option value="3500000" data-label="Domba / Kambing Super" selected>Domba / Kambing Super (Rp 3.500.000)</option>
-                                    <option value="3250000" data-label="Patungan Sapi (1/7)">Patungan Sapi 1/7 (Rp 3.250.000)</option>
-                                    <option value="22750000" data-label="1 Ekor Sapi Utuh">1 Ekor Sapi Utuh (Rp 22.750.000)</option>
-                                    <option value="custom" data-label="Hewan Qurban Pilihan">Nominal Harga Sendiri...</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-stone-700 mb-1">2. Harga Hewan Qurban (Rp)</label>
-                                <input id="qurban-harga-input" type="text" inputmode="numeric" value="3.500.000" oninput="hitungTabunganQurban()" class="w-full px-3.5 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" />
-                            </div>
+                            <div><label class="block text-xs font-bold text-stone-700 mb-1">1. Pilih Jenis Hewan Qurban</label><select id="qurban-jenis-select" onchange="ubahJenisHewanQurban(this.value)" class="w-full px-3.5 py-3 rounded-xl bg-white border border-stone-300 font-semibold text-xs sm:text-sm"><option value="3000000" data-label="Domba / Kambing Standar">Domba / Kambing Standar (Rp 3.000.000)</option><option value="3500000" data-label="Domba / Kambing Super" selected>Domba / Kambing Super (Rp 3.500.000)</option><option value="3250000" data-label="Patungan Sapi (1/7)">Patungan Sapi 1/7 (Rp 3.250.000)</option><option value="22750000" data-label="1 Ekor Sapi Utuh">1 Ekor Sapi Utuh (Rp 22.750.000)</option><option value="custom" data-label="Hewan Qurban Pilihan">Nominal Harga Sendiri...</option></select></div>
+                            <div><label class="block text-xs font-bold text-stone-700 mb-1">2. Harga Hewan Qurban (Rp)</label><input id="qurban-harga-input" type="text" inputmode="numeric" value="3.500.000" oninput="hitungTabunganQurban()" class="w-full px-3.5 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" /></div>
                         </div>
-
-                        <!-- BARIS 2: RENCANA CICILAN PER BULAN & LAMA CICIL -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                            <div>
-                                <label class="block text-xs font-bold text-stone-700 mb-1">3. Cicilan per Bulan (Rp)</label>
-                                <input id="qurban-cicil-input" type="text" inputmode="numeric" value="300.000" oninput="hitungTabunganQurban()" placeholder="Contoh: 300.000" class="w-full px-3.5 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" />
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-stone-700 mb-1">4. Selama Berapa Bulan?</label>
-                                <div class="relative">
-                                    <input id="qurban-bulan-input" type="number" min="0" max="60" value="3" oninput="hitungTabunganQurban()" class="w-full px-3.5 py-3 pr-16 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" />
-                                    <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-stone-400">Bulan</span>
-                                </div>
-                            </div>
+                            <div><label class="block text-xs font-bold text-stone-700 mb-1">3. Cicilan per Bulan (Rp)</label><input id="qurban-cicil-input" type="text" inputmode="numeric" value="300.000" oninput="hitungTabunganQurban()" class="w-full px-3.5 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" /></div>
+                            <div><label class="block text-xs font-bold text-stone-700 mb-1">4. Selama Berapa Bulan?</label><div class="relative"><input id="qurban-bulan-input" type="number" min="0" max="60" value="3" oninput="hitungTabunganQurban()" class="w-full px-3.5 py-3 pr-16 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" /><span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-stone-400">Bulan</span></div></div>
                         </div>
-
-                        <!-- PROGRESS BAR -->
-                        <div class="w-full h-3 rounded-full bg-stone-200 overflow-hidden">
-                            <div id="qurban-prog-bar" class="h-full bg-emeraldDeep transition-all duration-300" style="width: 26%;"></div>
-                        </div>
-
-                        <!-- HASIL: UANG SUDAH TERKUMPUL VS KURANGNYA BERAPA LAGI -->
+                        <div class="w-full h-3 rounded-full bg-stone-200 overflow-hidden"><div id="qurban-prog-bar" class="h-full bg-emeraldDeep transition-all duration-300" style="width: 26%;"></div></div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                            <div class="p-4 rounded-2xl bg-white border-2 border-emeraldDeep/25 shadow-sm">
-                                <span class="text-[11px] font-bold uppercase text-emeraldDeep block">Uang Sudah Terkumpul</span>
-                                <span id="qurban-out-terkumpul" class="font-mono font-black text-2xl text-emeraldDeep mt-1 block">Rp 900.000</span>
-                                <span id="qurban-out-subterkumpul" class="text-xs text-stone-500 mt-0.5 block">Rp 300.000/bln × 3 bulan</span>
-                            </div>
-                            <div class="p-4 rounded-2xl bg-white border-2 border-rose-300 shadow-sm">
-                                <span class="text-[11px] font-bold uppercase text-rose-700 block">Kurangnya Berapa Lagi</span>
-                                <span id="qurban-out-kurang" class="font-mono font-black text-2xl text-rose-700 mt-1 block">Rp 2.600.000</span>
-                                <span id="qurban-out-subkurang" class="text-xs text-stone-500 mt-0.5 block">± 9x cicilan lagi (@ Rp 300.000)</span>
-                            </div>
+                            <div class="p-4 rounded-2xl bg-white border-2 border-emeraldDeep/25 shadow-sm"><span class="text-[11px] font-bold uppercase text-emeraldDeep block">Uang Sudah Terkumpul</span><span id="qurban-out-terkumpul" class="font-mono font-black text-2xl text-emeraldDeep mt-1 block">Rp 900.000</span><span id="qurban-out-subterkumpul" class="text-xs text-stone-500 mt-0.5 block">Rp 300.000/bln × 3 bulan</span></div>
+                            <div class="p-4 rounded-2xl bg-white border-2 border-rose-300 shadow-sm"><span class="text-[11px] font-bold uppercase text-rose-700 block">Kurangnya Berapa Lagi</span><span id="qurban-out-kurang" class="font-mono font-black text-2xl text-rose-700 mt-1 block">Rp 2.600.000</span><span id="qurban-out-subkurang" class="text-xs text-stone-500 mt-0.5 block">± 9x cicilan lagi (@ Rp 300.000)</span></div>
                         </div>
-
-                        <div id="qurban-out-rincian" class="bg-white/90 px-4 py-3 rounded-xl border border-terracotta/20 text-xs text-stone-700 leading-relaxed">
-                            Untuk <b>Domba / Kambing Super (Rp 3.500.000)</b>, tabungan 3 bulan terkumpul <b>Rp 900.000</b> sehingga kurangnya tinggal <b>Rp 2.600.000</b> lagi.
-                        </div>
+                        <div id="qurban-out-rincian" class="bg-white/90 px-4 py-3 rounded-xl border border-terracotta/20 text-xs text-stone-700 leading-relaxed">Untuk <b>Domba / Kambing Super (Rp 3.500.000)</b>, tabungan 3 bulan terkumpul <b>Rp 900.000</b> sehingga kurangnya tinggal <b>Rp 2.600.000</b> lagi.</div>
                     </div>`;
-                w.innerHTML = buildLayananCard({
-                    badge: 'Idul Adha & Tabungan Terencana', title: 'Layanan & Tabungan Qurban RW 09 Cigending',
-                    subtitle: 'Fasilitas tabungan qurban terencana maupun penyaluran hewan qurban langsung untuk warga RW 09 Cigending.',
-                    emoji: '🐄', cardTitle: 'Formulir Pendaftaran & Tabungan Qurban', cardSubtitle: 'Terhubung ke Database Spreadsheet Masjid Al-Barokah 09',
-                    bullets: ['<b>Tabungan Qurban:</b> Setoran ringan sesuai kemampuan tiap bulan', '<b>Patungan Sapi (1/7):</b> Kolektif jamaah terorganisir', '<b>Qurban Domba/Kambing:</b> Hewan sehat & sesuai syariat'],
-                    customHtml: calcQurban,
-                    btn1: `<a href="https://docs.google.com/forms/d/e/1FAIpQLScug6XWUG9aC55K51lIJUf65jGCL7Vyvjwemn9yt3NkyZHb-g/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📝 Isi Formulir Pendaftaran</a>`,
-                    btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Setor Tabungan (Rekening BSI)</button>`
-                });
+                w.innerHTML = buildLayananCard({ badge: 'Idul Adha & Tabungan Terencana', title: 'Layanan & Tabungan Qurban RW 09 Cigending', subtitle: 'Fasilitas tabungan qurban terencana maupun penyaluran hewan qurban langsung untuk warga RW 09 Cigending.', emoji: '🐄', cardTitle: 'Formulir Pendaftaran & Tabungan Qurban', cardSubtitle: 'Terhubung ke Database Spreadsheet Masjid Al-Barokah 09', bullets: ['<b>Tabungan Qurban:</b> Setoran ringan sesuai kemampuan tiap bulan', '<b>Patungan Sapi (1/7):</b> Kolektif jamaah terorganisir', '<b>Qurban Domba/Kambing:</b> Hewan sehat & sesuai syariat'], customHtml: calcQurban, btn1: `<a href="https://docs.google.com/forms/d/e/1FAIpQLScug6XWUG9aC55K51lIJUf65jGCL7Vyvjwemn9yt3NkyZHb-g/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📝 Isi Formulir Pendaftaran</a>`, btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Setor Tabungan (Rekening BSI)</button>` });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'zakat') {
-                const calcZakat = `
-                    <div class="space-y-4">
-                        <div class="bg-emeraldLight/60 p-5 rounded-2xl border border-emeraldDeep/20 space-y-3">
-                            <div class="flex justify-between"><h4 class="font-bold text-sm">Kalkulator Zakat Maal / Profesi (2,5%)</h4><span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emeraldDeep text-goldSoft">2,5%</span></div>
-                            <div class="grid sm:grid-cols-2 gap-3 items-center">
-                                <input id="zakat-harta-input" type="text" inputmode="numeric" oninput="hitungZakatMaal(this.value)" placeholder="Total Harta (Rp)..." class="w-full px-4 py-3 rounded-xl bg-white border font-mono font-bold text-sm" />
-                                <div class="bg-white p-3 rounded-xl border text-right"><span class="text-[10px] font-bold uppercase text-stone-500 block">Zakat Wajib (2,5%)</span><span id="zakat-hasil-nominal" class="font-mono font-black text-2xl text-emeraldDeep">Rp 0</span></div>
-                            </div>
-                        </div>
-                        <div class="bg-amber-50/90 p-5 rounded-2xl border border-amber-700/20 space-y-3">
-                            <div class="flex justify-between"><h4 class="font-bold text-sm">Kalkulator Zakat Fitrah (Beras)</h4><span class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-800 text-amber-100">2,5 Kg / Jiwa</span></div>
-                            <div class="grid sm:grid-cols-2 gap-3 items-center">
-                                <input id="zakat-jiwa-input" type="text" inputmode="numeric" oninput="hitungZakatFitrah(this.value)" placeholder="Jumlah Jiwa..." class="w-full px-4 py-3 rounded-xl bg-white border font-mono font-bold text-sm" />
-                                <div class="bg-white p-3 rounded-xl border text-right"><span class="text-[10px] font-bold uppercase text-stone-500 block">Total Beras Zakat</span><span id="zakat-hasil-beras" class="font-mono font-black text-2xl text-amber-800">0 Kg</span><span id="zakat-hasil-liter" class="text-[11px] text-stone-500 block">Setara 0 Liter</span></div>
-                            </div>
-                        </div>
-                    </div>`;
-                w.innerHTML = buildLayananCard({
-                    badge: 'Unit Pengumpul Zakat (UPZ) Al-Barokah 09', title: 'Layanan Zakat (Maal & Fitrah)',
-                    subtitle: 'Penghimpunan dan penyaluran kewajiban zakat dengan pencatatan khusus mustahik (8 asnaf).',
-                    emoji: '⚖️', cardTitle: 'Penunaian & Akad Zakat Syariah', cardSubtitle: 'Khusus penyaluran kepada 8 golongan (Asnaf) mustahik',
-                    bullets: ['<b>Zakat Maal:</b> Kadar 2,5% dari harta mencapai nisab', '<b>Zakat Fitrah:</b> Berupa beras 2,5 kg / 3,5 liter per jiwa', '<b>Pencatatan Terpisah:</b> Tidak dicampur dengan kas pembangunan'],
-                    customHtml: calcZakat,
-                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20Pengurus%20UPZ%20Masjid%20Al-Barokah%2009,%20saya%20berniat%20menunaikan%20Zakat." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🤝 Konfirmasi Akad Zakat (WA)</a>`,
-                    btn2: `<button onclick="copyRekening('7302811959','BSI')" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📋 Salin Rekening BSI (7302 811 959)</button>`
-                });
+                const calcZakat = `<div class="space-y-4"><div class="bg-emeraldLight/60 p-5 rounded-2xl border border-emeraldDeep/20 space-y-3"><div class="flex justify-between"><h4 class="font-bold text-sm">Kalkulator Zakat Maal / Profesi (2,5%)</h4><span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emeraldDeep text-goldSoft">2,5%</span></div><div class="grid sm:grid-cols-2 gap-3 items-center"><input id="zakat-harta-input" type="text" inputmode="numeric" oninput="hitungZakatMaal(this.value)" placeholder="Total Harta (Rp)..." class="w-full px-4 py-3 rounded-xl bg-white border font-mono font-bold text-sm" /><div class="bg-white p-3 rounded-xl border text-right"><span class="text-[10px] font-bold uppercase text-stone-500 block">Zakat Wajib (2,5%)</span><span id="zakat-hasil-nominal" class="font-mono font-black text-2xl text-emeraldDeep">Rp 0</span></div></div></div><div class="bg-amber-50/90 p-5 rounded-2xl border border-amber-700/20 space-y-3"><div class="flex justify-between"><h4 class="font-bold text-sm">Kalkulator Zakat Fitrah (Beras)</h4><span class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-800 text-amber-100">2,5 Kg / Jiwa</span></div><div class="grid sm:grid-cols-2 gap-3 items-center"><input id="zakat-jiwa-input" type="text" inputmode="numeric" oninput="hitungZakatFitrah(this.value)" placeholder="Jumlah Jiwa..." class="w-full px-4 py-3 rounded-xl bg-white border font-mono font-bold text-sm" /><div class="bg-white p-3 rounded-xl border text-right"><span class="text-[10px] font-bold uppercase text-stone-500 block">Total Beras Zakat</span><span id="zakat-hasil-beras" class="font-mono font-black text-2xl text-amber-800">0 Kg</span><span id="zakat-hasil-liter" class="text-[11px] text-stone-500 block">Setara 0 Liter</span></div></div></div></div>`;
+                w.innerHTML = buildLayananCard({ badge: 'Unit Pengumpul Zakat (UPZ) Al-Barokah 09', title: 'Layanan Zakat (Maal & Fitrah)', subtitle: 'Penghimpunan dan penyaluran kewajiban zakat dengan pencatatan khusus mustahik (8 asnaf).', emoji: '⚖️', cardTitle: 'Penunaian & Akad Zakat Syariah', cardSubtitle: 'Khusus penyaluran kepada 8 golongan (Asnaf) mustahik', bullets: ['<b>Zakat Maal:</b> Kadar 2,5% dari harta mencapai nisab', '<b>Zakat Fitrah:</b> Berupa beras 2,5 kg / 3,5 liter per jiwa', '<b>Pencatatan Terpisah:</b> Tidak dicampur dengan kas pembangunan'], customHtml: calcZakat, btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20Pengurus%20UPZ%20Masjid%20Al-Barokah%2009,%20saya%20berniat%20menunaikan%20Zakat." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🤝 Konfirmasi Akad Zakat (WA)</a>`, btn2: `<button onclick="copyRekening('7302811959','BSI')" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📋 Salin Rekening BSI (7302 811 959)</button>` });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'infaq') {
-                w.innerHTML = buildLayananCard({
-                    badge: 'Kemakmuran Masjid', title: 'Layanan Infaq Masjid Al-Barokah 09', subtitle: 'Penyaluran infaq untuk operasional ibadah harian dan pembangunan masjid.',
-                    emoji: '🕌', cardTitle: 'Salurkan Infaq Kemakmuran Masjid', cardSubtitle: 'Tercatat dalam laporan kas Bendahara DKM',
-                    bullets: ['<b>Infaq Operasional:</b> Listrik, air wudhu & kebersihan masjid', '<b>Infaq Pembangunan:</b> Perluasan area ibadah & sarana masjid'],
-                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20konfirmasi%20INFAQ." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📲 Konfirmasi Infaq (WhatsApp)</a>`,
-                    btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📊 Lihat Laporan Kas</button>`
-                });
+                w.innerHTML = buildLayananCard({ badge: 'Kemakmuran Masjid', title: 'Layanan Infaq Masjid Al-Barokah 09', subtitle: 'Penyaluran infaq untuk operasional ibadah harian dan pembangunan masjid.', emoji: '🕌', cardTitle: 'Salurkan Infaq Kemakmuran Masjid', cardSubtitle: 'Tercatat dalam laporan kas Bendahara DKM', bullets: ['<b>Infaq Operasional:</b> Listrik, air wudhu & kebersihan masjid', '<b>Infaq Pembangunan:</b> Perluasan area ibadah & sarana masjid'], btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20konfirmasi%20INFAQ." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📲 Konfirmasi Infaq (WhatsApp)</a>`, btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📊 Lihat Laporan Kas</button>` });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'shodaqoh') {
-                w.innerHTML = buildLayananCard({
-                    badge: 'Kepedulian Sosial', title: 'Layanan Shodaqoh Umat', subtitle: 'Berbagi kebaikan untuk anak yatim, dhuafa, dan inventaris masjid RW 09 Cigending.',
-                    emoji: '🤲', cardTitle: 'Salurkan Shodaqoh Terbaik Anda', cardSubtitle: 'Tanpa batas minimal • Dapat diniatkan atas nama orang tua',
-                    bullets: ['<b>Shodaqoh Yatim & Dhuafa:</b> Santunan warga yang membutuhkan', '<b>Shodaqoh Jariyah:</b> Pengadaan mushaf, mukena & karpet masjid'],
-                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20konfirmasi%20SHODAQOH." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📲 Konfirmasi Shodaqoh (WA)</a>`,
-                    btn2: `<button onclick="copyRekening('7302811959','BSI')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📋 Salin Rekening BSI (7302 811 959)</button>`
-                });
+                w.innerHTML = buildLayananCard({ badge: 'Kepedulian Sosial', title: 'Layanan Shodaqoh Umat', subtitle: 'Berbagi kebaikan untuk anak yatim, dhuafa, dan inventaris masjid RW 09 Cigending.', emoji: '🤲', cardTitle: 'Salurkan Shodaqoh Terbaik Anda', cardSubtitle: 'Tanpa batas minimal • Dapat diniatkan atas nama orang tua', bullets: ['<b>Shodaqoh Yatim & Dhuafa:</b> Santunan warga yang membutuhkan', '<b>Shodaqoh Jariyah:</b> Pengadaan mushaf, mukena & karpet masjid'], btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20konfirmasi%20SHODAQOH." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📲 Konfirmasi Shodaqoh (WA)</a>`, btn2: `<button onclick="copyRekening('7302811959','BSI')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📋 Salin Rekening BSI (7302 811 959)</button>` });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'beras') {
                 const tabel = `<div class="bg-[#FCFBF7] p-6 rounded-3xl border max-w-4xl mx-auto mt-8"><h3 class="font-bold text-lg mb-4">Laporan Perolehan & Distribusi Beras Barokah</h3><table class="w-full text-left text-xs sm:text-sm"><thead><tr class="bg-[#F4F0E6] border-b"><th class="py-3 px-4">Bulan</th><th class="py-3 px-4">Pekan</th><th class="py-3 px-4">Sumber</th><th class="py-3 px-4 text-right">Total</th><th class="py-3 px-4">Distribusi</th></tr></thead><tbody class="divide-y">${berasBarokahData.map(r => `<tr><td class="py-3 px-4 font-semibold">${r.bulan}</td><td class="py-3 px-4">${r.pekan}</td><td class="py-3 px-4">${r.sumber}</td><td class="py-3 px-4 font-mono font-bold text-emeraldDeep text-right">${r.totalKg} Kg</td><td class="py-3 px-4">${r.distribusi}</td></tr>`).join('')}</tbody></table></div>`;
-                w.innerHTML = buildLayananCard({
-                    badge: 'Ketahanan Pangan Warga', title: 'Program Beras Barokah RW 09 Cigending', subtitle: 'Gerakan sedekah beras untuk keluarga prasejahtera dan lansia.',
-                    emoji: '🌾', cardTitle: 'Partisipasi Sedekah Beras Barokah', cardSubtitle: 'Penyaluran langsung ke warga mustahik RW 09',
-                    bullets: ['<b>Donasi Paket Beras:</b> Mulai dari 5 kg atau kelipatannya', '<b>Konversi Beras:</b> Mulai Rp 75.000/paket'],
-                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20donasi%20Beras%20Barokah." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🌾 Daftar Donatur Beras</a>`,
-                    btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Transfer Dana Beras (BSI)</button>`,
-                    extra: tabel
-                });
+                w.innerHTML = buildLayananCard({ badge: 'Ketahanan Pangan Warga', title: 'Program Beras Barokah RW 09 Cigending', subtitle: 'Gerakan sedekah beras untuk keluarga prasejahtera dan lansia.', emoji: '🌾', cardTitle: 'Partisipasi Sedekah Beras Barokah', cardSubtitle: 'Penyaluran langsung ke warga mustahik RW 09', bullets: ['<b>Donasi Paket Beras:</b> Mulai dari 5 kg atau kelipatannya', '<b>Konversi Beras:</b> Mulai Rp 75.000/paket'], btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20donasi%20Beras%20Barokah." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🌾 Daftar Donatur Beras</a>`, btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Transfer Dana Beras (BSI)</button>`, extra: tabel });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'jumat') {
-                w.innerHTML = buildLayananCard({
-                    badge: 'Sedekah Pekanan', title: "Program Jum'at Berkah RW 09 Cigending", subtitle: "Pembagian paket nasi box & minuman segar setiap hari Jum'at.",
-                    emoji: '🍱', cardTitle: "Layanan Donasi Jum'at Berkah", cardSubtitle: "Dikelola DKM & Remaja Masjid Al-Barokah 09",
-                    bullets: ['<b>Paket Nasi Box:</b> Rp 15.000 – Rp 20.000 per porsi', '<b>Titip Makanan:</b> Diantar sebelum pukul 11.00 WIB'],
-                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20partisipasi%20Jum'at%20Berkah." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🍱 Konfirmasi Paket Jum'at</a>`,
-                    btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Transfer Donasi (BSI)</button>`
-                });
+                w.innerHTML = buildLayananCard({ badge: 'Sedekah Pekanan', title: "Program Jum'at Berkah RW 09 Cigending", subtitle: "Pembagian paket nasi box & minuman segar setiap hari Jum'at.", emoji: '🍱', cardTitle: "Layanan Donasi Jum'at Berkah", cardSubtitle: "Dikelola DKM & Remaja Masjid Al-Barokah 09", bullets: ['<b>Paket Nasi Box:</b> Rp 15.000 – Rp 20.000 per porsi', '<b>Titip Makanan:</b> Diantar sebelum pukul 11.00 WIB'], btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20partisipasi%20Jum'at%20Berkah." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🍱 Konfirmasi Paket Jum'at</a>`, btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Transfer Donasi (BSI)</button>` });
             } else if (currentCategory === 'informasi' && currentSubmenu === 'pembangunan') {
                 w.innerHTML = `<div class="bg-midnightTeal text-white p-8 rounded-3xl shadow-lg"><h2 class="font-serif text-2xl font-bold">Seputar Pembangunan Masjid Jami' Al-Barokah 09</h2><p class="text-sm text-blue-100 mt-2">Pembangunan dan peningkatan sarana ibadah dilakukan bertahap bersama warga RW 09 Cigending.</p><div class="mt-5 inline-block bg-white/10 p-4 rounded-2xl"><div class="text-xs text-blue-200">Saldo Dana Pembangunan</div><div class="text-2xl font-extrabold text-goldSoft mt-1">${formatRupiah(keuanganData.danaPembangunan)}</div></div></div>`;
             } else if (currentCategory === 'informasi' && currentSubmenu === 'kas') {
-                w.innerHTML = `
-                    <div class="bg-midnightTeal text-white p-8 rounded-3xl shadow-lg max-w-2xl mx-auto mb-8 text-center">
-                        <span class="text-xs text-amber-300 uppercase font-bold">Saldo Dana Pembangunan Masjid</span>
-                        <p id="val-dana-pembangunan" class="font-heading text-3xl sm:text-5xl font-extrabold mt-3">${formatRupiah(keuanganData.danaPembangunan)}</p>
-                        <p id="sub-dana-pembangunan" class="text-xs text-blue-200 mt-2">Pemasukan: ${formatRupiah(keuanganData.totalPemasukan)} • Pengeluaran: ${formatRupiah(keuanganData.totalPengeluaran)}</p>
-                    </div>
-                    <div class="bg-tealLight/90 p-6 rounded-3xl border max-w-xl mx-auto mb-8 text-center space-y-3">
-                        <h3 class="font-bold text-midnightTeal">Rekening Resmi Bank Syariah Indonesia (BSI)</h3>
-                        <p class="font-mono font-bold text-2xl text-gray-900">7302 811 959</p>
-                        <p class="text-xs text-stone-600">a.n. MESJID AL-BAROKAH</p>
-                        <button onclick="copyRekening('7302811959','BSI')" class="px-5 py-2.5 rounded-xl bg-midnightTeal text-white text-xs font-bold">📋 Salin Nomor Rekening</button>
-                    </div>
-                    <div class="bg-[#FCFBF7] p-6 rounded-3xl border shadow-sm">
-                        <h3 class="font-bold text-lg mb-4">Rincian Mutasi Pembangunan (Google Sheets)</h3>
-                        <div class="overflow-x-auto"><table class="w-full text-left text-xs sm:text-sm"><thead><tr class="bg-[#EDF2F4] border-b"><th class="py-3 px-4">Tanggal</th><th class="py-3 px-4 text-right">Pemasukan</th><th class="py-3 px-4 text-right">Pengeluaran</th><th class="py-3 px-4">Donasi / Ket.</th></tr></thead><tbody id="mutasi-pembangunan-tbody" class="divide-y"><tr><td colspan="4" class="py-6 text-center text-stone-500">Memuat data...</td></tr></tbody></table></div>
-                    </div>`;
+                w.innerHTML = `<div class="bg-midnightTeal text-white p-8 rounded-3xl shadow-lg max-w-2xl mx-auto mb-8 text-center"><span class="text-xs text-amber-300 uppercase font-bold">Saldo Dana Pembangunan Masjid</span><p id="val-dana-pembangunan" class="font-heading text-3xl sm:text-5xl font-extrabold mt-3">${formatRupiah(keuanganData.danaPembangunan)}</p><p id="sub-dana-pembangunan" class="text-xs text-blue-200 mt-2">Pemasukan: ${formatRupiah(keuanganData.totalPemasukan)} • Pengeluaran: ${formatRupiah(keuanganData.totalPengeluaran)}</p></div><div class="bg-tealLight/90 p-6 rounded-3xl border max-w-xl mx-auto mb-8 text-center space-y-3"><h3 class="font-bold text-midnightTeal">Rekening Resmi Bank Syariah Indonesia (BSI)</h3><p class="font-mono font-bold text-2xl text-gray-900">7302 811 959</p><p class="text-xs text-stone-600">a.n. MESJID AL-BAROKAH</p><button onclick="copyRekening('7302811959','BSI')" class="px-5 py-2.5 rounded-xl bg-midnightTeal text-white text-xs font-bold">📋 Salin Nomor Rekening</button></div><div class="bg-[#FCFBF7] p-6 rounded-3xl border shadow-sm"><h3 class="font-bold text-lg mb-4">Rincian Mutasi Pembangunan (Google Sheets)</h3><div class="overflow-x-auto"><table class="w-full text-left text-xs sm:text-sm"><thead><tr class="bg-[#EDF2F4] border-b"><th class="py-3 px-4">Tanggal</th><th class="py-3 px-4 text-right">Pemasukan</th><th class="py-3 px-4 text-right">Pengeluaran</th><th class="py-3 px-4">Donasi / Ket.</th></tr></thead><tbody id="mutasi-pembangunan-tbody" class="divide-y"><tr><td colspan="4" class="py-6 text-center text-stone-500">Memuat data...</td></tr></tbody></table></div></div>`;
             }
-
-            main.appendChild(w);
-            lucide.createIcons();
-            updateClock();
+            main.appendChild(w); lucide.createIcons(); updateClock();
             if (currentCategory === 'profil' && currentSubmenu === 'beranda') fetchPrayerAndWeather();
             if (currentCategory === 'informasi' && currentSubmenu === 'kas') { updateKasUI(); fetchKeuanganFromSheet(); }
         }
 
-        function copyRekening(norek, bank) {
-            if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(norek).then(() => showToast(`Rekening ${bank} (${norek}) disalin!`));
-            else { const t = document.createElement('textarea'); t.value = norek; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); showToast(`Rekening ${bank} (${norek}) disalin!`); }
-        }
-
-        function updateClock() {
-            const now = new Date();
-            if (document.getElementById('flip-hour')) {
-                document.getElementById('flip-hour').textContent = String(now.getHours()).padStart(2, '0');
-                document.getElementById('flip-minute').textContent = String(now.getMinutes()).padStart(2, '0');
-                document.getElementById('flip-second').textContent = String(now.getSeconds()).padStart(2, '0');
-            }
-            const tgl = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' });
-            if (document.getElementById('current-date-display')) document.getElementById('current-date-display').textContent = tgl;
-            if (document.getElementById('masehi-full-text')) document.getElementById('masehi-full-text').textContent = tgl;
-        }
+        function copyRekening(norek, bank) { if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(norek).then(() => showToast(`Rekening ${bank} (${norek}) disalin!`)); else { const t = document.createElement('textarea'); t.value = norek; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); showToast(`Rekening ${bank} (${norek}) disalin!`); } }
+        function updateClock() { const now = new Date(); if (document.getElementById('flip-hour')) { document.getElementById('flip-hour').textContent = String(now.getHours()).padStart(2, '0'); document.getElementById('flip-minute').textContent = String(now.getMinutes()).padStart(2, '0'); document.getElementById('flip-second').textContent = String(now.getSeconds()).padStart(2, '0'); } const tgl = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' }); if (document.getElementById('current-date-display')) document.getElementById('current-date-display').textContent = tgl; if (document.getElementById('masehi-full-text')) document.getElementById('masehi-full-text').textContent = tgl; }
         setInterval(updateClock, 1000);
 
         async function fetchPrayerAndWeather() {
             try {
                 const t = (await (await fetch('https://api.aladhan.com/v1/timingsByCity?city=Bandung&country=Indonesia&method=20')).json()).data.timings;
-                if (document.getElementById('sholat-imsak')) {
-                    document.getElementById('sholat-imsak').textContent = t.Imsak; document.getElementById('sholat-subuh').textContent = t.Fajr;
-                    document.getElementById('sholat-terbit').textContent = t.Sunrise; document.getElementById('sholat-dzuhur').textContent = t.Dhuhr;
-                    document.getElementById('sholat-ashar').textContent = t.Asr; document.getElementById('sholat-maghrib').textContent = t.Maghrib;
-                    document.getElementById('sholat-isya').textContent = t.Isha;
-                }
+                if (document.getElementById('sholat-imsak')) { document.getElementById('sholat-imsak').textContent = t.Imsak; document.getElementById('sholat-subuh').textContent = t.Fajr; document.getElementById('sholat-terbit').textContent = t.Sunrise; document.getElementById('sholat-dzuhur').textContent = t.Dhuhr; document.getElementById('sholat-ashar').textContent = t.Asr; document.getElementById('sholat-maghrib').textContent = t.Maghrib; document.getElementById('sholat-isya').textContent = t.Isha; }
                 const cw = (await (await fetch('https://api.open-meteo.com/v1/forecast?latitude=-6.9125&longitude=107.7025&current_weather=true')).json()).current_weather;
-                if (document.getElementById('weather-temp')) {
-                    document.getElementById('weather-temp').textContent = `${cw.temperature}°C`;
-                    document.getElementById('weather-topbar').innerHTML = `🌡️ Cigending, Bandung • <b>${cw.temperature}°C</b>`;
-                }
+                if (document.getElementById('weather-temp')) { document.getElementById('weather-temp').textContent = `${cw.temperature}°C`; document.getElementById('weather-topbar').innerHTML = `🌡️ Cigending, Bandung • <b>${cw.temperature}°C</b>`; }
             } catch (e) {}
         }
 
