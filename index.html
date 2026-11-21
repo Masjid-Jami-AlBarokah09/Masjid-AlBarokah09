@@ -174,6 +174,10 @@
                             <input id="fq-pengurban" type="text" required placeholder="Contoh: Kel. Bpk. Ahmad Subarjo" class="w-full px-4 py-3 rounded-xl bg-white border border-stone-300 text-sm font-medium focus:outline-none focus:border-terracotta" />
                         </div>
                     </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Nomor Telepon / WhatsApp <span class="text-rose-600">*</span></label>
+                        <input id="fq-telepon" type="tel" inputmode="tel" required placeholder="Contoh: 081234567890" class="w-full px-4 py-3 rounded-xl bg-white border border-stone-300 text-sm font-mono font-semibold focus:outline-none focus:border-terracotta" />
+                    </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                         <div class="sm:col-span-2">
                             <label class="block text-xs font-bold text-stone-700 mb-1">Alamat Lengkap <span class="text-rose-600">*</span></label>
@@ -407,12 +411,14 @@
             const st = getQurbanSimulationState();
             const namaPendaftar = document.getElementById('fq-pendaftar').value.trim();
             const namaPengurban = document.getElementById('fq-pengurban').value.trim();
+            const telepon = document.getElementById('fq-telepon').value.trim();
             const alamat = document.getElementById('fq-alamat').value.trim();
             const rt = document.getElementById('fq-rt').value;
 
             const payload = {
                 namaPendaftar,
                 namaPengurban,
+                telepon,
                 alamat,
                 rt,
                 jenisHewan: st.namaHewan,
@@ -451,6 +457,7 @@
                 `*DATA PESERTA:*`,
                 `• Nama Pendaftar: ${namaPendaftar}`,
                 `• Nama Pengurban: ${namaPengurban}`,
+                `• No. Telepon / WA: ${telepon}`,
                 `• Alamat: ${alamat}`,
                 `• RT: ${rt}`,
                 ``,
