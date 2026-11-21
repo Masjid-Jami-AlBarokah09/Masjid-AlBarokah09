@@ -121,12 +121,12 @@
         </div>
     </div>
 
-    <!-- MODAL FORMULIR PENDAFTARAN QURBAN (TERINTEGRASI KE GOOGLE SHEETS TAB 'Pendaftar' & WA) -->
+    <!-- MODAL FORMULIR PENDAFTARAN QURBAN (TERINTEGRASI KE GOOGLE SHEETS TAB 'Pendaftar' & WA PANITIA QURBAN) -->
     <div id="qurban-form-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this) tutupFormQurbanModal()">
         <div class="bg-[#FCFBF7] max-w-xl w-full rounded-3xl border-2 border-terracotta/40 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
             <div class="bg-terracotta text-white px-6 py-4 flex items-center justify-between">
                 <div>
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-amber-200 block">Panitia Qurban DKM Al-Barokah 09</span>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-amber-200 block">Panitia Qurban DKM Al-Barokah 09 (0858-6177-3945)</span>
                     <h3 class="font-serif text-xl font-bold">Formulir Pendaftaran Qurban</h3>
                 </div>
                 <button onclick="tutupFormQurbanModal()" class="w-8 h-8 rounded-xl bg-white/15 hover:bg-white/25 flex items-center justify-center text-white font-bold">✕</button>
@@ -198,7 +198,7 @@
                     <button id="btn-submit-qurban" type="submit" class="w-full bg-terracotta hover:bg-amber-800 text-white py-4 px-5 rounded-2xl font-extrabold text-sm shadow-lg flex items-center justify-center gap-2 transition-all">
                         <span>💾 Simpan ke Spreadsheet & Konfirmasi WA</span>
                     </button>
-                    <p class="text-[11px] text-center text-stone-500">Data otomatis tercatat ke tab <b>Pendaftar</b> Spreadsheet Tabungan Qurban DKM.</p>
+                    <p class="text-[11px] text-center text-stone-500">Data otomatis tercatat ke tab <b>Pendaftar</b> & dikirim ke WA Panitia Qurban (<b>0858-6177-3945</b>).</p>
                 </div>
             </form>
         </div>
@@ -229,7 +229,9 @@
         const SHEET_GID = '0';
         const DOCS_ARTIKEL_URL = 'https://docs.google.com/document/d/1i7G_1kQ8vS8q3s9x7vF2mL4nK8pQ2wR9tY5uI0oP3aS/preview';
 
-        // URL WEB APP GOOGLE APPS SCRIPT SUDAH TERPASANG:
+        // KONFIGURASI PANITIA QURBAN & APPS SCRIPT:
+        const WA_ADMIN_QURBAN = '6285861773945'; // 085861773945
+        const WA_ADMIN_UMUM = '6288218271505';
         const QURBAN_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQ-J2vpHGDZeM4AOThg7n9dD4dLzRmbPt29Plnu7YmkgJ-7Tb_qq8ggvmm1tYfGd90/exec';
 
         let keuanganData = { danaPembangunan: 0, totalPemasukan: 0, totalPengeluaran: 0, mutasiPembangunan: [] };
@@ -460,7 +462,7 @@
                 btn.innerHTML = '<span>💾 Simpan ke Spreadsheet & Konfirmasi WA</span>';
             }
 
-            window.open(`https://wa.me/6288218271505?text=${encodeURIComponent(pesan)}`, '_blank', 'noopener,noreferrer');
+            window.open(`https://wa.me/${WA_ADMIN_QURBAN}?text=${encodeURIComponent(pesan)}`, '_blank', 'noopener,noreferrer');
             tutupFormQurbanModal();
         }
 
@@ -847,7 +849,7 @@
                         <div class="bg-emeraldDeep text-white p-4 sm:p-5 rounded-2xl border border-goldSoft/40 space-y-2">
                             <div class="flex items-center justify-between">
                                 <span class="text-[11px] font-bold uppercase tracking-wider text-goldSoft">✨ Rincian Terkonfirmasi ke Formulir & Spreadsheet</span>
-                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/15 text-emerald-100">Calon pengurban hanya isi identitas</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/15 text-emerald-100">Admin Qurban: 0858-6177-3945</span>
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1 text-xs">
                                 <div class="bg-black/20 px-3 py-2 rounded-xl"><span class="text-emerald-200/80 block text-[10px]">Jenis Hewan:</span><b id="qurban-form-prev-jenis" class="text-white">Kambing Super (Rp 4.200.000)</b></div>
@@ -871,7 +873,7 @@
                     ],
                     emoji: '🐄',
                     cardTitle: 'Formulir Pendaftaran & Tabungan Qurban',
-                    cardSubtitle: 'Otomatis masuk ke tab Pendaftar Spreadsheet DKM',
+                    cardSubtitle: 'Admin Panitia Qurban: 0858-6177-3945 • Otomatis masuk Spreadsheet',
                     bullets: ['<b>Tabungan Qurban:</b> Setoran ringan sesuai kemampuan tiap bulan', '<b>Patungan Sapi (1/7):</b> Kolektif jamaah terorganisir', '<b>Qurban Domba/Kambing:</b> Hewan sehat & sesuai syariat'],
                     customHtml: calcQurban,
                     btn1: `<button onclick="bukaFormQurbanModal()" class="w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📝 Isi Formulir Pendaftaran</button>`,
@@ -944,7 +946,7 @@
                     cardSubtitle: 'Khusus penyaluran kepada 8 golongan (Asnaf) mustahik',
                     bullets: ['<b>Zakat Maal:</b> Kadar 2,5% dari harta mencapai nisab', '<b>Zakat Fitrah:</b> Berupa beras 2,5 kg / 3,5 liter per jiwa atau senilai harga beras konsumsi', '<b>Pencatatan Terpisah:</b> Tidak dicampur dengan kas pembangunan'],
                     customHtml: calcZakat,
-                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20Pengurus%20UPZ%20Masjid%20Al-Barokah%2009,%20saya%20berniat%20menunaikan%20Zakat." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🤝 Konfirmasi Akad Zakat (WA)</a>`,
+                    btn1: `<a href="https://wa.me/${WA_ADMIN_UMUM}?text=Assalamu'alaikum%20Pengurus%20UPZ%20Masjid%20Al-Barokah%2009,%20saya%20berniat%20menunaikan%20Zakat." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🤝 Konfirmasi Akad Zakat (WA)</a>`,
                     btn2: `<button onclick="copyRekening('7302811959','BSI')" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📋 Salin Rekening BSI (7302 811 959)</button>`
                 });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'infaq') {
@@ -965,7 +967,7 @@
                     cardTitle: 'Salurkan Infaq Kemakmuran Masjid',
                     cardSubtitle: 'Tercatat dalam laporan kas Bendahara DKM',
                     bullets: ['<b>Infaq Operasional:</b> Listrik, air wudhu & kebersihan masjid', '<b>Infaq Pembangunan:</b> Perluasan area ibadah & sarana masjid'],
-                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20konfirmasi%20INFAQ." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📲 Konfirmasi Infaq (WhatsApp)</a>`,
+                    btn1: `<a href="https://wa.me/${WA_ADMIN_UMUM}?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20konfirmasi%20INFAQ." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📲 Konfirmasi Infaq (WhatsApp)</a>`,
                     btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📊 Lihat Laporan Kas</button>`
                 });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'shodaqoh') {
@@ -986,7 +988,7 @@
                     cardTitle: 'Salurkan Shodaqoh Terbaik Anda',
                     cardSubtitle: 'Tanpa batas minimal • Dapat diniatkan atas nama orang tua',
                     bullets: ['<b>Shodaqoh Yatim & Dhuafa:</b> Santunan warga yang membutuhkan', '<b>Shodaqoh Jariyah:</b> Pengadaan mushaf, mukena & karpet masjid'],
-                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20konfirmasi%20SHODAQOH." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📲 Konfirmasi Shodaqoh (WA)</a>`,
+                    btn1: `<a href="https://wa.me/${WA_ADMIN_UMUM}?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20konfirmasi%20SHODAQOH." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📲 Konfirmasi Shodaqoh (WA)</a>`,
                     btn2: `<button onclick="copyRekening('7302811959','BSI')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📋 Salin Rekening BSI (7302 811 959)</button>`
                 });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'beras') {
@@ -1008,7 +1010,7 @@
                     cardTitle: 'Partisipasi Sedekah Beras Barokah',
                     cardSubtitle: 'Penyaluran langsung ke warga mustahik RW 09',
                     bullets: ['<b>Donasi Paket Beras:</b> Mulai dari 5 kg atau kelipatannya', '<b>Konversi Beras:</b> Mulai Rp 75.000/paket'],
-                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20donasi%20Beras%20Barokah." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🌾 Daftar Donatur Beras</a>`,
+                    btn1: `<a href="https://wa.me/${WA_ADMIN_UMUM}?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20donasi%20Beras%20Barokah." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🌾 Daftar Donatur Beras</a>`,
                     btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Transfer Dana Beras (BSI)</button>`,
                     extra: tabel
                 });
@@ -1030,7 +1032,7 @@
                     cardTitle: "Layanan Donasi Jum'at Berkah",
                     cardSubtitle: "Dikelola DKM & Remaja Masjid Al-Barokah 09",
                     bullets: ['<b>Paket Nasi Box:</b> Rp 15.000 – Rp 20.000 per porsi', '<b>Titip Makanan:</b> Diantar sebelum pukul 11.00 WIB'],
-                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20partisipasi%20Jum'at%20Berkah." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🍱 Konfirmasi Paket Jum'at</a>`,
+                    btn1: `<a href="https://wa.me/${WA_ADMIN_UMUM}?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20partisipasi%20Jum'at%20Berkah." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🍱 Konfirmasi Paket Jum'at</a>`,
                     btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Transfer Donasi (BSI)</button>`
                 });
             } else if (currentCategory === 'informasi' && currentSubmenu === 'pembangunan') {
