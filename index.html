@@ -42,7 +42,6 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Animasi Cuaca Dinamis */
         @keyframes spinSun { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes floatCloud { 0%, 100% { transform: translateX(-4px); } 50% { transform: translateX(5px); } }
         @keyframes rainFall { 0% { transform: translateY(-4px); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(10px); opacity: 0; } }
@@ -107,7 +106,6 @@
 
     <main id="main-content" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8"></main>
 
-    <!-- MODAL BACA ARTIKEL LENGKAP -->
     <div id="artikel-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this) tutupArtikelModal()">
         <div class="bg-[#FCFBF7] max-w-2xl w-full rounded-3xl border border-stone-300 shadow-2xl overflow-hidden max-h-[88vh] flex flex-col">
             <div class="bg-emeraldDeep text-white px-6 py-4 flex items-center justify-between">
@@ -167,50 +165,66 @@
         ];
 
         const pengurusData = {
-            penasehat: ['Ketua RW 09 Cigending', 'DR. H. Asep Hilman, M.Pd', 'H. Aep Syaepulloh', 'H. Gatot st'],
-            bph: [{ jabatan: 'Ketua DKM', nama: 'H. Suwandi', highlight: true }, { jabatan: 'Sekretaris 1', nama: 'H. Agus Gunadi Ismail, ST' }, { jabatan: 'Sekretaris 2', nama: 'Ir Aang Utarya' }, { jabatan: 'Bendahara 1', nama: 'Drs. Deni Iskandar' }, { jabatan: 'Bendahara 2', nama: 'Zulkarnaen' }],
+            penasehat: [
+                { nama: 'Ketua RW 09 Cigending', peran: 'Ex-Officio Wilayah' },
+                { nama: 'DR. H. Asep Hilman, M.Pd', peran: 'Dewan Penasehat' },
+                { nama: 'H. Aep Syaepulloh', peran: 'Dewan Penasehat' },
+                { nama: 'H. Gatot ST', peran: 'Dewan Penasehat' }
+            ],
+            ketua: { jabatan: 'Ketua DKM Masjid Jami\' Al-Barokah 09', nama: 'H. Suwandi' },
+            bph: [
+                { jabatan: 'Sekretaris 1', nama: 'H. Agus Gunadi Ismail, ST', icon: 'file-signature' },
+                { jabatan: 'Sekretaris 2', nama: 'Ir. Aang Utarya', icon: 'file-text' },
+                { jabatan: 'Bendahara 1', nama: 'Drs. Deni Iskandar', icon: 'wallet' },
+                { jabatan: 'Bendahara 2', nama: 'Zulkarnaen', icon: 'coins' }
+            ],
             bidang: [
-                { nama: 'Seksi Dakwah', anggota: ['Kasno', 'Zumar', 'Tardi Nurdiansyah', 'Sulkhoni', 'Mastur', 'Robby Ilman'] },
-                { nama: 'Seksi Pendidikan', anggota: ['Siti Parlina, S.Pd', 'Teti Supriatin, S.Pd', 'Imam Mauludin'] },
-                { nama: 'Seksi Pemberdayaan', anggota: ['Lingga, S.Sos', 'Atep Permana', 'Dedi Cahyana', 'Imas Suciawati', 'Nurdini Homsah'] },
-                { nama: 'Seksi Humas', anggota: ['Ending', 'Gugum Gumilar', 'Syamsu', 'Tono Haryanto', 'Haryono', 'Zaenal Mutaqim'] },
-                { nama: 'Seksi Kerumahtanggaan', anggota: ['Engkos Kosidin', 'Suwarto', 'Sarjono', 'Sugito', 'Budianto'] },
-                { nama: 'Seksi Muslimat', anggota: ['Rika Nisa', 'Ning Hartati', 'Tarmini', 'Yeuis Purnamawati', 'Surip Romlah', 'Titin Aisah', 'Siti Warliyah', 'Aisyah'] },
-                { nama: 'Seksi Remaja', anggota: ['Firdaus', 'Hisyam Nur Chairuddin', 'Sibab', 'Radella Bilqisthi Gunawan', 'Najmi Tsaqib Nurhasani'] }
+                { nama: 'Seksi Dakwah', icon: 'book-open', accent: 'bg-emerald-100 text-emeraldDeep', anggota: ['Kasno', 'Zumar', 'Tardi Nurdiansyah', 'Sulkhoni', 'Mastur', 'Robby Ilman'] },
+                { nama: 'Seksi Pendidikan', icon: 'graduation-cap', accent: 'bg-amber-100 text-amber-900', anggota: ['Siti Parlina, S.Pd', 'Teti Supriatin, S.Pd', 'Imam Mauludin'] },
+                { nama: 'Seksi Pemberdayaan', icon: 'hand-helping', accent: 'bg-teal-100 text-teal-900', anggota: ['Lingga, S.Sos', 'Atep Permana', 'Dedi Cahyana', 'Imas Suciawati', 'Nurdini Homsah'] },
+                { nama: 'Seksi Humas', icon: 'megaphone', accent: 'bg-sky-100 text-sky-900', anggota: ['Ending', 'Gugum Gumilar', 'Syamsu', 'Tono Haryanto', 'Haryono', 'Zaenal Mutaqim'] },
+                { nama: 'Seksi Kerumahtanggaan', icon: 'home', accent: 'bg-orange-100 text-orange-900', anggota: ['Engkos Kosidin', 'Suwarto', 'Sarjono', 'Sugito', 'Budianto'] },
+                { nama: 'Seksi Muslimat', icon: 'flower-2', accent: 'bg-rose-100 text-rose-900', anggota: ['Rika Nisa', 'Ning Hartati', 'Tarmini', 'Yeuis Purnamawati', 'Surip Romlah', 'Titin Aisah', 'Siti Warliyah', 'Aisyah'] },
+                { nama: 'Seksi Remaja Masjid', icon: 'sparkles', accent: 'bg-purple-100 text-purple-900', anggota: ['Firdaus', 'Hisyam Nur Chairuddin', 'Sibab', 'Radella Bilqisthi Gunawan', 'Najmi Tsaqib Nurhasani'] }
             ]
         };
 
         let currentCategory = 'profil', currentSubmenu = 'beranda';
 
+        function getInisial(nama) {
+            const clean = nama.replace(/^(DR\.|Drs\.|Ir\.|H\.|Hj\.)\s*/gi, '').trim();
+            const parts = clean.split(/\s+/);
+            return parts.length >= 2 ? (parts[0][0] + parts[1][0]).toUpperCase() : clean.slice(0, 2).toUpperCase();
+        }
+
+        function filterPengurus(keyword) {
+            const q = keyword.toLowerCase().trim();
+            document.querySelectorAll('.pengurus-person').forEach(el => {
+                const match = el.dataset.nama.toLowerCase().includes(q);
+                el.style.display = match ? '' : 'none';
+            });
+            document.querySelectorAll('.pengurus-seksi-card').forEach(card => {
+                const visibleMembers = Array.from(card.querySelectorAll('.pengurus-person')).filter(m => m.style.display !== 'none');
+                const titleMatch = card.dataset.seksi.toLowerCase().includes(q);
+                card.style.display = (visibleMembers.length > 0 || titleMatch || q === '') ? '' : 'none';
+                if (titleMatch) card.querySelectorAll('.pengurus-person').forEach(m => m.style.display = '');
+            });
+        }
+
         function getWeatherVisual(code) {
             if (code === 0) {
-                return {
-                    label: 'Cerah Terik',
-                    svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-sun"><circle cx="32" cy="32" r="13" fill="#FBBF24"/><path d="M32 6V12M32 52V58M6 32H12M52 32H58M13.6 13.6L17.8 17.8M46.2 46.2L50.4 50.4M50.4 13.6L46.2 17.8M17.8 46.2L13.6 50.4" stroke="#F59E0B" stroke-width="3.5" stroke-linecap="round"/></g></svg>`
-                };
+                return { label: 'Cerah Terik', svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-sun"><circle cx="32" cy="32" r="13" fill="#FBBF24"/><path d="M32 6V12M32 52V58M6 32H12M52 32H58M13.6 13.6L17.8 17.8M46.2 46.2L50.4 50.4M50.4 13.6L46.2 17.8M17.8 46.2L13.6 50.4" stroke="#F59E0B" stroke-width="3.5" stroke-linecap="round"/></g></svg>` };
             }
             if (code >= 1 && code <= 3) {
-                return {
-                    label: code === 1 ? 'Cerah Berawan' : 'Berawan Sejuk',
-                    svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-sun"><circle cx="24" cy="24" r="10" fill="#FBBF24"/><path d="M24 8V11M24 37V40M8 24H11M37 24H40M12.7 12.7L14.8 14.8M33.2 33.2L35.3 35.3M35.3 12.7L33.2 14.8M14.8 33.2L12.7 35.3" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round"/></g><g class="anim-cloud"><path d="M22 46H47C51.4 46 55 42.4 55 38C55 33.8 51.8 30.4 47.7 30.1C46.3 24.3 41.1 20 35 20C28.4 20 23 25 22.1 31.4C18.6 32.1 16 35.2 16 38.9C16 42.8 18.7 46 22 46Z" fill="#F8FAFC"/></g></svg>`
-                };
+                return { label: code === 1 ? 'Cerah Berawan' : 'Berawan Sejuk', svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-sun"><circle cx="24" cy="24" r="10" fill="#FBBF24"/><path d="M24 8V11M24 37V40M8 24H11M37 24H40M12.7 12.7L14.8 14.8M33.2 33.2L35.3 35.3M35.3 12.7L33.2 14.8M14.8 33.2L12.7 35.3" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round"/></g><g class="anim-cloud"><path d="M22 46H47C51.4 46 55 42.4 55 38C55 33.8 51.8 30.4 47.7 30.1C46.3 24.3 41.1 20 35 20C28.4 20 23 25 22.1 31.4C18.6 32.1 16 35.2 16 38.9C16 42.8 18.7 46 22 46Z" fill="#F8FAFC"/></g></svg>` };
             }
             if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) {
-                return {
-                    label: 'Hujan Ringan / Sedang',
-                    svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-cloud"><path d="M18 38H46C50.9 38 55 34 55 29C55 24.3 51.4 20.5 46.8 20.1C45.2 13.7 39.4 9 32.5 9C25.1 9 19 14.6 18 21.8C14.1 22.6 11 26 11 30.1C11 34.5 14.1 38 18 38Z" fill="#E2E8F0"/></g><line class="anim-rain-1" x1="22" y1="42" x2="19" y2="52" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/><line class="anim-rain-2" x1="32" y1="42" x2="29" y2="52" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/><line class="anim-rain-3" x1="42" y1="42" x2="39" y2="52" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/></svg>`
-                };
+                return { label: 'Hujan Ringan / Sedang', svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-cloud"><path d="M18 38H46C50.9 38 55 34 55 29C55 24.3 51.4 20.5 46.8 20.1C45.2 13.7 39.4 9 32.5 9C25.1 9 19 14.6 18 21.8C14.1 22.6 11 26 11 30.1C11 34.5 14.1 38 18 38Z" fill="#E2E8F0"/></g><line class="anim-rain-1" x1="22" y1="42" x2="19" y2="52" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/><line class="anim-rain-2" x1="32" y1="42" x2="29" y2="52" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/><line class="anim-rain-3" x1="42" y1="42" x2="39" y2="52" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/></svg>` };
             }
             if (code >= 95) {
-                return {
-                    label: 'Hujan Petir',
-                    svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-cloud"><path d="M18 37H46C50.9 37 55 33 55 28C55 23.3 51.4 19.5 46.8 19.1C45.2 12.7 39.4 8 32.5 8C25.1 8 19 13.6 18 20.8C14.1 21.6 11 25 11 29.1C11 33.5 14.1 37 18 37Z" fill="#CBD5E1"/></g><path class="anim-bolt" d="M34 36L26 47H33L30 57L41 44H34L34 36Z" fill="#FACC15"/></svg>`
-                };
+                return { label: 'Hujan Petir', svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-cloud"><path d="M18 37H46C50.9 37 55 33 55 28C55 23.3 51.4 19.5 46.8 19.1C45.2 12.7 39.4 8 32.5 8C25.1 8 19 13.6 18 20.8C14.1 21.6 11 25 11 29.1C11 33.5 14.1 37 18 37Z" fill="#CBD5E1"/></g><path class="anim-bolt" d="M34 36L26 47H33L30 57L41 44H34L34 36Z" fill="#FACC15"/></svg>` };
             }
-            return {
-                label: 'Berawan Sejuk',
-                svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-cloud"><path d="M18 42H46C50.9 42 55 38 55 33C55 28.3 51.4 24.5 46.8 24.1C45.2 17.7 39.4 13 32.5 13C25.1 13 19 18.6 18 25.8C14.1 26.6 11 30 11 34.1C11 38.5 14.1 42 18 42Z" fill="#F1F5F9"/></g></svg>`
-            };
+            return { label: 'Berawan Sejuk', svg: `<svg class="w-16 h-16" viewBox="0 0 64 64" fill="none"><g class="anim-cloud"><path d="M18 42H46C50.9 42 55 38 55 33C55 28.3 51.4 24.5 46.8 24.1C45.2 17.7 39.4 13 32.5 13C25.1 13 19 18.6 18 25.8C14.1 26.6 11 30 11 34.1C11 38.5 14.1 42 18 42Z" fill="#F1F5F9"/></g></svg>` };
         }
 
         function bukaArtikelModal(id) {
@@ -298,16 +312,13 @@
             if (currentCategory === 'profil' && currentSubmenu === 'beranda') {
                 const defaultVis = getWeatherVisual(2);
                 w.innerHTML = `
-                    <!-- HERO BANNER RATA TENGAH + 3 KOLOM (JAM KIRI | ANIMASI CUACA TENGAH | SUHU KANAN) -->
                     <div class="bg-emeraldDeep text-white p-6 sm:p-10 rounded-3xl shadow-xl mb-8 border border-goldSoft/40">
                         <div class="text-center max-w-3xl mx-auto">
                             <span class="inline-block px-3.5 py-1 rounded-full bg-goldSoft/20 text-goldSoft text-xs font-semibold uppercase tracking-wide">✨ Selamat Datang</span>
                             <h2 class="font-serif text-2xl sm:text-4xl font-bold mt-3">Portal Digital Masjid Jami' Al-Barokah 09</h2>
                             <p class="text-emerald-100/90 text-sm sm:text-base mt-2.5 leading-relaxed">Pusat informasi ibadah, kajian, transparansi dana pembangunan, serta layanan qurban, zakat, infaq, dan sosial warga RW 09 Cigending.</p>
                         </div>
-
                         <div class="pt-7 grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
-                            <!-- SUDUT KIRI: WAKTU REAL-TIME -->
                             <div class="bg-black/25 px-5 py-4 rounded-2xl border border-white/15 flex flex-col justify-center items-center md:items-start">
                                 <div class="text-[11px] uppercase tracking-wider text-amber-300 font-bold mb-2">Waktu Real-Time:</div>
                                 <div class="flex items-center space-x-2">
@@ -316,14 +327,10 @@
                                     <div class="flip-box w-12 h-14 rounded-xl flex items-center justify-center text-gray-900 font-black text-xl font-mono"><span id="flip-second">00</span></div>
                                 </div>
                             </div>
-
-                            <!-- TENGAH: ANIMASI CUACA REAL-TIME -->
                             <div class="bg-white/10 px-5 py-4 rounded-2xl border border-white/20 flex flex-col items-center justify-center text-center">
                                 <div id="weather-anim-container" class="flex items-center justify-center">${defaultVis.svg}</div>
                                 <span id="weather-status-badge" class="mt-1 px-3 py-0.5 rounded-full bg-black/25 text-amber-200 text-[11px] font-bold tracking-wide">${defaultVis.label}</span>
                             </div>
-
-                            <!-- SUDUT KANAN: INFO SUHU & LOKASI -->
                             <div class="bg-black/25 px-5 py-4 rounded-2xl border border-white/15 flex flex-col justify-center items-center md:items-end text-center md:text-right">
                                 <span class="text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full bg-white/15 text-amber-200">Cuaca Cigending</span>
                                 <div class="flex items-baseline gap-2 mt-2">
@@ -334,14 +341,13 @@
                         </div>
                     </div>
 
-                    <!-- JADWAL SHOLAT + 1 KOTAK TANGGAL GABUNG (ATAS MASEHI, BAWAH HIJRIAH) -->
                     <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm mb-10">
                         <div class="flex flex-wrap justify-between items-center gap-4 border-b border-stone-200 pb-4 mb-5">
                             <div>
                                 <span class="text-xs font-bold text-amber-800 uppercase tracking-wider">⏰ Jadwal Sholat Kota Bandung</span>
                                 <p class="text-xs text-stone-500 mt-0.5">Kementerian Agama RI • Wilayah Bandung & Sekitarnya</p>
                             </div>
-                            <div class="bg-[#F4F0E6] px-4 py-2.5 rounded-2xl border border-stone-300/80 text-right shadow-xs">
+                            <div class="bg-[#F4F0E6] px-4 py-2.5 rounded-2xl border border-stone-300/80 text-right">
                                 <div id="masehi-full-text" class="text-xs sm:text-sm font-extrabold text-gray-900 leading-snug">Sabtu, 21 Nov 2026</div>
                                 <div id="hijri-full-text" class="text-[11px] sm:text-xs font-bold text-emeraldDeep mt-0.5">11 Jumadil Akhir 1448 H</div>
                             </div>
@@ -357,7 +363,6 @@
                         </div>
                     </div>
 
-                    <!-- KOLOM ARTIKEL & BULETIN DAKWAH -->
                     <section id="kolom-artikel-beranda" class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border-2 border-emeraldDeep/20 shadow-sm space-y-6">
                         <div class="flex flex-wrap items-center justify-between gap-4 border-b border-stone-200 pb-4">
                             <div>
@@ -410,7 +415,129 @@
                         <div tabindex="0" onclick="this.classList.toggle('is-open')" class="kajian-card cursor-pointer bg-[#FCFBF7] p-6 pt-10 islamic-arch border-2 border-rose-700/20 text-center shadow-sm hover-lift"><div class="w-14 h-14 mx-auto rounded-2xl bg-rose-800 text-white flex items-center justify-center mb-4 shadow-md"><i data-lucide="users" class="w-7 h-7"></i></div><span class="px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-900">Rutin Sore Hari</span><h3 class="font-heading font-bold text-lg text-gray-900 mt-3">Pengajian Anak-Anak (TPA)</h3><p class="text-xs text-stone-600 mt-2">Taman Pendidikan Al-Qur'an, hafalan surat pendek & pembinaan akhlak santri.</p><div class="curtain-panel text-left"><div class="curtain-inner"><div class="pt-3 border-t border-rose-800/15 text-xs text-stone-700 space-y-1.5 bg-rose-50/90 p-3.5 rounded-2xl"><p class="font-bold text-rose-900">🎒 Program Santri:</p><p>Belajar Iqra, hafalan doa harian, kisah teladan nabi, dan praktik wudhu/sholat setiap Senin–Jum'at pukul 16.00 – 17.15 WIB.</p></div></div></div></div>
                     </div>`;
             } else if (currentCategory === 'profil' && currentSubmenu === 'struktur') {
-                w.innerHTML = `<h2 class="font-serif text-3xl font-bold mb-6">Susunan Kepengurusan DKM Al-Barokah 09</h2><div class="mb-6"><h3 class="font-bold text-base mb-3">Dewan Penasehat</h3><div class="grid sm:grid-cols-4 gap-3">${pengurusData.penasehat.map(n => `<div class="bg-[#FCFBF7] p-4 rounded-2xl border font-bold text-sm">${n}</div>`).join('')}</div></div><div class="mb-6"><h3 class="font-bold text-base mb-3">Badan Pengurus Harian (BPH)</h3><div class="grid sm:grid-cols-3 gap-4">${pengurusData.bph.map(p => `<div class="${p.highlight ? 'bg-emeraldDeep text-white' : 'bg-[#FCFBF7]'} p-5 rounded-2xl border"><div class="text-xs uppercase font-bold opacity-80">${p.jabatan}</div><div class="font-bold text-base mt-1">${p.nama}</div></div>`).join('')}</div></div><h3 class="font-bold text-base mb-3">Bidang & Seksi</h3><div class="grid md:grid-cols-3 gap-4">${pengurusData.bidang.map(b => `<div class="bg-[#FCFBF7] p-5 rounded-2xl border"><h4 class="font-bold text-emeraldDeep border-b pb-2 mb-3">${b.nama}</h4><div class="flex flex-wrap gap-1.5">${b.anggota.map(a => `<span class="px-2.5 py-1 rounded-lg bg-[#F4F0E6] text-xs font-medium">${a}</span>`).join('')}</div></div>`).join('')}</div>`;
+                const totalAnggota = pengurusData.penasehat.length + 1 + pengurusData.bph.length + pengurusData.bidang.reduce((acc, b) => acc + b.anggota.length, 0);
+                w.innerHTML = `
+                    <!-- HEADER STRUKTUR ORGANISASI YANG LUWES & INTERAKTIF -->
+                    <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border border-stone-300/80 shadow-sm mb-8">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+                            <div>
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emeraldLight text-emeraldDeep text-xs font-bold uppercase tracking-wider">
+                                    <i data-lucide="shield" class="w-3.5 h-3.5"></i> Khidmat Umat RW 09 Cigending
+                                </span>
+                                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mt-2">Susunan Kepengurusan DKM Al-Barokah 09</h2>
+                                <p class="text-xs sm:text-sm text-stone-600 mt-1">Sinergi Dewan Penasehat, Badan Pengurus Harian (BPH), serta 7 Bidang & Seksi Pelayanan Umat.</p>
+                            </div>
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                                <div class="relative min-w-[240px]">
+                                    <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                                    <input type="text" oninput="filterPengurus(this.value)" placeholder="Cari nama pengurus / seksi..." class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#F4F0E6] border border-stone-300 text-xs sm:text-sm font-medium focus:outline-none focus:border-emeraldDeep" />
+                                </div>
+                                <div class="px-4 py-2.5 rounded-2xl bg-emeraldDeep text-white text-center shrink-0">
+                                    <span class="text-[10px] uppercase tracking-wider text-goldSoft font-bold block">Total Pengurus</span>
+                                    <span class="font-heading font-extrabold text-base">${totalAnggota} Personel</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TINGKAT 1: DEWAN PENASEHAT -->
+                    <div class="mb-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center"><i data-lucide="crown" class="w-4 h-4"></i></span>
+                            <div>
+                                <h3 class="font-heading font-bold text-base sm:text-lg text-gray-900">Dewan Penasehat & Pembina</h3>
+                                <p class="text-xs text-stone-500">Tokoh masyarakat dan pemangku wilayah RW 09 Cigending</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            ${pengurusData.penasehat.map(p => `
+                                <div data-nama="${p.nama}" class="pengurus-person bg-[#FCFBF7] p-4 rounded-2xl border border-amber-700/20 shadow-xs hover-lift flex items-center gap-3.5">
+                                    <div class="w-11 h-11 rounded-2xl bg-amber-100 text-amber-900 font-heading font-extrabold text-sm flex items-center justify-center shrink-0">${getInisial(p.nama)}</div>
+                                    <div class="min-w-0">
+                                        <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 block">${p.peran}</span>
+                                        <span class="font-bold text-sm text-gray-900 block truncate">${p.nama}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- TINGKAT 2: BADAN PENGURUS HARIAN (BPH) -->
+                    <div class="mb-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-xl bg-emeraldDeep text-goldSoft flex items-center justify-center"><i data-lucide="award" class="w-4 h-4"></i></span>
+                            <div>
+                                <h3 class="font-heading font-bold text-base sm:text-lg text-gray-900">Badan Pengurus Harian (BPH)</h3>
+                                <p class="text-xs text-stone-500">Pimpinan operasional, kesekretariatan, dan kebendaharaan masjid</p>
+                            </div>
+                        </div>
+
+                        <!-- Kartu Utama Ketua DKM -->
+                        <div data-nama="${pengurusData.ketua.nama}" class="pengurus-person bg-gradient-to-r from-emeraldDeep to-[#114e3d] text-white p-6 rounded-3xl border border-goldSoft/40 shadow-md mb-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="flex items-center gap-4 text-center sm:text-left flex-col sm:flex-row">
+                                <div class="w-16 h-16 rounded-2xl bg-goldSoft text-emeraldDeep font-heading font-black text-xl flex items-center justify-center shadow-md shrink-0">${getInisial(pengurusData.ketua.nama)}</div>
+                                <div>
+                                    <span class="px-3 py-0.5 rounded-full bg-white/15 text-goldSoft text-[11px] font-bold uppercase tracking-wider">${pengurusData.ketua.jabatan}</span>
+                                    <h4 class="font-serif text-2xl font-bold mt-1.5">${pengurusData.ketua.nama}</h4>
+                                </div>
+                            </div>
+                            <span class="text-xs text-emerald-100/85 bg-black/20 px-4 py-2 rounded-xl border border-white/10">Penanggung Jawab Umum DKM</span>
+                        </div>
+
+                        <!-- Sekretaris & Bendahara -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            ${pengurusData.bph.map(p => `
+                                <div data-nama="${p.nama}" class="pengurus-person bg-[#FCFBF7] p-5 rounded-2xl border border-stone-300/80 shadow-xs hover-lift flex items-center gap-3.5">
+                                    <div class="w-11 h-11 rounded-2xl bg-emeraldLight text-emeraldDeep flex items-center justify-center shrink-0">
+                                        <i data-lucide="${p.icon}" class="w-5 h-5"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <span class="text-[11px] font-bold uppercase text-emeraldDeep block">${p.jabatan}</span>
+                                        <span class="font-bold text-sm text-gray-900 block truncate mt-0.5">${p.nama}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- TINGKAT 3: BIDANG & SEKSI -->
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-8 rounded-xl bg-midnightTeal text-goldSoft flex items-center justify-center"><i data-lucide="layers" class="w-4 h-4"></i></span>
+                            <div>
+                                <h3 class="font-heading font-bold text-base sm:text-lg text-gray-900">Bidang & Seksi Pelaksana</h3>
+                                <p class="text-xs text-stone-500">Pelaksana teknis program dakwah, pendidikan, sosial, dan kemakmuran masjid</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                            ${pengurusData.bidang.map(b => `
+                                <div data-seksi="${b.nama}" class="pengurus-seksi-card bg-[#FCFBF7] p-6 rounded-3xl border border-stone-300/80 shadow-xs hover-lift flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center justify-between gap-2 pb-3.5 mb-4 border-b border-stone-200">
+                                            <div class="flex items-center gap-2.5">
+                                                <span class="w-9 h-9 rounded-xl ${b.accent} flex items-center justify-center shrink-0">
+                                                    <i data-lucide="${b.icon}" class="w-4 h-4"></i>
+                                                </span>
+                                                <h4 class="font-heading font-bold text-base text-gray-900">${b.nama}</h4>
+                                            </div>
+                                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#F4F0E6] text-stone-600">${b.anggota.length} Orang</span>
+                                        </div>
+                                        <div class="space-y-2">
+                                            ${b.anggota.map((a, idx) => `
+                                                <div data-nama="${a}" class="pengurus-person flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-[#F8F5EE] hover:bg-emeraldLight/50 transition-colors">
+                                                    <div class="flex items-center gap-2.5 min-w-0">
+                                                        <span class="w-7 h-7 rounded-lg bg-white border border-stone-200 text-[11px] font-bold text-emeraldDeep flex items-center justify-center shrink-0">${getInisial(a)}</span>
+                                                        <span class="text-xs sm:text-sm font-medium text-gray-800 truncate">${a}</span>
+                                                    </div>
+                                                    ${idx === 0 ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emeraldDeep/10 text-emeraldDeep shrink-0">Koordinator</span>' : ''}
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>`;
             } else if (currentCategory === 'layanan' && currentSubmenu === 'qurban') {
                 const calcQurban = `
                     <div class="bg-amber-50/90 p-5 sm:p-6 rounded-2xl border border-terracotta/25 space-y-5">
