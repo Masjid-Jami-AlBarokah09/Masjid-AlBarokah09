@@ -257,7 +257,8 @@
             lucide.createIcons();
         }
 
-        // Kalkulator Simulasi Tabungan Qurban + Perkiraan Progres Pembayaran
+        // Kalkulator Simulasi Tabungan Qurban:
+        // Input: Jenis/Harga Hewan + Cicilan/Bulan + Lama Cicil (Bulan) -> Output: Uang Terkumpul & Kurangnya Berapa Lagi
         function ubahJenisHewanQurban(val) {
             const inp = document.getElementById('qurban-harga-input');
             if (!inp) return;
@@ -265,64 +266,54 @@
             hitungTabunganQurban();
         }
 
-        function sinkronSetoranDariBulan() {
-            const inpHarga = document.getElementById('qurban-harga-input');
-            const tenSel = document.getElementById('qurban-tenor-select');
-            const blnInp = document.getElementById('qurban-bulan-jalan-input');
-            const masukInp = document.getElementById('qurban-sudah-masuk-input');
-            if (!inpHarga || !tenSel || !blnInp || !masukInp) return;
-
-            const harga = Number(String(inpHarga.value).replace(/[^0-9]/g, '')) || 0;
-            const tenor = Math.max(1, parseInt(tenSel.value, 10) || 1);
-            const cicilan = Math.ceil(harga / tenor);
-            const bulanJalan = Math.min(tenor, Math.max(0, parseInt(String(blnInp.value).replace(/[^0-9]/g, ''), 10) || 0));
-            blnInp.value = bulanJalan;
-
-            const estimasiMasuk = Math.min(harga, cicilan * bulanJalan);
-            masukInp.value = estimasiMasuk > 0 ? estimasiMasuk.toLocaleString('id-ID') : '0';
-            hitungTabunganQurban();
-        }
-
         function hitungTabunganQurban() {
             const sel = document.getElementById('qurban-jenis-select');
             const inpHarga = document.getElementById('qurban-harga-input');
-            const tenSel = document.getElementById('qurban-tenor-select');
-            const masukInp = document.getElementById('qurban-sudah-masuk-input');
+            const inpCicil = document.getElementById('qurban-cicil-input');
+            const inpBulan = document.getElementById('qurban-bulan-input');
 
-            const outCicilan = document.getElementById('qurban-hasil-nominal');
-            const subInfo = document.getElementById('qurban-hasil-subinfo');
-            const outMasuk = document.getElementById('qurban-prog-masuk');
-            const outSisa = document.getElementById('qurban-prog-sisa');
+            const outTerkumpul = document.getElementById('qurban-out-terkumpul');
+            const outSubTerkumpul = document.getElementById('qurban-out-subterkumpul');
+            const outKurang = document.getElementById('qurban-out-kurang');
+            const outSubKurang = document.getElementById('qurban-out-subkurang');
             const outPersen = document.getElementById('qurban-prog-persen');
             const outBar = document.getElementById('qurban-prog-bar');
-            const outEstimasi = document.getElementById('qurban-prog-estimasi');
+            const outRincian = document.getElementById('qurban-out-rincian');
 
-            if (!sel || !inpHarga || !tenSel || !outCicilan) return;
+            if (!sel || !inpHarga || !inpCicil || !inpBulan || !outTerkumpul || !outKurang) return;
 
             const harga = Number(String(inpHarga.value).replace(/[^0-9]/g, '')) || 0;
             inpHarga.value = harga > 0 ? harga.toLocaleString('id-ID') : '';
 
-            const tenor = Math.max(1, parseInt(tenSel.value, 10) || 1);
-            const cicilanPerBulan = Math.ceil(harga / tenor);
+            const cicil = Number(String(inpCicil.value).replace(/[^0-9]/g, '')) || 0;
+            inpCicil.value = cicil > 0 ? cicil.toLocaleString('id-ID') : '';
 
-            outCicilan.textContent = formatRupiah(cicilanPerBulan);
-            if (subInfo) subInfo.textContent = `${sel.options[sel.selectedIndex]?.dataset?.label || 'Hewan Qurban'} • ${tenor}x cicilan/bulan`;
+            const bulan = Math.max(0, parseInt(String(inpBulan.value).replace(/[^0-9]/g, ''), 10) || 0);
+            inpBulan.value = bulan;
 
-            const rawMasuk = masukInp ? (Number(String(masukInp.value).replace(/[^0-9]/g, '')) || 0) : 0;
-            if (masukInp) masukInp.value = rawMasuk > 0 ? rawMasuk.toLocaleString('id-ID') : '';
+            const terkumpul = cicil * bulan;
+            const kurang = Math.max(0, harga - terkumpul);
+            const lebih = terkumpul > harga ? terkumpul - harga : 0;
+            const persen = harga > 0 ? Math.min(100, Math.round((terkumpul / harga) * 100)) : 0;
+            const sisaBulan = cicil > 0 ? Math.ceil(kurang / cicil) : 0;
+            const namaHewan = sel.options[sel.selectedIndex]?.dataset?.label || 'Hewan Qurban';
 
-            const sisa = Math.max(0, harga - rawMasuk);
-            const persen = harga > 0 ? Math.min(100, Math.round((rawMasuk / harga) * 100)) : 0;
-            const sisaBulan = cicilanPerBulan > 0 ? Math.ceil(sisa / cicilanPerBulan) : 0;
+            outTerkumpul.textContent = formatRupiah(terkumpul);
+            if (outSubTerkumpul) outSubTerkumpul.textContent = `${formatRupiah(cicil)}/bln × ${bulan} bulan`;
 
-            if (outMasuk) outMasuk.textContent = formatRupiah(rawMasuk);
-            if (outSisa) outSisa.textContent = formatRupiah(sisa);
+            outKurang.textContent = formatRupiah(kurang);
+            if (outSubKurang) {
+                outSubKurang.textContent = kurang === 0 && harga > 0
+                    ? (lebih > 0 ? `Lunas! (Lebih ${formatRupiah(lebih)})` : 'Alhamdulillah, Lunas 100%!')
+                    : (cicil > 0 ? `± ${sisaBulan}x cicilan lagi (@ ${formatRupiah(cicil)})` : 'Isi nominal cicilan/bulan');
+            }
+
             if (outPersen) outPersen.textContent = `${persen}%`;
             if (outBar) outBar.style.width = `${persen}%`;
-            if (outEstimasi) {
-                outEstimasi.textContent = sisa === 0 && harga > 0
-                    ? 'Alhamdulillah, Tabungan Qurban sudah Lunas 100%!'
-                    : `Perkiraan butuh ± ${sisaBulan}x setoran lagi (${formatRupiah(cicilanPerBulan)}/bln) untuk lunas.`;
+            if (outRincian) {
+                outRincian.innerHTML = kurang === 0 && harga > 0
+                    ? `Target <b>${namaHewan} (${formatRupiah(harga)})</b> sudah terpenuhi dari tabungan ${bulan} bulan.`
+                    : `Untuk <b>${namaHewan} (${formatRupiah(harga)})</b>, tabungan ${bulan} bulan terkumpul <b>${formatRupiah(terkumpul)}</b> sehingga kurangnya tinggal <b>${formatRupiah(kurang)}</b> lagi.`;
             }
         }
 
@@ -439,82 +430,75 @@
             } else if (currentCategory === 'layanan' && currentSubmenu === 'qurban') {
                 const calcQurban = `
                     <div class="bg-amber-50/90 p-5 sm:p-6 rounded-2xl border border-terracotta/25 space-y-5">
-                        <div class="flex items-center justify-between">
-                            <div><span class="text-[11px] font-bold uppercase text-terracotta">Simulasi Tabungan Qurban</span><h4 class="font-heading font-bold text-base text-gray-900">Hitung Cicilan & Perkiraan Pembayaran</h4></div>
-                            <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-terracotta text-white">Harga ÷ Tenor</span>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
                             <div>
-                                <label class="block text-xs font-bold text-stone-700 mb-1">Jenis Hewan Qurban</label>
-                                <select id="qurban-jenis-select" onchange="ubahJenisHewanQurban(this.value)" class="w-full px-3 py-3 rounded-xl bg-white border border-stone-300 font-semibold text-xs sm:text-sm">
-                                    <option value="3000000" data-label="Domba / Kambing Standar" selected>Domba / Kambing (Rp 3 Jt)</option>
-                                    <option value="3500000" data-label="Domba / Kambing Super">Domba Super (Rp 3,5 Jt)</option>
-                                    <option value="3250000" data-label="Patungan Sapi (1/7)">Patungan Sapi 1/7 (Rp 3,25 Jt)</option>
-                                    <option value="22750000" data-label="1 Ekor Sapi Utuh">1 Ekor Sapi Utuh (Rp 22,75 Jt)</option>
+                                <span class="text-[11px] font-bold uppercase text-terracotta">Simulasi Tabungan Qurban</span>
+                                <h4 class="font-heading font-bold text-base text-gray-900">Hitung Uang Terkumpul & Kekurangannya</h4>
+                            </div>
+                            <span id="qurban-prog-persen" class="px-3 py-1 rounded-full text-xs font-black bg-emeraldDeep text-goldSoft">26% Terkumpul</span>
+                        </div>
+
+                        <!-- BARIS 1: PILIH HEWAN & ESTIMASI HARGA -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                            <div>
+                                <label class="block text-xs font-bold text-stone-700 mb-1">1. Pilih Jenis Hewan Qurban</label>
+                                <select id="qurban-jenis-select" onchange="ubahJenisHewanQurban(this.value)" class="w-full px-3.5 py-3 rounded-xl bg-white border border-stone-300 font-semibold text-xs sm:text-sm">
+                                    <option value="3000000" data-label="Domba / Kambing Standar">Domba / Kambing Standar (Rp 3.000.000)</option>
+                                    <option value="3500000" data-label="Domba / Kambing Super" selected>Domba / Kambing Super (Rp 3.500.000)</option>
+                                    <option value="3250000" data-label="Patungan Sapi (1/7)">Patungan Sapi 1/7 (Rp 3.250.000)</option>
+                                    <option value="22750000" data-label="1 Ekor Sapi Utuh">1 Ekor Sapi Utuh (Rp 22.750.000)</option>
                                     <option value="custom" data-label="Hewan Qurban Pilihan">Nominal Harga Sendiri...</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-stone-700 mb-1">Estimasi Harga (Rp)</label>
-                                <input id="qurban-harga-input" type="text" inputmode="numeric" value="3.000.000" oninput="hitungTabunganQurban()" class="w-full px-3.5 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" />
+                                <label class="block text-xs font-bold text-stone-700 mb-1">2. Harga Hewan Qurban (Rp)</label>
+                                <input id="qurban-harga-input" type="text" inputmode="numeric" value="3.500.000" oninput="hitungTabunganQurban()" class="w-full px-3.5 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" />
+                            </div>
+                        </div>
+
+                        <!-- BARIS 2: RENCANA CICILAN PER BULAN & LAMA CICIL -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                            <div>
+                                <label class="block text-xs font-bold text-stone-700 mb-1">3. Cicilan per Bulan (Rp)</label>
+                                <input id="qurban-cicil-input" type="text" inputmode="numeric" value="300.000" oninput="hitungTabunganQurban()" placeholder="Contoh: 300.000" class="w-full px-3.5 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" />
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-stone-700 mb-1">Tenor / Cicilan</label>
-                                <select id="qurban-tenor-select" onchange="hitungTabunganQurban()" class="w-full px-3 py-3 rounded-xl bg-white border border-stone-300 font-bold text-sm">
-                                    <option value="3">3 Bulan</option>
-                                    <option value="6" selected>6 Bulan</option>
-                                    <option value="8">8 Bulan</option>
-                                    <option value="10">10 Bulan</option>
-                                    <option value="12">12 Bulan (1 Tahun)</option>
-                                </select>
+                                <label class="block text-xs font-bold text-stone-700 mb-1">4. Selama Berapa Bulan?</label>
+                                <div class="relative">
+                                    <input id="qurban-bulan-input" type="number" min="0" max="60" value="3" oninput="hitungTabunganQurban()" class="w-full px-3.5 py-3 pr-16 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" />
+                                    <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-stone-400">Bulan</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="bg-white p-4 rounded-xl border border-terracotta/25 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                            <div><span class="text-[11px] font-bold uppercase text-stone-500 block">Nominal Setoran Tabungan / Bulan</span><span id="qurban-hasil-subinfo" class="text-xs text-stone-600">Domba / Kambing Standar • 6x cicilan/bulan</span></div>
-                            <div class="sm:text-right"><span id="qurban-hasil-nominal" class="font-mono font-black text-2xl sm:text-3xl text-terracotta block">Rp 500.000</span><span class="text-[11px] text-stone-400">per bulan (Harga ÷ Tenor)</span></div>
+                        <!-- PROGRESS BAR -->
+                        <div class="w-full h-3 rounded-full bg-stone-200 overflow-hidden">
+                            <div id="qurban-prog-bar" class="h-full bg-emeraldDeep transition-all duration-300" style="width: 26%;"></div>
                         </div>
 
-                        <!-- SIMULASI PERKIRAAN PEMBAYARAN (SUDAH TERKUMPUL VS SISA KEKURANGAN) -->
-                        <div class="bg-white p-4 sm:p-5 rounded-xl border border-emeraldDeep/20 space-y-4">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-extrabold uppercase tracking-wider text-emeraldDeep">📊 Perkiraan Progres Pembayaran Pengurban</span>
-                                <span id="qurban-prog-persen" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-emeraldLight text-emeraldDeep">0%</span>
+                        <!-- HASIL: UANG SUDAH TERKUMPUL VS KURANGNYA BERAPA LAGI -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                            <div class="p-4 rounded-2xl bg-white border-2 border-emeraldDeep/25 shadow-sm">
+                                <span class="text-[11px] font-bold uppercase text-emeraldDeep block">Uang Sudah Terkumpul</span>
+                                <span id="qurban-out-terkumpul" class="font-mono font-black text-2xl text-emeraldDeep mt-1 block">Rp 900.000</span>
+                                <span id="qurban-out-subterkumpul" class="text-xs text-stone-500 mt-0.5 block">Rp 300.000/bln × 3 bulan</span>
                             </div>
+                            <div class="p-4 rounded-2xl bg-white border-2 border-rose-300 shadow-sm">
+                                <span class="text-[11px] font-bold uppercase text-rose-700 block">Kurangnya Berapa Lagi</span>
+                                <span id="qurban-out-kurang" class="font-mono font-black text-2xl text-rose-700 mt-1 block">Rp 2.600.000</span>
+                                <span id="qurban-out-subkurang" class="text-xs text-stone-500 mt-0.5 block">± 9x cicilan lagi (@ Rp 300.000)</span>
+                            </div>
+                        </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-[11px] font-bold text-stone-600 mb-1">Simulasi Sudah Setor Berapa Bulan?</label>
-                                    <input id="qurban-bulan-jalan-input" type="number" min="0" max="24" value="0" oninput="sinkronSetoranDariBulan()" class="w-full px-3 py-2.5 rounded-xl bg-[#F4F0E6]/60 border border-stone-300 font-mono font-bold text-sm" />
-                                </div>
-                                <div>
-                                    <label class="block text-[11px] font-bold text-stone-600 mb-1">Atau Isi Nominal Uang Sudah Masuk (Rp)</label>
-                                    <input id="qurban-sudah-masuk-input" type="text" inputmode="numeric" value="0" oninput="hitungTabunganQurban()" class="w-full px-3 py-2.5 rounded-xl bg-[#F4F0E6]/60 border border-stone-300 font-mono font-bold text-sm" />
-                                </div>
-                            </div>
-
-                            <div class="w-full h-3 rounded-full bg-stone-200 overflow-hidden">
-                                <div id="qurban-prog-bar" class="h-full bg-emeraldDeep transition-all duration-300" style="width: 0%;"></div>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3 pt-1">
-                                <div class="p-3 rounded-xl bg-emeraldLight/60 border border-emeraldDeep/15">
-                                    <span class="text-[10px] font-bold uppercase text-emeraldDeep block">Uang Sudah Terkumpul</span>
-                                    <span id="qurban-prog-masuk" class="font-mono font-black text-base sm:text-lg text-emeraldDeep mt-0.5 block">Rp 0</span>
-                                </div>
-                                <div class="p-3 rounded-xl bg-rose-50 border border-rose-200">
-                                    <span class="text-[10px] font-bold uppercase text-rose-800 block">Tinggal Kekurangan</span>
-                                    <span id="qurban-prog-sisa" class="font-mono font-black text-base sm:text-lg text-rose-700 mt-0.5 block">Rp 3.000.000</span>
-                                </div>
-                            </div>
-                            <p id="qurban-prog-estimasi" class="text-xs text-stone-600 font-medium">Perkiraan butuh ± 6x setoran lagi (Rp 500.000/bln) untuk lunas.</p>
+                        <div id="qurban-out-rincian" class="bg-white/90 px-4 py-3 rounded-xl border border-terracotta/20 text-xs text-stone-700 leading-relaxed">
+                            Untuk <b>Domba / Kambing Super (Rp 3.500.000)</b>, tabungan 3 bulan terkumpul <b>Rp 900.000</b> sehingga kurangnya tinggal <b>Rp 2.600.000</b> lagi.
                         </div>
                     </div>`;
                 w.innerHTML = buildLayananCard({
                     badge: 'Idul Adha & Tabungan Terencana', title: 'Layanan & Tabungan Qurban RW 09 Cigending',
                     subtitle: 'Fasilitas tabungan qurban terencana maupun penyaluran hewan qurban langsung untuk warga RW 09 Cigending.',
                     emoji: '🐄', cardTitle: 'Formulir Pendaftaran & Tabungan Qurban', cardSubtitle: 'Terhubung ke Database Spreadsheet Masjid Al-Barokah 09',
-                    bullets: ['<b>Tabungan Qurban:</b> Setoran ringan sesuai pilihan tenor', '<b>Patungan Sapi (1/7):</b> Kolektif jamaah terorganisir', '<b>Qurban Domba/Kambing:</b> Hewan sehat & sesuai syariat'],
+                    bullets: ['<b>Tabungan Qurban:</b> Setoran ringan sesuai kemampuan tiap bulan', '<b>Patungan Sapi (1/7):</b> Kolektif jamaah terorganisir', '<b>Qurban Domba/Kambing:</b> Hewan sehat & sesuai syariat'],
                     customHtml: calcQurban,
                     btn1: `<a href="https://docs.google.com/forms/d/e/1FAIpQLScug6XWUG9aC55K51lIJUf65jGCL7Vyvjwemn9yt3NkyZHb-g/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📝 Isi Formulir Pendaftaran</a>`,
                     btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Setor Tabungan (Rekening BSI)</button>`
