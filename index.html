@@ -303,8 +303,57 @@
         function hitungZakatMaal(val) { const raw = Number(String(val).replace(/[^0-9]/g, '')) || 0; const el = document.getElementById('zakat-harta-input'); if (el) el.value = raw > 0 ? raw.toLocaleString('id-ID') : ''; if (document.getElementById('zakat-hasil-nominal')) document.getElementById('zakat-hasil-nominal').textContent = formatRupiah(Math.round(raw * 0.025)); }
         function hitungZakatFitrah(val) { const jiwa = Math.max(0, parseInt(String(val).replace(/[^0-9]/g, ''), 10) || 0); const el = document.getElementById('zakat-jiwa-input'); if (el) el.value = jiwa > 0 ? jiwa : ''; if (document.getElementById('zakat-hasil-beras')) document.getElementById('zakat-hasil-beras').textContent = `${(jiwa * 2.5).toLocaleString('id-ID', { maximumFractionDigits: 1 })} Kg`; if (document.getElementById('zakat-hasil-liter')) document.getElementById('zakat-hasil-liter').textContent = `Setara ${(jiwa * 3.5).toLocaleString('id-ID', { maximumFractionDigits: 1 })} Liter (${jiwa} Jiwa × 2,5 Kg)`; }
 
-        function buildLayananCard({ badge, title, subtitle, emoji, cardTitle, cardSubtitle, bullets, customHtml = '', btn1, btn2, extra = '' }) {
-            return `<div class="mb-8"><span class="text-xs font-bold uppercase tracking-widest text-terracotta">${badge}</span><h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">${title}</h2><p class="text-sm text-stone-600 mt-1">${subtitle}</p></div><div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border-2 border-terracotta/40 shadow-md space-y-6 max-w-3xl mx-auto"><div class="flex items-center space-x-4"><span class="w-16 h-16 rounded-2xl bg-terracotta/15 border border-terracotta/40 flex items-center justify-center text-3xl shrink-0">${emoji}</span><div><h3 class="text-xl font-extrabold text-gray-900">${cardTitle}</h3><p class="text-xs text-stone-500">${cardSubtitle}</p></div></div><ul class="text-sm text-stone-700 space-y-2.5 bg-[#F8F1E9] p-5 rounded-2xl border border-terracotta/20">${bullets.map(b => `<li class="flex items-start gap-2"><span class="text-terracotta font-bold">✔</span><span>${b}</span></li>`).join('')}</ul>${customHtml}<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">${btn1}${btn2}</div></div>${extra}`;
+        function buildLayananCard({ badge, title, subtitle, deskripsi, tujuan = [], manfaat = [], emoji, cardTitle, cardSubtitle, bullets, customHtml = '', btn1, btn2, extra = '' }) {
+            const tujuanManfaatHtml = (tujuan.length || manfaat.length) ? `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-[#F8F1E9]/80 p-5 rounded-2xl border border-terracotta/25">
+                        <div class="flex items-center gap-2 mb-2.5">
+                            <span class="w-7 h-7 rounded-lg bg-terracotta/15 text-terracotta flex items-center justify-center"><i data-lucide="target" class="w-4 h-4"></i></span>
+                            <h4 class="font-heading font-bold text-sm text-gray-900">Tujuan Program</h4>
+                        </div>
+                        <ul class="text-xs sm:text-sm text-stone-700 space-y-2">
+                            ${tujuan.map(t => `<li class="flex items-start gap-2"><span class="text-terracotta font-bold mt-0.5">•</span><span>${t}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="bg-emeraldLight/50 p-5 rounded-2xl border border-emeraldDeep/20">
+                        <div class="flex items-center gap-2 mb-2.5">
+                            <span class="w-7 h-7 rounded-lg bg-emeraldDeep/15 text-emeraldDeep flex items-center justify-center"><i data-lucide="sparkles" class="w-4 h-4"></i></span>
+                            <h4 class="font-heading font-bold text-sm text-gray-900">Manfaat Bagi Umat</h4>
+                        </div>
+                        <ul class="text-xs sm:text-sm text-stone-700 space-y-2">
+                            ${manfaat.map(m => `<li class="flex items-start gap-2"><span class="text-emeraldDeep font-bold mt-0.5">✓</span><span>${m}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                </div>` : '';
+
+            return `
+                <div class="mb-8 max-w-4xl mx-auto">
+                    <span class="text-xs font-bold uppercase tracking-widest text-terracotta">${badge}</span>
+                    <h2 class="font-serif text-3xl font-bold text-gray-900 mt-1">${title}</h2>
+                    <p class="text-sm text-stone-600 mt-1">${subtitle}</p>
+                </div>
+                <div class="bg-[#FCFBF7] p-6 sm:p-8 rounded-3xl border-2 border-terracotta/40 shadow-md space-y-6 max-w-4xl mx-auto">
+                    <div class="flex items-center space-x-4">
+                        <span class="w-16 h-16 rounded-2xl bg-terracotta/15 border border-terracotta/40 flex items-center justify-center text-3xl shrink-0">${emoji}</span>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-gray-900">${cardTitle}</h3>
+                            <p class="text-xs text-stone-500">${cardSubtitle}</p>
+                        </div>
+                    </div>
+
+                    ${deskripsi ? `<div class="bg-[#F9F6EE] p-4 sm:p-5 rounded-2xl border border-stone-200/90 text-xs sm:text-sm text-stone-700 leading-relaxed"><span class="font-bold text-gray-900 block mb-1">Tentang Layanan:</span>${deskripsi}</div>` : ''}
+
+                    ${tujuanManfaatHtml}
+
+                    <ul class="text-sm text-stone-700 space-y-2.5 bg-[#F8F1E9] p-5 rounded-2xl border border-terracotta/20">
+                        ${bullets.map(b => `<li class="flex items-start gap-2"><span class="text-terracotta font-bold">✔</span><span>${b}</span></li>`).join('')}
+                    </ul>
+
+                    ${customHtml}
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">${btn1}${btn2}</div>
+                </div>
+                ${extra}`;
         }
 
         function renderPage() {
@@ -435,7 +484,6 @@
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <!-- LEVEL 1: DEWAN PENASEHAT -->
                         <div class="w-full max-w-4xl bg-[#FCFBF7] p-5 sm:p-6 rounded-3xl border-2 border-amber-700/30 shadow-sm">
                             <div class="text-center mb-4">
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-[11px] font-bold uppercase tracking-wider">
@@ -457,7 +505,6 @@
 
                         <div class="w-0.5 h-8 bg-emeraldDeep/40"></div>
 
-                        <!-- LEVEL 2: KETUA DKM DENGAN IKON KETUA -->
                         <div class="w-full max-w-md bg-gradient-to-br from-emeraldDeep to-[#114e3d] text-white p-6 rounded-3xl border-2 border-goldSoft shadow-lg text-center relative">
                             <div class="w-16 h-16 mx-auto rounded-2xl bg-goldSoft text-emeraldDeep flex items-center justify-center shadow-md mb-3">
                                 <i data-lucide="user-check" class="w-8 h-8"></i>
@@ -468,7 +515,6 @@
 
                         <div class="w-0.5 h-8 bg-emeraldDeep/40"></div>
 
-                        <!-- LEVEL 3: CABANG DIVISI KESEKRETARIATAN & KEBENDAHARAAN -->
                         <div class="w-full max-w-4xl relative">
                             <div class="hidden md:block absolute top-0 left-1/4 right-1/4 h-0.5 bg-emeraldDeep/40"></div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -511,7 +557,6 @@
                         </div>
                         <div class="w-0.5 h-6 bg-emeraldDeep/40"></div>
 
-                        <!-- LEVEL 4: CABANG PER SEKSI (7 SEKSI) -->
                         <div class="w-full relative pt-0 md:pt-4">
                             <div class="hidden lg:block absolute top-0 left-[12%] right-[12%] h-0.5 bg-emeraldDeep/35"></div>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -564,19 +609,136 @@
                         </div>
                         <div id="qurban-out-rincian" class="bg-white/90 px-4 py-3 rounded-xl border border-terracotta/20 text-xs text-stone-700 leading-relaxed">Untuk <b>Domba / Kambing Super (Rp 3.500.000)</b>, tabungan 3 bulan terkumpul <b>Rp 900.000</b> sehingga kurangnya tinggal <b>Rp 2.600.000</b> lagi.</div>
                     </div>`;
-                w.innerHTML = buildLayananCard({ badge: 'Idul Adha & Tabungan Terencana', title: 'Layanan & Tabungan Qurban RW 09 Cigending', subtitle: 'Fasilitas tabungan qurban terencana maupun penyaluran hewan qurban langsung untuk warga RW 09 Cigending.', emoji: '🐄', cardTitle: 'Formulir Pendaftaran & Tabungan Qurban', cardSubtitle: 'Terhubung ke Database Spreadsheet Masjid Al-Barokah 09', bullets: ['<b>Tabungan Qurban:</b> Setoran ringan sesuai kemampuan tiap bulan', '<b>Patungan Sapi (1/7):</b> Kolektif jamaah terorganisir', '<b>Qurban Domba/Kambing:</b> Hewan sehat & sesuai syariat'], customHtml: calcQurban, btn1: `<a href="https://docs.google.com/forms/d/e/1FAIpQLScug6XWUG9aC55K51lIJUf65jGCL7Vyvjwemn9yt3NkyZHb-g/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📝 Isi Formulir Pendaftaran</a>`, btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Setor Tabungan (Rekening BSI)</button>` });
+                w.innerHTML = buildLayananCard({
+                    badge: 'Idul Adha & Tabungan Terencana',
+                    title: 'Layanan & Tabungan Qurban RW 09 Cigending',
+                    subtitle: 'Fasilitas tabungan qurban terencana maupun penyaluran hewan qurban langsung untuk warga RW 09 Cigending.',
+                    deskripsi: 'Fasilitas perencanaan dan penghimpunan ibadah qurban warga RW 09 Cigending, baik melalui skema tabungan bulanan terencana maupun penyaluran langsung hewan qurban (domba/kambing dan patungan sapi 1/7) menjelang Hari Raya Idul Adha.',
+                    tujuan: [
+                        'Memudahkan jamaah mempersiapkan dana qurban secara bertahap agar tidak terasa berat di akhir waktu.',
+                        'Memastikan pengadaan hewan qurban memenuhi syarat sah syariat, sehat, serta terkoordinasi penyembelihan dan distribusinya.'
+                    ],
+                    manfaat: [
+                        'Warga memiliki catatan progres tabungan yang transparan dan terukur.',
+                        'Daging qurban tersalurkan merata kepada warga mustahik, dhuafa, dan seluruh masyarakat RW 09 Cigending.'
+                    ],
+                    emoji: '🐄',
+                    cardTitle: 'Formulir Pendaftaran & Tabungan Qurban',
+                    cardSubtitle: 'Terhubung ke Database Spreadsheet Masjid Al-Barokah 09',
+                    bullets: ['<b>Tabungan Qurban:</b> Setoran ringan sesuai kemampuan tiap bulan', '<b>Patungan Sapi (1/7):</b> Kolektif jamaah terorganisir', '<b>Qurban Domba/Kambing:</b> Hewan sehat & sesuai syariat'],
+                    customHtml: calcQurban,
+                    btn1: `<a href="https://docs.google.com/forms/d/e/1FAIpQLScug6XWUG9aC55K51lIJUf65jGCL7Vyvjwemn9yt3NkyZHb-g/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📝 Isi Formulir Pendaftaran</a>`,
+                    btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Setor Tabungan (Rekening BSI)</button>`
+                });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'zakat') {
                 const calcZakat = `<div class="space-y-4"><div class="bg-emeraldLight/60 p-5 rounded-2xl border border-emeraldDeep/20 space-y-3"><div class="flex justify-between"><h4 class="font-bold text-sm">Kalkulator Zakat Maal / Profesi (2,5%)</h4><span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emeraldDeep text-goldSoft">2,5%</span></div><div class="grid sm:grid-cols-2 gap-3 items-center"><input id="zakat-harta-input" type="text" inputmode="numeric" oninput="hitungZakatMaal(this.value)" placeholder="Total Harta (Rp)..." class="w-full px-4 py-3 rounded-xl bg-white border font-mono font-bold text-sm" /><div class="bg-white p-3 rounded-xl border text-right"><span class="text-[10px] font-bold uppercase text-stone-500 block">Zakat Wajib (2,5%)</span><span id="zakat-hasil-nominal" class="font-mono font-black text-2xl text-emeraldDeep">Rp 0</span></div></div></div><div class="bg-amber-50/90 p-5 rounded-2xl border border-amber-700/20 space-y-3"><div class="flex justify-between"><h4 class="font-bold text-sm">Kalkulator Zakat Fitrah (Beras)</h4><span class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-800 text-amber-100">2,5 Kg / Jiwa</span></div><div class="grid sm:grid-cols-2 gap-3 items-center"><input id="zakat-jiwa-input" type="text" inputmode="numeric" oninput="hitungZakatFitrah(this.value)" placeholder="Jumlah Jiwa..." class="w-full px-4 py-3 rounded-xl bg-white border font-mono font-bold text-sm" /><div class="bg-white p-3 rounded-xl border text-right"><span class="text-[10px] font-bold uppercase text-stone-500 block">Total Beras Zakat</span><span id="zakat-hasil-beras" class="font-mono font-black text-2xl text-amber-800">0 Kg</span><span id="zakat-hasil-liter" class="text-[11px] text-stone-500 block">Setara 0 Liter</span></div></div></div></div>`;
-                w.innerHTML = buildLayananCard({ badge: 'Unit Pengumpul Zakat (UPZ) Al-Barokah 09', title: 'Layanan Zakat (Maal & Fitrah)', subtitle: 'Penghimpunan dan penyaluran kewajiban zakat dengan pencatatan khusus mustahik (8 asnaf).', emoji: '⚖️', cardTitle: 'Penunaian & Akad Zakat Syariah', cardSubtitle: 'Khusus penyaluran kepada 8 golongan (Asnaf) mustahik', bullets: ['<b>Zakat Maal:</b> Kadar 2,5% dari harta mencapai nisab', '<b>Zakat Fitrah:</b> Berupa beras 2,5 kg / 3,5 liter per jiwa', '<b>Pencatatan Terpisah:</b> Tidak dicampur dengan kas pembangunan'], customHtml: calcZakat, btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20Pengurus%20UPZ%20Masjid%20Al-Barokah%2009,%20saya%20berniat%20menunaikan%20Zakat." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🤝 Konfirmasi Akad Zakat (WA)</a>`, btn2: `<button onclick="copyRekening('7302811959','BSI')" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📋 Salin Rekening BSI (7302 811 959)</button>` });
+                w.innerHTML = buildLayananCard({
+                    badge: 'Unit Pengumpul Zakat (UPZ) Al-Barokah 09',
+                    title: 'Layanan Zakat (Maal & Fitrah)',
+                    subtitle: 'Penghimpunan dan penyaluran kewajiban zakat dengan pencatatan khusus mustahik (8 asnaf).',
+                    deskripsi: 'Layanan penghimpunan dan penyaluran Zakat Maal (harta/penghasilan) dan Zakat Fitrah yang dikelola khusus oleh Unit Pengumpul Zakat (UPZ) Masjid Jami\' Al-Barokah 09 dengan pembukuan terpisah dari kas pembangunan.',
+                    tujuan: [
+                        'Memfasilitasi jamaah dalam menunaikan kewajiban rukun Islam sesuai ketentuan syariah (nishab, haul, dan takaran fitrah).',
+                        'Menyalurkan dana dan beras zakat secara tepat sasaran kepada 8 golongan penerima zakat (asnaf) di lingkungan sekitar.'
+                    ],
+                    manfaat: [
+                        'Memberikan ketenangan batin bagi muzakki karena zakat dikelola amanah dan terpisah dari dana operasional masjid.',
+                        'Meringankan beban ekonomi fakir miskin di wilayah RW 09 Cigending, khususnya menjelang Idul Fitri.'
+                    ],
+                    emoji: '⚖️',
+                    cardTitle: 'Penunaian & Akad Zakat Syariah',
+                    cardSubtitle: 'Khusus penyaluran kepada 8 golongan (Asnaf) mustahik',
+                    bullets: ['<b>Zakat Maal:</b> Kadar 2,5% dari harta mencapai nisab', '<b>Zakat Fitrah:</b> Berupa beras 2,5 kg / 3,5 liter per jiwa', '<b>Pencatatan Terpisah:</b> Tidak dicampur dengan kas pembangunan'],
+                    customHtml: calcZakat,
+                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20Pengurus%20UPZ%20Masjid%20Al-Barokah%2009,%20saya%20berniat%20menunaikan%20Zakat." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🤝 Konfirmasi Akad Zakat (WA)</a>`,
+                    btn2: `<button onclick="copyRekening('7302811959','BSI')" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📋 Salin Rekening BSI (7302 811 959)</button>`
+                });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'infaq') {
-                w.innerHTML = buildLayananCard({ badge: 'Kemakmuran Masjid', title: 'Layanan Infaq Masjid Al-Barokah 09', subtitle: 'Penyaluran infaq untuk operasional ibadah harian dan pembangunan masjid.', emoji: '🕌', cardTitle: 'Salurkan Infaq Kemakmuran Masjid', cardSubtitle: 'Tercatat dalam laporan kas Bendahara DKM', bullets: ['<b>Infaq Operasional:</b> Listrik, air wudhu & kebersihan masjid', '<b>Infaq Pembangunan:</b> Perluasan area ibadah & sarana masjid'], btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20konfirmasi%20INFAQ." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📲 Konfirmasi Infaq (WhatsApp)</a>`, btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📊 Lihat Laporan Kas</button>` });
+                w.innerHTML = buildLayananCard({
+                    badge: 'Kemakmuran Masjid',
+                    title: 'Layanan Infaq Masjid Al-Barokah 09',
+                    subtitle: 'Penyaluran infaq untuk operasional ibadah harian dan pembangunan masjid.',
+                    deskripsi: 'Saluran donasi sukarela dari jamaah untuk mendukung kelancaran operasional peribadatan harian maupun pengembangan sarana dan prasarana fisik Masjid Jami\' Al-Barokah 09.',
+                    tujuan: [
+                        'Menjaga keberlangsungan operasional masjid (listrik, air wudhu, kebersihan, dan perawatan fasilitas ibadah).',
+                        'Mendukung pembangunan dan perluasan ruang ibadah agar semakin nyaman bagi jamaah.'
+                    ],
+                    manfaat: [
+                        'Jamaah dapat beribadah dengan khusyuk di lingkungan masjid yang bersih, sejuk, dan terawat.',
+                        'Laporan pemasukan dan pengeluaran tercatat terbuka melalui laporan kas Bendahara DKM.'
+                    ],
+                    emoji: '🕌',
+                    cardTitle: 'Salurkan Infaq Kemakmuran Masjid',
+                    cardSubtitle: 'Tercatat dalam laporan kas Bendahara DKM',
+                    bullets: ['<b>Infaq Operasional:</b> Listrik, air wudhu & kebersihan masjid', '<b>Infaq Pembangunan:</b> Perluasan area ibadah & sarana masjid'],
+                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20konfirmasi%20INFAQ." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📲 Konfirmasi Infaq (WhatsApp)</a>`,
+                    btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📊 Lihat Laporan Kas</button>`
+                });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'shodaqoh') {
-                w.innerHTML = buildLayananCard({ badge: 'Kepedulian Sosial', title: 'Layanan Shodaqoh Umat', subtitle: 'Berbagi kebaikan untuk anak yatim, dhuafa, dan inventaris masjid RW 09 Cigending.', emoji: '🤲', cardTitle: 'Salurkan Shodaqoh Terbaik Anda', cardSubtitle: 'Tanpa batas minimal • Dapat diniatkan atas nama orang tua', bullets: ['<b>Shodaqoh Yatim & Dhuafa:</b> Santunan warga yang membutuhkan', '<b>Shodaqoh Jariyah:</b> Pengadaan mushaf, mukena & karpet masjid'], btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20konfirmasi%20SHODAQOH." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📲 Konfirmasi Shodaqoh (WA)</a>`, btn2: `<button onclick="copyRekening('7302811959','BSI')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📋 Salin Rekening BSI (7302 811 959)</button>` });
+                w.innerHTML = buildLayananCard({
+                    badge: 'Kepedulian Sosial',
+                    title: 'Layanan Shodaqoh Umat',
+                    subtitle: 'Berbagi kebaikan untuk anak yatim, dhuafa, dan inventaris masjid RW 09 Cigending.',
+                    deskripsi: 'Program penghimpunan sedekah bebas (tanpa batas minimal) yang dialokasikan untuk santunan sosial, yatim piatu, dhuafa, serta sedekah jariyah perlengkapan ibadah masjid.',
+                    tujuan: [
+                        'Menumbuhkan budaya berbagi dan kepedulian sosial antarwarga RW 09 Cigending.',
+                        'Menyediakan dana cepat tanggap untuk kebutuhan sosial umat dan inventaris masjid (mushaf Al-Qur\'an, mukena, sarung, dan karpet).'
+                    ],
+                    manfaat: [
+                        'Membuka peluang amal jariyah berkelanjutan bagi donatur (termasuk sedekah atas nama orang tua).',
+                        'Memperkuat solidaritas dan jaring pengaman sosial bagi keluarga yang sedang mengalami kesulitan.'
+                    ],
+                    emoji: '🤲',
+                    cardTitle: 'Salurkan Shodaqoh Terbaik Anda',
+                    cardSubtitle: 'Tanpa batas minimal • Dapat diniatkan atas nama orang tua',
+                    bullets: ['<b>Shodaqoh Yatim & Dhuafa:</b> Santunan warga yang membutuhkan', '<b>Shodaqoh Jariyah:</b> Pengadaan mushaf, mukena & karpet masjid'],
+                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20konfirmasi%20SHODAQOH." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📲 Konfirmasi Shodaqoh (WA)</a>`,
+                    btn2: `<button onclick="copyRekening('7302811959','BSI')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📋 Salin Rekening BSI (7302 811 959)</button>`
+                });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'beras') {
                 const tabel = `<div class="bg-[#FCFBF7] p-6 rounded-3xl border max-w-4xl mx-auto mt-8"><h3 class="font-bold text-lg mb-4">Laporan Perolehan & Distribusi Beras Barokah</h3><table class="w-full text-left text-xs sm:text-sm"><thead><tr class="bg-[#F4F0E6] border-b"><th class="py-3 px-4">Bulan</th><th class="py-3 px-4">Pekan</th><th class="py-3 px-4">Sumber</th><th class="py-3 px-4 text-right">Total</th><th class="py-3 px-4">Distribusi</th></tr></thead><tbody class="divide-y">${berasBarokahData.map(r => `<tr><td class="py-3 px-4 font-semibold">${r.bulan}</td><td class="py-3 px-4">${r.pekan}</td><td class="py-3 px-4">${r.sumber}</td><td class="py-3 px-4 font-mono font-bold text-emeraldDeep text-right">${r.totalKg} Kg</td><td class="py-3 px-4">${r.distribusi}</td></tr>`).join('')}</tbody></table></div>`;
-                w.innerHTML = buildLayananCard({ badge: 'Ketahanan Pangan Warga', title: 'Program Beras Barokah RW 09 Cigending', subtitle: 'Gerakan sedekah beras untuk keluarga prasejahtera dan lansia.', emoji: '🌾', cardTitle: 'Partisipasi Sedekah Beras Barokah', cardSubtitle: 'Penyaluran langsung ke warga mustahik RW 09', bullets: ['<b>Donasi Paket Beras:</b> Mulai dari 5 kg atau kelipatannya', '<b>Konversi Beras:</b> Mulai Rp 75.000/paket'], btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20donasi%20Beras%20Barokah." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🌾 Daftar Donatur Beras</a>`, btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Transfer Dana Beras (BSI)</button>`, extra: tabel });
+                w.innerHTML = buildLayananCard({
+                    badge: 'Ketahanan Pangan Warga',
+                    title: 'Program Beras Barokah RW 09 Cigending',
+                    subtitle: 'Gerakan sedekah beras untuk keluarga prasejahtera dan lansia.',
+                    deskripsi: 'Gerakan sedekah pangan berbasis beras (dalam bentuk fisik minimal 5 kg maupun konversi dana) yang dihimpun secara rutin dari warga untuk dibagikan kepada keluarga prasejahtera dan lansia di RW 09 Cigending.',
+                    tujuan: [
+                        'Menjaga ketahanan pangan pokok harian bagi warga lanjut usia dan keluarga kurang mampu di sekitar masjid.',
+                        'Menggerakkan partisipasi gotong royong warga melalui sedekah kebutuhan pokok yang paling dibutuhkan.'
+                    ],
+                    manfaat: [
+                        'Penerima manfaat terbantu pemenuhan kebutuhan pokoknya secara berkelanjutan setiap pekan/bulan.',
+                        'Donatur dapat melihat rekapitulasi perolehan kilogram beras dan jumlah keluarga penerima secara transparan.'
+                    ],
+                    emoji: '🌾',
+                    cardTitle: 'Partisipasi Sedekah Beras Barokah',
+                    cardSubtitle: 'Penyaluran langsung ke warga mustahik RW 09',
+                    bullets: ['<b>Donasi Paket Beras:</b> Mulai dari 5 kg atau kelipatannya', '<b>Konversi Beras:</b> Mulai Rp 75.000/paket'],
+                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20donasi%20Beras%20Barokah." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🌾 Daftar Donatur Beras</a>`,
+                    btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Transfer Dana Beras (BSI)</button>`,
+                    extra: tabel
+                });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'jumat') {
-                w.innerHTML = buildLayananCard({ badge: 'Sedekah Pekanan', title: "Program Jum'at Berkah RW 09 Cigending", subtitle: "Pembagian paket nasi box & minuman segar setiap hari Jum'at.", emoji: '🍱', cardTitle: "Layanan Donasi Jum'at Berkah", cardSubtitle: "Dikelola DKM & Remaja Masjid Al-Barokah 09", bullets: ['<b>Paket Nasi Box:</b> Rp 15.000 – Rp 20.000 per porsi', '<b>Titip Makanan:</b> Diantar sebelum pukul 11.00 WIB'], btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20partisipasi%20Jum'at%20Berkah." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🍱 Konfirmasi Paket Jum'at</a>`, btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Transfer Donasi (BSI)</button>` });
+                w.innerHTML = buildLayananCard({
+                    badge: 'Sedekah Pekanan',
+                    title: "Program Jum'at Berkah RW 09 Cigending",
+                    subtitle: "Pembagian paket nasi box & minuman segar setiap hari Jum'at.",
+                    deskripsi: "Kegiatan berbagi paket makanan siap santap dan minuman segar setiap hari Jum'at yang dikelola bersama oleh DKM dan Remaja Masjid Al-Barokah 09 untuk jamaah sholat Jum'at dan warga sekitar.",
+                    tujuan: [
+                        "Menghidupkan sunnah bersedekah di hari Jum'at (Sayyidul Ayyam).",
+                        "Menjalin silaturahmi dan kebersamaan antara pengurus DKM, remaja masjid, para dermawan, dan jamaah."
+                    ],
+                    manfaat: [
+                        "Memberikan kebahagiaan dan hidangan layak bagi jamaah, pekerja harian, serta warga sekitar selepas sholat Jum'at.",
+                        "Menjadi wadah pembinaan karakter sosial dan kekompakan bagi Remaja Masjid Al-Barokah 09."
+                    ],
+                    emoji: '🍱',
+                    cardTitle: "Layanan Donasi Jum'at Berkah",
+                    cardSubtitle: "Dikelola DKM & Remaja Masjid Al-Barokah 09",
+                    bullets: ['<b>Paket Nasi Box:</b> Rp 15.000 – Rp 20.000 per porsi', '<b>Titip Makanan:</b> Diantar sebelum pukul 11.00 WIB'],
+                    btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20DKM%20Al-Barokah%2009,%20partisipasi%20Jum'at%20Berkah." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🍱 Konfirmasi Paket Jum'at</a>`,
+                    btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Transfer Donasi (BSI)</button>`
+                });
             } else if (currentCategory === 'informasi' && currentSubmenu === 'pembangunan') {
                 w.innerHTML = `<div class="bg-midnightTeal text-white p-8 rounded-3xl shadow-lg"><h2 class="font-serif text-2xl font-bold">Seputar Pembangunan Masjid Jami' Al-Barokah 09</h2><p class="text-sm text-blue-100 mt-2">Pembangunan dan peningkatan sarana ibadah dilakukan bertahap bersama warga RW 09 Cigending.</p><div class="mt-5 inline-block bg-white/10 p-4 rounded-2xl"><div class="text-xs text-blue-200">Saldo Dana Pembangunan</div><div class="text-2xl font-extrabold text-goldSoft mt-1">${formatRupiah(keuanganData.danaPembangunan)}</div></div></div>`;
             } else if (currentCategory === 'informasi' && currentSubmenu === 'kas') {
