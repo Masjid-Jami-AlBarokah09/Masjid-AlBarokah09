@@ -144,6 +144,14 @@
         const SHEET_ID = '135ZDz6L9AKgm4znvvPPkJxCdtCjy_Qd8EBhEcAVv7D0';
         const SHEET_GID = '0';
         const DOCS_ARTIKEL_URL = 'https://docs.google.com/document/d/1i7G_1kQ8vS8q3s9x7vF2mL4nK8pQ2wR9tY5uI0oP3aS/preview';
+        const QURBAN_FORM_BASE_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScug6XWUG9aC55K51lIJUf65jGCL7Vyvjwemn9yt3NkyZHb-g/viewform';
+        // Ganti entry ID di bawah dengan entry.xxxxx dari menu "Get pre-filled link" Google Form Qurban Anda
+        const QURBAN_FORM_ENTRIES = {
+            jenisHewan: 'entry.1111111111',
+            tenorBulan: 'entry.2222222222',
+            nominalCicilan: 'entry.3333333333'
+        };
+
         let keuanganData = { danaPembangunan: 0, totalPemasukan: 0, totalPengeluaran: 0, mutasiPembangunan: [] };
 
         const artikelList = [
@@ -283,6 +291,42 @@
             lucide.createIcons();
         }
 
+        function getQurbanSimulationState() {
+            const sel = document.getElementById('qurban-jenis-select');
+            const inpHarga = document.getElementById('qurban-harga-input');
+            const inpCicil = document.getElementById('qurban-cicil-input');
+            const inpBulan = document.getElementById('qurban-bulan-input');
+            const namaHewan = sel?.options[sel.selectedIndex]?.dataset?.label || 'Domba / Kambing Super';
+            const harga = Number(String(inpHarga?.value || '3500000').replace(/[^0-9]/g, '')) || 0;
+            const cicil = Number(String(inpCicil?.value || '300000').replace(/[^0-9]/g, '')) || 0;
+            const bulan = Math.max(0, parseInt(String(inpBulan?.value || '3').replace(/[^0-9]/g, ''), 10) || 0);
+            const terkumpul = cicil * bulan;
+            return { namaHewan, harga, cicil, bulan, terkumpul };
+        }
+
+        function buildQurbanPrefillUrl() {
+            const { namaHewan, harga, cicil, bulan, terkumpul } = getQurbanSimulationState();
+            const params = new URLSearchParams({
+                usp: 'pp_url',
+                [QURBAN_FORM_ENTRIES.jenisHewan]: `${namaHewan} (${formatRupiah(harga)})`,
+                [QURBAN_FORM_ENTRIES.tenorBulan]: `${bulan} Bulan`,
+                [QURBAN_FORM_ENTRIES.nominalCicilan]: `${formatRupiah(cicil)} / bulan (Terkumpul: ${formatRupiah(terkumpul)})`
+            });
+            return `${QURBAN_FORM_BASE_URL}?${params.toString()}`;
+        }
+
+        function updateQurbanFormPreview() {
+            const { namaHewan, harga, cicil, bulan } = getQurbanSimulationState();
+            const prevJenis = document.getElementById('qurban-form-prev-jenis');
+            const prevTenor = document.getElementById('qurban-form-prev-tenor');
+            const prevCicil = document.getElementById('qurban-form-prev-cicil');
+            const btnLink = document.getElementById('btn-daftar-qurban-prefill');
+            if (prevJenis) prevJenis.textContent = `${namaHewan} (${formatRupiah(harga)})`;
+            if (prevTenor) prevTenor.textContent = `${bulan} Bulan`;
+            if (prevCicil) prevCicil.textContent = `${formatRupiah(cicil)} / bulan`;
+            if (btnLink) btnLink.href = buildQurbanPrefillUrl();
+        }
+
         function ubahJenisHewanQurban(val) { const inp = document.getElementById('qurban-harga-input'); if (!inp) return; if (val !== 'custom') inp.value = Number(val).toLocaleString('id-ID'); else { inp.value = ''; inp.focus(); } hitungTabunganQurban(); }
         function hitungTabunganQurban() {
             const sel = document.getElementById('qurban-jenis-select'), inpHarga = document.getElementById('qurban-harga-input'), inpCicil = document.getElementById('qurban-cicil-input'), inpBulan = document.getElementById('qurban-bulan-input');
@@ -298,10 +342,38 @@
             outKurang.textContent = formatRupiah(kurang); outSubKurang.textContent = kurang === 0 && harga > 0 ? (lebih > 0 ? `Lunas! (Lebih ${formatRupiah(lebih)})` : 'Alhamdulillah, Lunas 100%!') : (cicil > 0 ? `± ${sisaBulan}x cicilan lagi (@ ${formatRupiah(cicil)})` : 'Isi nominal cicilan/bulan');
             outPersen.textContent = `${persen}% Terkumpul`; outBar.style.width = `${persen}%`;
             outRincian.innerHTML = kurang === 0 && harga > 0 ? `Target <b>${namaHewan} (${formatRupiah(harga)})</b> sudah terpenuhi dari tabungan ${bulan} bulan.` : `Untuk <b>${namaHewan} (${formatRupiah(harga)})</b>, tabungan ${bulan} bulan terkumpul <b>${formatRupiah(terkumpul)}</b> sehingga kurangnya tinggal <b>${formatRupiah(kurang)}</b> lagi.`;
+            updateQurbanFormPreview();
         }
 
         function hitungZakatMaal(val) { const raw = Number(String(val).replace(/[^0-9]/g, '')) || 0; const el = document.getElementById('zakat-harta-input'); if (el) el.value = raw > 0 ? raw.toLocaleString('id-ID') : ''; if (document.getElementById('zakat-hasil-nominal')) document.getElementById('zakat-hasil-nominal').textContent = formatRupiah(Math.round(raw * 0.025)); }
-        function hitungZakatFitrah(val) { const jiwa = Math.max(0, parseInt(String(val).replace(/[^0-9]/g, ''), 10) || 0); const el = document.getElementById('zakat-jiwa-input'); if (el) el.value = jiwa > 0 ? jiwa : ''; if (document.getElementById('zakat-hasil-beras')) document.getElementById('zakat-hasil-beras').textContent = `${(jiwa * 2.5).toLocaleString('id-ID', { maximumFractionDigits: 1 })} Kg`; if (document.getElementById('zakat-hasil-liter')) document.getElementById('zakat-hasil-liter').textContent = `Setara ${(jiwa * 3.5).toLocaleString('id-ID', { maximumFractionDigits: 1 })} Liter (${jiwa} Jiwa × 2,5 Kg)`; }
+
+        function hitungZakatFitrah() {
+            const elJiwa = document.getElementById('zakat-jiwa-input');
+            const elHarga = document.getElementById('zakat-harga-beras-input');
+            if (!elJiwa) return;
+            const jiwa = Math.max(0, parseInt(String(elJiwa.value).replace(/[^0-9]/g, ''), 10) || 0);
+            elJiwa.value = jiwa > 0 ? jiwa : '';
+
+            const hargaBeras = Number(String(elHarga?.value || '0').replace(/[^0-9]/g, '')) || 0;
+            if (elHarga) elHarga.value = hargaBeras > 0 ? hargaBeras.toLocaleString('id-ID') : '';
+
+            const totalKg = jiwa * 2.5;
+            const totalLiter = jiwa * 3.5;
+            const totalUang = Math.round(totalKg * hargaBeras);
+
+            if (document.getElementById('zakat-hasil-beras')) {
+                document.getElementById('zakat-hasil-beras').textContent = `${totalKg.toLocaleString('id-ID', { maximumFractionDigits: 1 })} Kg`;
+            }
+            if (document.getElementById('zakat-hasil-liter')) {
+                document.getElementById('zakat-hasil-liter').textContent = `Setara ${totalLiter.toLocaleString('id-ID', { maximumFractionDigits: 1 })} Liter (${jiwa} Jiwa × 2,5 Kg)`;
+            }
+            if (document.getElementById('zakat-hasil-fitrah-uang')) {
+                document.getElementById('zakat-hasil-fitrah-uang').textContent = formatRupiah(totalUang);
+            }
+            if (document.getElementById('zakat-hasil-fitrah-uang-sub')) {
+                document.getElementById('zakat-hasil-fitrah-uang-sub').textContent = `${totalKg.toLocaleString('id-ID', { maximumFractionDigits: 1 })} Kg × ${formatRupiah(hargaBeras)}/Kg`;
+            }
+        }
 
         function buildLayananCard({ badge, title, subtitle, deskripsi, tujuan = [], manfaat = [], emoji, cardTitle, cardSubtitle, bullets, customHtml = '', btn1, btn2, extra = '' }) {
             const tujuanManfaatHtml = (tujuan.length || manfaat.length) ? `
@@ -600,7 +672,7 @@
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <div><label class="block text-xs font-bold text-stone-700 mb-1">3. Cicilan per Bulan (Rp)</label><input id="qurban-cicil-input" type="text" inputmode="numeric" value="300.000" oninput="hitungTabunganQurban()" class="w-full px-3.5 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" /></div>
-                            <div><label class="block text-xs font-bold text-stone-700 mb-1">4. Selama Berapa Bulan?</label><div class="relative"><input id="qurban-bulan-input" type="number" min="0" max="60" value="3" oninput="hitungTabunganQurban()" class="w-full px-3.5 py-3 pr-16 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" /><span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-stone-400">Bulan</span></div></div>
+                            <div><label class="block text-xs font-bold text-stone-700 mb-1">4. Tenor Pembayaran (Bulan)</label><div class="relative"><input id="qurban-bulan-input" type="number" min="0" max="60" value="3" oninput="hitungTabunganQurban()" class="w-full px-3.5 py-3 pr-16 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" /><span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-stone-400">Bulan</span></div></div>
                         </div>
                         <div class="w-full h-3 rounded-full bg-stone-200 overflow-hidden"><div id="qurban-prog-bar" class="h-full bg-emeraldDeep transition-all duration-300" style="width: 26%;"></div></div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -608,6 +680,18 @@
                             <div class="p-4 rounded-2xl bg-white border-2 border-rose-300 shadow-sm"><span class="text-[11px] font-bold uppercase text-rose-700 block">Kurangnya Berapa Lagi</span><span id="qurban-out-kurang" class="font-mono font-black text-2xl text-rose-700 mt-1 block">Rp 2.600.000</span><span id="qurban-out-subkurang" class="text-xs text-stone-500 mt-0.5 block">± 9x cicilan lagi (@ Rp 300.000)</span></div>
                         </div>
                         <div id="qurban-out-rincian" class="bg-white/90 px-4 py-3 rounded-xl border border-terracotta/20 text-xs text-stone-700 leading-relaxed">Untuk <b>Domba / Kambing Super (Rp 3.500.000)</b>, tabungan 3 bulan terkumpul <b>Rp 900.000</b> sehingga kurangnya tinggal <b>Rp 2.600.000</b> lagi.</div>
+
+                        <div class="bg-emeraldDeep text-white p-4 sm:p-5 rounded-2xl border border-goldSoft/40 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-goldSoft">✨ Data Otomatis Terkirim ke Formulir</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/15 text-emerald-100">Calon pengurban tinggal isi identitas</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1 text-xs">
+                                <div class="bg-black/20 px-3 py-2 rounded-xl"><span class="text-emerald-200/80 block text-[10px]">Jenis Hewan:</span><b id="qurban-form-prev-jenis" class="text-white">Domba / Kambing Super (Rp 3.500.000)</b></div>
+                                <div class="bg-black/20 px-3 py-2 rounded-xl"><span class="text-emerald-200/80 block text-[10px]">Tenor Pembayaran:</span><b id="qurban-form-prev-tenor" class="text-white">3 Bulan</b></div>
+                                <div class="bg-black/20 px-3 py-2 rounded-xl"><span class="text-emerald-200/80 block text-[10px]">Jumlah Pembayaran:</span><b id="qurban-form-prev-cicil" class="text-white">Rp 300.000 / bulan</b></div>
+                            </div>
+                        </div>
                     </div>`;
                 w.innerHTML = buildLayananCard({
                     badge: 'Idul Adha & Tabungan Terencana',
@@ -624,14 +708,61 @@
                     ],
                     emoji: '🐄',
                     cardTitle: 'Formulir Pendaftaran & Tabungan Qurban',
-                    cardSubtitle: 'Terhubung ke Database Spreadsheet Masjid Al-Barokah 09',
+                    cardSubtitle: 'Jenis hewan, tenor & cicilan otomatis mengikuti simulasi di atas',
                     bullets: ['<b>Tabungan Qurban:</b> Setoran ringan sesuai kemampuan tiap bulan', '<b>Patungan Sapi (1/7):</b> Kolektif jamaah terorganisir', '<b>Qurban Domba/Kambing:</b> Hewan sehat & sesuai syariat'],
                     customHtml: calcQurban,
-                    btn1: `<a href="https://docs.google.com/forms/d/e/1FAIpQLScug6XWUG9aC55K51lIJUf65jGCL7Vyvjwemn9yt3NkyZHb-g/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📝 Isi Formulir Pendaftaran</a>`,
+                    btn1: `<a id="btn-daftar-qurban-prefill" href="${buildQurbanPrefillUrl()}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-terracotta hover:bg-amber-800 text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">📝 Isi Formulir Pendaftaran (Otomatis Terisi)</a>`,
                     btn2: `<button onclick="switchPage('informasi','kas')" class="w-full text-center bg-emeraldDeep hover:bg-emerald-950 text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">💳 Setor Tabungan (Rekening BSI)</button>`
                 });
             } else if (currentCategory === 'layanan' && currentSubmenu === 'zakat') {
-                const calcZakat = `<div class="space-y-4"><div class="bg-emeraldLight/60 p-5 rounded-2xl border border-emeraldDeep/20 space-y-3"><div class="flex justify-between"><h4 class="font-bold text-sm">Kalkulator Zakat Maal / Profesi (2,5%)</h4><span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emeraldDeep text-goldSoft">2,5%</span></div><div class="grid sm:grid-cols-2 gap-3 items-center"><input id="zakat-harta-input" type="text" inputmode="numeric" oninput="hitungZakatMaal(this.value)" placeholder="Total Harta (Rp)..." class="w-full px-4 py-3 rounded-xl bg-white border font-mono font-bold text-sm" /><div class="bg-white p-3 rounded-xl border text-right"><span class="text-[10px] font-bold uppercase text-stone-500 block">Zakat Wajib (2,5%)</span><span id="zakat-hasil-nominal" class="font-mono font-black text-2xl text-emeraldDeep">Rp 0</span></div></div></div><div class="bg-amber-50/90 p-5 rounded-2xl border border-amber-700/20 space-y-3"><div class="flex justify-between"><h4 class="font-bold text-sm">Kalkulator Zakat Fitrah (Beras)</h4><span class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-800 text-amber-100">2,5 Kg / Jiwa</span></div><div class="grid sm:grid-cols-2 gap-3 items-center"><input id="zakat-jiwa-input" type="text" inputmode="numeric" oninput="hitungZakatFitrah(this.value)" placeholder="Jumlah Jiwa..." class="w-full px-4 py-3 rounded-xl bg-white border font-mono font-bold text-sm" /><div class="bg-white p-3 rounded-xl border text-right"><span class="text-[10px] font-bold uppercase text-stone-500 block">Total Beras Zakat</span><span id="zakat-hasil-beras" class="font-mono font-black text-2xl text-amber-800">0 Kg</span><span id="zakat-hasil-liter" class="text-[11px] text-stone-500 block">Setara 0 Liter</span></div></div></div></div>`;
+                const calcZakat = `
+                    <div class="space-y-4">
+                        <div class="bg-emeraldLight/60 p-5 rounded-2xl border border-emeraldDeep/20 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-bold text-sm">Kalkulator Zakat Maal / Profesi (2,5%)</h4>
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emeraldDeep text-goldSoft">2,5%</span>
+                            </div>
+                            <div class="grid sm:grid-cols-2 gap-3 items-center">
+                                <div>
+                                    <label class="block text-[11px] font-bold text-stone-600 mb-1">Total Harta / Penghasilan (Rp)</label>
+                                    <input id="zakat-harta-input" type="text" inputmode="numeric" oninput="hitungZakatMaal(this.value)" placeholder="Contoh: 10.000.000" class="w-full px-4 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" />
+                                </div>
+                                <div class="bg-white p-3.5 rounded-xl border border-emeraldDeep/20 text-right">
+                                    <span class="text-[10px] font-bold uppercase text-stone-500 block">Zakat Wajib (2,5%)</span>
+                                    <span id="zakat-hasil-nominal" class="font-mono font-black text-2xl text-emeraldDeep">Rp 0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-amber-50/90 p-5 rounded-2xl border border-amber-700/20 space-y-4">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-bold text-sm">Kalkulator Zakat Fitrah (Beras & Diuangkan)</h4>
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-800 text-amber-100">2,5 Kg / Jiwa</span>
+                            </div>
+                            <div class="grid sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[11px] font-bold text-stone-700 mb-1">1. Jumlah Anggota Keluarga (Jiwa)</label>
+                                    <input id="zakat-jiwa-input" type="text" inputmode="numeric" oninput="hitungZakatFitrah()" placeholder="Contoh: 4" class="w-full px-4 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" />
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-bold text-stone-700 mb-1">2. Harga Beras Konsumsi / Kg (Rp)</label>
+                                    <input id="zakat-harga-beras-input" type="text" inputmode="numeric" value="15.000" oninput="hitungZakatFitrah()" placeholder="15.000" class="w-full px-4 py-3 rounded-xl bg-white border border-stone-300 font-mono font-bold text-sm" />
+                                </div>
+                            </div>
+                            <div class="grid sm:grid-cols-2 gap-3">
+                                <div class="bg-white p-3.5 rounded-xl border border-amber-700/20">
+                                    <span class="text-[10px] font-bold uppercase text-stone-500 block">Jika Berupa Beras</span>
+                                    <span id="zakat-hasil-beras" class="font-mono font-black text-2xl text-amber-800 mt-0.5 block">0 Kg</span>
+                                    <span id="zakat-hasil-liter" class="text-[11px] text-stone-500 block mt-0.5">Setara 0 Liter (0 Jiwa × 2,5 Kg)</span>
+                                </div>
+                                <div class="bg-white p-3.5 rounded-xl border border-emeraldDeep/25">
+                                    <span class="text-[10px] font-bold uppercase text-emeraldDeep block">Jika Diuangkan (Rupiah)</span>
+                                    <span id="zakat-hasil-fitrah-uang" class="font-mono font-black text-2xl text-emeraldDeep mt-0.5 block">Rp 0</span>
+                                    <span id="zakat-hasil-fitrah-uang-sub" class="text-[11px] text-stone-500 block mt-0.5">0 Kg × Rp 15.000/Kg</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
                 w.innerHTML = buildLayananCard({
                     badge: 'Unit Pengumpul Zakat (UPZ) Al-Barokah 09',
                     title: 'Layanan Zakat (Maal & Fitrah)',
@@ -648,7 +779,7 @@
                     emoji: '⚖️',
                     cardTitle: 'Penunaian & Akad Zakat Syariah',
                     cardSubtitle: 'Khusus penyaluran kepada 8 golongan (Asnaf) mustahik',
-                    bullets: ['<b>Zakat Maal:</b> Kadar 2,5% dari harta mencapai nisab', '<b>Zakat Fitrah:</b> Berupa beras 2,5 kg / 3,5 liter per jiwa', '<b>Pencatatan Terpisah:</b> Tidak dicampur dengan kas pembangunan'],
+                    bullets: ['<b>Zakat Maal:</b> Kadar 2,5% dari harta mencapai nisab', '<b>Zakat Fitrah:</b> Berupa beras 2,5 kg / 3,5 liter per jiwa atau senilai harga beras konsumsi', '<b>Pencatatan Terpisah:</b> Tidak dicampur dengan kas pembangunan'],
                     customHtml: calcZakat,
                     btn1: `<a href="https://wa.me/6288218271505?text=Assalamu'alaikum%20Pengurus%20UPZ%20Masjid%20Al-Barokah%2009,%20saya%20berniat%20menunaikan%20Zakat." target="_blank" rel="noopener noreferrer" class="w-full text-center bg-emeraldDeep text-white py-4 px-4 rounded-2xl shadow-lg block font-extrabold text-sm">🤝 Konfirmasi Akad Zakat (WA)</a>`,
                     btn2: `<button onclick="copyRekening('7302811959','BSI')" class="w-full text-center bg-terracotta text-white py-4 px-4 rounded-2xl shadow-lg font-extrabold text-sm">📋 Salin Rekening BSI (7302 811 959)</button>`
